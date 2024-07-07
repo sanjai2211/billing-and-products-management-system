@@ -11,19 +11,20 @@ model User {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   email       String   @unique
   name        String?
-  address     Address?
   phoneNumber String?
 }
 model ShopDetails {
-  id          String   @id @default(auto()) @map("_id")
-  name        String
-  address     Json     @json({ constraints: { allowedKeys: ["addressLine", "addressLine2", "district", "pinCode", "city"] } })
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String?
+  address     Address?
   phoneNumbers String[]
   email       String   @unique
 }
 
 
 type Address {
+  addressLine1 String
+  addressLine2 String
   street String
   city   String
   state  String

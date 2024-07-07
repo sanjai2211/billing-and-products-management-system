@@ -14,14 +14,14 @@ model User {
   address     Address?
   phoneNumber String?
 }
-model ShopDetails {
-  id          String   @id @default(auto()) @map("_id")
-  name        String
-  address     Json     @json({ constraints: { allowedKeys: ["addressLine", "addressLine2", "district", "pinCode", "city"] } })
-  phoneNumbers String[]
-  email       String   @unique
-}
 
+model ShopDetails {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  address      Address?
+  phoneNumbers String[]
+  email        String   @unique
+}
 
 type Address {
   street String

@@ -36,37 +36,36 @@ export async function GET(
 }
 
 export async function PATCH(
-    req: Request,
-    { params }: { params: { id: string } }
-  ) {
-    try {
-      const { id } = params;
-      const data = await req.json();
-      console.log({aaaaaaaa : data,req,id})
-  
-      if (!id) {
-        return NextResponse.json(
-          { error: "Product id not found" },
-          { status: 400 }
-        );
-      }
-    
-  
-      const updatedProduct = await (prisma as any).product.update({
-        where: { id },
-        data,
-      });
-      console.log({updatedProduct})
-  
+  req: Request,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const { id } = params;
+    const data = await req.json();
+    console.log({ aaaaaaaa: data, req, id });
+
+    if (!id) {
       return NextResponse.json(
-        { message: "Product updated successfully", updatedProduct },
-        { status: 200 }
-      );
-    } catch (error) {
-      console.error(error);
-      return NextResponse.json(
-        { error: "Internal server error" },
-        { status: 500 }
+        { error: "Product id not found" },
+        { status: 400 }
       );
     }
+
+    const updatedProduct = await (prisma as any).product.update({
+      where: { id },
+      data,
+    });
+    console.log({ updatedProduct });
+
+    return NextResponse.json(
+      { message: "Product updated successfully", updatedProduct },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
+}

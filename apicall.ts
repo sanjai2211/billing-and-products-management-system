@@ -55,7 +55,7 @@ export const loginUser = async (data: { email: string; password: string }) => {
 
 export const createNewProduct = async (data: any) => {
   const response = await fetchApi({
-    endpoint: "/products/create",
+    endpoint: "/product/create",
     method: "POST",
     data,
   });
@@ -64,14 +64,14 @@ export const createNewProduct = async (data: any) => {
 
 export const getProductDetailsById = async (productId: any) => {
   const response = await fetchApi({
-    endpoint: `/products/${productId}`,
+    endpoint: `/product/${productId}`,
   });
   return response;
 };
 
 export const updateProductDetails = async (productId: any,data: any) => {
   const response = await fetchApi({
-    endpoint: `/products/${productId}`,
+    endpoint: `/product/${productId}`,
     method : "PATCH",
     data
   });

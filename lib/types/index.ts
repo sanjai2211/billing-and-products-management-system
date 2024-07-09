@@ -6,7 +6,9 @@ export interface DynamicInputFieldProps {
     type?: string;
     placeholder?: string;
     description?: string;
-    component : string
+    component : string;
+    list? :any;
+    defaultValue? :string;
   };
 }
 

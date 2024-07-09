@@ -1,3 +1,4 @@
 import SignupScreen from "./authentication/signup-screen";
 import LoginScreen from "./authentication/login-screen";
-export { LoginScreen, SignupScreen };
+import AddProductScreen from "./products/add-product-screen";
+export {AddProductScreen, LoginScreen, SignupScreen };

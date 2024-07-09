@@ -1,2 +1,3 @@
 import { SignupSchema,LoginSchema } from "./auth-form";
-export { LoginSchema,SignupSchema };
+import { ProductSchema } from "./add-product";
+export { LoginSchema,ProductSchema,SignupSchema };

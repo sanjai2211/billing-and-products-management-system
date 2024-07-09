@@ -1,6 +1,7 @@
 import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaClient } from "@prisma/client";
 import { compare } from "bcrypt";
+import { CloudCog } from "lucide-react";
 
 const prisma :any= new PrismaClient();
 
@@ -27,7 +28,7 @@ const authOptions = {
         const user = await prisma.user.findFirst({
           where: { email: credentials.email },
         });
-
+console.log({user})
         if (!user) {
           throw new Error(
             "User not found. Please create your account and login !"
@@ -39,6 +40,8 @@ const authOptions = {
           credentials.password,
           user.password
         );
+        console.log({isValidPassword})
+
         if (!isValidPassword) {
           throw new Error(
             "Invalid password. Please verify your password and try again!"

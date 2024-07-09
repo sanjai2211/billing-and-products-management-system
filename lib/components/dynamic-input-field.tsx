@@ -10,7 +10,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { DynamicInputFieldProps } from "@/lib/types";
 
-export default function DynamicInputField({
+export function DynamicInputField({
   form,
   data,
 }: DynamicInputFieldProps) {

@@ -29,7 +29,7 @@ export const MenuData = [
       {
         name: "Add Product",
         icon: "ListPlus",
-        path: "/new-product",
+        path: "/add-product",
       },
       {
         name: "My Products",

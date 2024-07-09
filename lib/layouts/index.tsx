@@ -9,7 +9,7 @@ export const BaseLayout = ({ children }: any) => {
       {/* <div className="w-full h-12 bg-yellow-500">Header</div> */}
       <div className="flex flex-1 border-r">
         <NavigationBar toggled={toggled} setToggle={setToggle} />
-        <div className="h-full w-full">{children}</div>
+        <div className="max-h-screen h-screen overflow-y-auto w-full p-4">{children}</div>
       </div>
     </div>
   );

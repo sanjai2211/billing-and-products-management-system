@@ -34,12 +34,12 @@ const TooltipContent = React.forwardRef<
 ));
 TooltipContent.displayName = TooltipPrimitive.Content.displayName;
 
-const ToolTip = ({ trigger, content, side = "top" }: any) => {
+const ToolTip = ({ trigger, content, side = "top",align='start' }: any) => {
   return (
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>{trigger}</TooltipTrigger>
-        <TooltipContent side={side}>{content}</TooltipContent>
+        <TooltipContent align={align} side={side}>{content}</TooltipContent>
       </Tooltip>
     </TooltipProvider>
   );

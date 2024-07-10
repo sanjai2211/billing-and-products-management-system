@@ -78,6 +78,15 @@ export const updateProductDetails = async (productId: any,data: any) => {
   return response;
 };
 
+export const deleteProduct = async (productId: any,data: any) => {
+  const response = await fetchApi({
+    endpoint: `/product/${productId}`,
+    method : "DELETE",
+    data
+  });
+  return response;
+};
+
 export const getProductsByShopId = async (shopId: any) => {
   const response = await fetchApi({
     endpoint: `/products/${shopId}`,

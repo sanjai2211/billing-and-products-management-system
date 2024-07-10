@@ -34,7 +34,7 @@ export const MenuData = [
       {
         name: "My Products",
         icon: "ListTodo",
-        path: "/products",
+        path: "/my-products",
       },
     ],
   },

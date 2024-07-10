@@ -17,7 +17,7 @@ export function PageHeader({
 }) {
   const router = useRouter();
   return (
-    <div className="flex gap-4 items-center">
+    <div className="flex gap-4 items-center mb-4">
       {hasBack && (
         <div
           className="border rounded-md p-1 cursor-pointer"

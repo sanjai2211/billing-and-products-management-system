@@ -9,7 +9,7 @@ import { AdddProduct } from "@/lib/constants";
 import { PageHeader, SectionWithFields } from "@/lib/components";
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { useAddEditProduct } from "@/lib/hooks";
+import { useAddEditDeleteProduct } from "@/lib/hooks";
 import { Icon } from "@/lib/icons";
 
 type FormData = z.infer<typeof ProductSchema>;
@@ -40,7 +40,7 @@ export default function AddProductScreen({ productDetails }: any) {
     },
   });
 
-  const { mutate: onSubmit } = useAddEditProduct(productDetails?.id);
+  const { mutate: onSubmit } = useAddEditDeleteProduct(productDetails?.id,'PATCH');
 
   return (
     <Form {...form}>

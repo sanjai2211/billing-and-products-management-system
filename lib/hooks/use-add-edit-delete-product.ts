@@ -1,19 +1,31 @@
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
-import { createNewProduct, updateProductDetails } from "@/apicall";
+import {
+  createNewProduct,
+  deleteProduct,
+  updateProductDetails,
+} from "@/apicall";
 
-const useAddEditProduct = (id : String | undefined | null) => {
+const useAddEditDeleteProduct = (id?: String, method?: String) => {
   const router = useRouter();
-  const action = id ? 'Updat' : 'Creat'
+  const action =
+    method === "PATCH" ? "Updat" : method === "DELETE" ? "Delet" : "Creat";
+  const shopId = "668d73ba2a6cfb4e622c0255";
   return useMutation({
-    mutationFn: async (data : any) => {
-      let response 
-      if(id)
-
-      response = await updateProductDetails(id,{...data,shopId : '668d73ba2a6cfb4e622c0255'});
+    mutationFn: async (data: any) => {
+      let response;
+      if (method === "PATCH")
+        response = await updateProductDetails(id, {
+          ...data,
+          shopId,
+        });
+      else if (method === "DELETE") response = await deleteProduct(id, shopId);
       else
-      response = await createNewProduct({...data,shopId : '668d73ba2a6cfb4e622c0255'})
+        response = await createNewProduct({
+          ...data,
+          shopId,
+        });
       return response;
     },
     onMutate: () => {
@@ -26,16 +38,15 @@ const useAddEditProduct = (id : String | undefined | null) => {
       if (data?.error) {
         toast({
           title: `Product ${action}ion Failed !`,
-          description:
-            `We encountered an issue while ${action}ing your product. Please try again.`,
+          description: `We encountered an issue while ${action}ing your product. Please try again.`,
         });
       } else {
         toast({
           title: `Product ${action}ed !`,
           description: `Your product has been ${action}ed successfully.`,
         });
-        // router.push("/products");
-        router.refresh()
+        if (!id) router.push("/products");
+        router.refresh();
       }
     },
     onError: (error: any) => {
@@ -49,4 +60,4 @@ const useAddEditProduct = (id : String | undefined | null) => {
   });
 };
 
-export default useAddEditProduct;
+export default useAddEditDeleteProduct;

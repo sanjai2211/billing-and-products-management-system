@@ -4,32 +4,47 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "./data-table-column-header";
 import { formatDate } from "@/lib/utils-helper";
+import { DataTableRowActions } from "./data-table-row-actions";
 // import { DataTableRowActions } from "./data-table-row-actions";
 
 export const columns: ColumnDef<any>[] = [
+  // {
+  //   id: "select",
+  //   header: ({ table }) => (
+  //     <Checkbox
+  //       checked={
+  //         table.getIsAllPageRowsSelected() ||
+  //         (table.getIsSomePageRowsSelected() && "indeterminate")
+  //       }
+  //       onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+  //       aria-label="Select all"
+  //       className="translate-y-[2px]"
+  //     />
+  //   ),
+  //   cell: ({ row }) => (
+  //     <Checkbox
+  //       checked={row.getIsSelected()}
+  //       onCheckedChange={(value) => row.toggleSelected(!!value)}
+  //       aria-label="Select row"
+  //       className="translate-y-[2px]"
+  //     />
+  //   ),
+  //   enableSorting: false,
+  //   enableHiding: false,
+  // },
   {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-        className="translate-y-[2px]"
-      />
+    accessorKey: "id",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Id" className="hidden" />
     ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-        className="translate-y-[2px]"
-      />
+    cell: ({ row }) => <div className="w-[80px] hidden">{row.getValue('id')}</div>,
+  },
+  {
+    accessorKey: "sNo",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="S.No" />
     ),
-    enableSorting: false,
-    enableHiding: false,
+    cell: ({ row }) => <div className="w-[80px]">{row.index + 1}</div>,
   },
   {
     accessorKey: "code",
@@ -59,7 +74,7 @@ export const columns: ColumnDef<any>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Status" />
     ),
-    cell: ({ row }) => <div>{row.getValue("status") || '-'}</div>,
+    cell: ({ row }) => <div>{row.getValue("status") || "-"}</div>,
   },
   {
     accessorKey: "category",
@@ -73,7 +88,7 @@ export const columns: ColumnDef<any>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Unit" />
     ),
-    cell: ({ row }) => <div>{row.getValue("stockValue") || '-'}</div>,
+    cell: ({ row }) => <div>{row.getValue("stockValue") || "-"}</div>,
   },
   {
     accessorKey: "group",
@@ -150,34 +165,38 @@ export const columns: ColumnDef<any>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="HSN Code" />
     ),
-    cell: ({ row }) => <div>{row.getValue("hsnCode") || '-'}</div>,
+    cell: ({ row }) => <div>{row.getValue("hsnCode") || "-"}</div>,
   },
   {
     accessorKey: "openStock",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Open Stock" />
     ),
-    cell: ({ row }) => <div>{row.getValue("openStock") || '-'}</div>,
+    cell: ({ row }) => <div>{row.getValue("openStock") || "-"}</div>,
   },
   {
     accessorKey: "stockValue",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Stock Value" />
     ),
-    cell: ({ row }) => <div>{row.getValue("stockValue") || '-'}</div>,
+    cell: ({ row }) => <div>{row.getValue("stockValue") || "-"}</div>,
   },
-  
+
   {
     accessorKey: "createdAt",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Created At" />
     ),
     cell: ({ row }) => (
-      <div>{formatDate(row.getValue("createdAt"))}</div>
+      <div className="w-40">{formatDate(row.getValue("createdAt"))}</div>
     ),
+    size: 48,
   },
-  // {
-  //   id: "actions",
-  //   cell: ({ row }) => <DataTableRowActions row={row} />,
-  // },
+  {
+    id: "actions",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Actions" />
+    ),
+    cell: ({ row }) => <DataTableRowActions row={row} />,
+  },
 ];

@@ -77,3 +77,10 @@ export const updateProductDetails = async (productId: any,data: any) => {
   });
   return response;
 };
+
+export const getProductsByShopId = async (shopId: any) => {
+  const response = await fetchApi({
+    endpoint: `/products/${shopId}`,
+  });
+  return response;
+};

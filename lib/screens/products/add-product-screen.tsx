@@ -47,9 +47,13 @@ export default function AddProductScreen({ productDetails }: any) {
       <form onSubmit={form.handleSubmit(onSubmit as any)}>
         <div className="flex flex-1 h-full flex-col gap-4">
           <div className="flex justify-between">
-            <PageHeader title="Add Product" />
+            <PageHeader
+              title={`${productDetails?.id ? "Edit" : "Add"} Product`}
+              hasBack = {!!productDetails?.id}
+              path = '/my-products'
+            />
             {productDetails?.id ? (
-              <Button type="submit" >
+              <Button type="submit">
                 <Icon name="Pencil" className="h-4 w-4 mr-2" />
                 Save
               </Button>

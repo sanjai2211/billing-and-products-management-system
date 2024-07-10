@@ -11,14 +11,14 @@ const useAddEditProduct = (id : String | undefined | null) => {
       let response 
       if(id)
 
-      response = await updateProductDetails(id,{...data,shopId : '668d44febf3fb97fe519f4f8'});
+      response = await updateProductDetails(id,{...data,shopId : '668d73ba2a6cfb4e622c0255'});
       else
-      response = await createNewProduct({...data,shopId : '668d44febf3fb97fe519f4f8'})
+      response = await createNewProduct({...data,shopId : '668d73ba2a6cfb4e622c0255'})
       return response;
     },
     onMutate: () => {
       toast({
-        title: `${action}ing Product... !"`,
+        title: `${action}ing Product... !`,
         description: "We are processing your request. Please wait a moment.",
       });
     },

@@ -27,7 +27,7 @@ export default function LoginScreen() {
 
   return (
     <div className="flex flex-1 justify-center items-center ">
-      <div className="flex flex-col justify-center w-96 mx-auto border rounded-md bg-slate-50 p-4 ">
+      <div className="flex flex-col justify-center w-96 mx-auto border rounded-md bg-background p-4 ">
         <div className="space-y-8">
           <p className="text-center text-2xl font-semibold">Login</p>
           <Form {...form}>

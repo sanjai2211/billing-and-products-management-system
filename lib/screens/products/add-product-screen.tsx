@@ -6,7 +6,7 @@ import * as z from "zod";
 
 import { ProductSchema } from "@/lib/form-schema";
 import { AdddProduct } from "@/lib/constants";
-import { PageHeader, SectionWithFields } from "@/lib/components";
+import { PageHeader, SectionWithDynamicFields } from "@/lib/components";
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { useAddEditDeleteProduct } from "@/lib/hooks";
@@ -84,7 +84,9 @@ export default function AddProductScreen({ productDetails, session }: any) {
               </div>
             )}
           </div>
-          <SectionWithFields data={AdddProduct} form={form} />
+          {AdddProduct?.map((item: any) => (
+            <SectionWithDynamicFields data={item} form={form} />
+          ))}
         </div>
       </form>
     </Form>

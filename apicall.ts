@@ -92,3 +92,29 @@ export const getProductsByShopId = async (shopId: any) => {
   });
   return response;
 };
+
+export const createShop = async (data: any) => {
+  const response = await fetchApi({
+    endpoint: "/shop/create",
+    method: "POST",
+    data,
+  });
+  return response;
+};
+
+export const updateShop = async (data: any) => {
+  const {shopId , ...rest} = data
+  const response = await fetchApi({
+    endpoint: `/shop/${shopId}`,
+    method : "PATCH",
+    data : rest
+  });
+  return response;
+};
+
+export const getShopDetailsById = async (shopId: String) => {
+  const response = await fetchApi({
+    endpoint: `/shop/${shopId}`,
+  });
+  return response;
+};

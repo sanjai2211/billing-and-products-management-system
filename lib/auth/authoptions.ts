@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client";
 import { compare } from "bcrypt";
 import { CloudCog } from "lucide-react";
 
-const prisma :any= new PrismaClient();
+const prisma: any = new PrismaClient();
 
 const authOptions = {
   session: {
@@ -28,7 +28,6 @@ const authOptions = {
         const user = await prisma.user.findFirst({
           where: { email: credentials.email },
         });
-console.log({user})
         if (!user) {
           throw new Error(
             "User not found. Please create your account and login !"
@@ -40,7 +39,6 @@ console.log({user})
           credentials.password,
           user.password
         );
-        console.log({isValidPassword})
 
         if (!isValidPassword) {
           throw new Error(
@@ -58,17 +56,20 @@ console.log({user})
     }),
   ],
   callbacks: {
-    async session({ session, token } : any) {
-        console.log({session,token})
-      session.user = token.user;
-      return session;
-    },
-    async jwt({ token, user } : any) {
-        console.log({token,user})
-      if (user) {
-        token.user = user;
-      }
+    async jwt({ token }: any) {
       return token;
+    },
+    async session({ session, user, token }: any) {
+      const shop = await prisma.shop.findFirst({
+        where: { userId: token?.sub },
+      });
+      const res = {
+        ...session?.user,
+        userId: token?.sub,
+        shopId: shop?.id,
+      };
+
+      return res;
     },
   },
 };

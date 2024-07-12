@@ -14,6 +14,8 @@ export default async function Home({ params }: any) {
     productDetails = await getProductDetailsById(productId);
   }
 
+  // If any product id is changed
+
   if (productDetails?.error) {
     redirect("/add-product");
   }

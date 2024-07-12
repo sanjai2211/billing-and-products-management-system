@@ -14,7 +14,7 @@ import { Icon } from "@/lib/icons";
 
 type FormData = z.infer<typeof ProductSchema>;
 
-export default function AddProductScreen({ productDetails }: any) {
+export default function AddProductScreen({ productDetails, session }: any) {
   const form = useForm<FormData>({
     resolver: zodResolver(ProductSchema),
     defaultValues: {
@@ -40,17 +40,24 @@ export default function AddProductScreen({ productDetails }: any) {
     },
   });
 
-  const { mutate: onSubmit } = useAddEditDeleteProduct(productDetails?.id,'PATCH');
+  const { mutate: onSubmit } = useAddEditDeleteProduct({
+    shopId: session?.shopId,
+    method: "PATCH",
+  });
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit as any)}>
+      <form
+        onSubmit={form.handleSubmit(
+          (data) => onSubmit({ ...data, productId: productDetails?.id }) as any
+        )}
+      >
         <div className="flex flex-1 h-full flex-col gap-4">
           <div className="flex justify-between">
             <PageHeader
               title={`${productDetails?.id ? "Edit" : "Add"} Product`}
-              hasBack = {!!productDetails?.id}
-              path = '/my-products'
+              hasBack={!!productDetails?.id}
+              path="/my-products"
             />
             {productDetails?.id ? (
               <Button type="submit">

@@ -5,7 +5,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "./data-table-column-header";
 import { formatDate } from "@/lib/utils-helper";
 import { DataTableRowActions } from "./data-table-row-actions";
-// import { DataTableRowActions } from "./data-table-row-actions";
 
 export const columns: ColumnDef<any>[] = [
   // {
@@ -192,11 +191,11 @@ export const columns: ColumnDef<any>[] = [
     ),
     size: 48,
   },
-  {
-    id: "actions",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Actions" />
-    ),
-    cell: ({ row }) => <DataTableRowActions row={row} />,
-  },
+  // {
+  //   id: "actions",
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader column={column} title="Actions" />
+  //   ),
+  //   cell: ({ row }) => <DataTableRowActions row={row} />,
+  // },
 ];

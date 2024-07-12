@@ -7,23 +7,24 @@ import {
   updateProductDetails,
 } from "@/apicall";
 
-const useAddEditDeleteProduct = (id?: String, method?: String) => {
+const useAddEditDeleteProduct = ({ shopId, method }: any) => {
   const router = useRouter();
   const action =
     method === "PATCH" ? "Updat" : method === "DELETE" ? "Delet" : "Creat";
-  const shopId = "668d73ba2a6cfb4e622c0255";
   return useMutation({
     mutationFn: async (data: any) => {
+      const { productId, ...rest } = data;
+      console.log({data})
       let response;
       if (method === "PATCH")
-        response = await updateProductDetails(id, {
-          ...data,
+        response = await updateProductDetails(productId, {
+          ...rest,
           shopId,
         });
-      else if (method === "DELETE") response = await deleteProduct(id, shopId);
+      else if (method === "DELETE") response = await deleteProduct(productId);
       else
         response = await createNewProduct({
-          ...data,
+          ...rest,
           shopId,
         });
       return response;
@@ -45,7 +46,7 @@ const useAddEditDeleteProduct = (id?: String, method?: String) => {
           title: `Product ${action}ed !`,
           description: `Your product has been ${action}ed successfully.`,
         });
-        if (!id) router.push("/products");
+        if (action === "Creat") router.push("/products");
         router.refresh();
       }
     },

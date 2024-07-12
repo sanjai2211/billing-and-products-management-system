@@ -1,4 +1,4 @@
-import { ArrowLeftToLine,ArrowRightToLine,BadgeCheck,BarChart3,Boxes,Cable, ChevronLeft, ClipboardList, CloudCog, FileBarChart, FileBarChart2, HandCoins, IndianRupee, Layers, LayoutDashboard, LayoutList, LineChart, List,ListChecks,ListPlus, ListTodo,LogOut,Moon, MoreHorizontal, MoreVertical, Pen, Pencil, Plus, Save, Settings,SlidersHorizontal,SquarePlus,Sun, Trash, Trash2, User, UserCog, UserCog2 } from 'lucide-react';
+import { ArrowLeftToLine,ArrowRightToLine,BadgeCheck,BarChart3,Boxes,Cable, ChevronLeft, ClipboardList, CloudCog, FileBarChart, FileBarChart2, HandCoins, Headset, Home, IndianRupee, Layers, LayoutDashboard, LayoutList, LineChart, List,ListChecks,ListPlus, ListTodo,LogOut,Mail,MapPinned,Moon, MoreHorizontal, MoreVertical, Pen, Pencil, Phone, Plus, Save, Settings,SlidersHorizontal,SquarePlus,Store,Sun, Trash, Trash2, User, UserCog, UserCog2 } from 'lucide-react';
 import { FC } from 'react';
 
 const iconMap = {
@@ -11,11 +11,11 @@ const iconMap = {
     ChevronLeft,
     ClipboardList,
     CloudCog,
-    MoreHorizontal,
-    MoreVertical,
     FileBarChart, 
     FileBarChart2,
     HandCoins,
+    Headset,
+    Home,
     IndianRupee,
     Layers,
     LayoutDashboard,
@@ -26,14 +26,20 @@ const iconMap = {
     ListPlus,
     ListTodo,
     LogOut,
+    Mail,
+    MapPinned,
     Moon,
+    MoreHorizontal,
+    MoreVertical,
     Pen,
     Pencil,
     Plus,
+    Phone,
     Save,
     Settings,
     SlidersHorizontal,
     SquarePlus,
+    Store,
     Sun,
     Trash,
     Trash2,

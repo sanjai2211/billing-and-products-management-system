@@ -80,6 +80,11 @@ export const MenuData = [
         icon: "Cable",
         path: "/reports/products",
       },
+      {
+        name: "Shop Settings",
+        icon: "Store",
+        path: "/shop-settings",
+      },
     ],
   },
 ];

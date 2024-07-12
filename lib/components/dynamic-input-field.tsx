@@ -46,19 +46,19 @@ export function DynamicInputField({ form, data }: DynamicInputFieldProps) {
     }
   };
 
-  const error = form.formState.errors[data.id]?.message;
+  const error = form?.formState ?  form?.formState?.errors[data.id]?.message : '';
 
   return (
     <FormField
-      control={form.control}
+      control={form?.control}
       name={data?.id}
       render={({ field }) => {
         return (
           <FormItem>
-            <FormLabel>{data.label}</FormLabel>
+            <FormLabel>{data?.label}</FormLabel>
             <FormControl>{renderFormControl(field)}</FormControl>
-            {data.description && (
-              <FormDescription>{data.description}</FormDescription>
+            {data?.description && (
+              <FormDescription>{data?.description}</FormDescription>
             )}
             {error && <p className="text-sm text-red-500">{error}</p>}
           </FormItem>
@@ -67,3 +67,4 @@ export function DynamicInputField({ form, data }: DynamicInputFieldProps) {
     />
   );
 }
+

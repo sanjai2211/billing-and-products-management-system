@@ -27,21 +27,31 @@ import {
 
 import { DataTablePagination } from "./data-table-pagination";
 import { DataTableToolbar } from "./data-table-toolbar";
+import { Icon } from "@/lib/icons";
+import { EditDeleteContainer } from "@/lib/components";
+import { DataTableRowActions } from "./data-table-row-actions";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  handleDelete?: any
+  handleEdit? :any
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  handleDelete,
+  handleEdit
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
+  );
+  const [hoveredRow, setHoveredRow] = React.useState<string | number | null>(
+    null
   );
   const [sorting, setSorting] = React.useState<SortingState>([]);
 
@@ -67,11 +77,10 @@ export function DataTable<TData, TValue>({
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
-
   return (
-    <div className="space-y-4 max-h-[528px] h-full ">
+    <div className="flex flex-col gap-4 w-full h-[calc(100vh-84px)] ">
       <DataTableToolbar table={table} />
-      <div className="rounded-md border h-full overflow-y-scroll">
+      <div className="rounded-md border h-full overflow-auto">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -95,9 +104,12 @@ export function DataTable<TData, TValue>({
             {table.getRowModel()?.rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
-                key={row.id}
-                data-state={row.getIsSelected() && "selected"}
-              >
+                  key={row.id}
+                  data-state={row.getIsSelected() && "selected"}
+                  onMouseEnter={() => setHoveredRow(row.id)}
+                  onMouseLeave={() => setHoveredRow(null)}
+                  className="relative"
+                >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
                       {flexRender(
@@ -106,7 +118,10 @@ export function DataTable<TData, TValue>({
                       )}
                     </TableCell>
                   ))}
-              </TableRow>
+                  {hoveredRow === row.id && (
+                     <DataTableRowActions row={row} handleEdit={handleEdit} handleDelete={handleDelete} />
+                  )}
+                </TableRow>
               ))
             ) : (
               <TableRow>

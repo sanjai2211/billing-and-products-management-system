@@ -6,7 +6,7 @@ import { redirect } from "next/navigation";
 export const revalidate = 0;
 
 export default async function Home({ params }: any) {
-  // const session = await accessPage();
+  const session = await accessPage();
   const { productId } = params;
   let productDetails;
 
@@ -18,5 +18,5 @@ export default async function Home({ params }: any) {
     redirect("/add-product");
   }
 
-  return <AddProductScreen productDetails={productDetails} />;
+  return <AddProductScreen productDetails={productDetails} session={session} />;
 }

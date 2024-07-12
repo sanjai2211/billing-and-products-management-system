@@ -1,30 +1,57 @@
 "use client";
-import { Icon } from "@/lib/icons";
+import { useState } from "react";
 import { DynamicInputField } from "./dynamic-input-field";
+import { Section } from "./section";
+import { AddableComponent } from "./addable-component";
+import { CloudCog } from "lucide-react";
+import { useFieldArray, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Form } from "@/components/ui/form";
 
-export function SectionWithFields({ form, data }: any) {
+const renderDynamicField = ({ form, data }: any) => {
   return (
-    <div className="w-full space-y-8 py-4">
-      {data?.map((section: any) => (
-        <div className="" key={section?.id}>
-          <div className="relative border rounded-md min-h-10">
-            {(section?.sectionName || section?.icon) && (
-              <div className="absolute -top-5 left-5 flex items-center gap-2 border rounded-md bg-background p-2 h-10 w-fit">
-                <Icon name={section?.icon} className="w-4 h-4" />
-                <p>{section?.sectionName}</p>
-              </div>
-            )}
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 p-4">
-              {section?.fields?.map((field: any) => (
-                <div>
-                  <DynamicInputField form={form} data={field} />
-                </div>
-              ))}
-            </div>
-          </div>
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 p-4">
+      {data?.fields?.map((field: any) => (
+        <div key={field.id}>
+          <DynamicInputField form={form} data={field} />
         </div>
       ))}
     </div>
+  );
+};
+
+export function SectionWithDynamicFields({ form, data }: any) {
+  return (
+    <Section
+      name={data?.sectionName}
+      icon={data?.icon}
+      component={renderDynamicField({ form, data })}
+    />
+  );
+}
+
+type FieldsType = Record<string, any>;
+
+export function SectionWithAddableFields({ form, data, key }: any) {
+  const [value, setValue] = useState<FieldsType[]>([]);
+  // console.log({ form, data, value });
+  // console.log({ addForm, data: data?.validationSchema, default : form });
+
+  return (
+    <Section
+      key={key}
+      name={data?.sectionName}
+      icon={data?.icon}
+      component={
+        <AddableComponent
+          key={key}
+          form={form}
+          value={value}
+          setValue={setValue}
+          component={renderDynamicField({ form: form, data })}
+          data={data}
+        />
+      }
+    />
   );
 }

@@ -30,6 +30,7 @@ const useLogin = () => {
       } else {
         toast({ title: "Welcome", description: "Logged in Successfully !" });
         router.push("/");
+        router.refresh()
       }
     },
     onError: (error: any) => {

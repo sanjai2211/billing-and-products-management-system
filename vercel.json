@@ -1,8 +1,0 @@
-{
-    "build": {
-      "commands": {
-        "build": "npm run prisma:generate && next build"
-      }
-    }
-  }
-  

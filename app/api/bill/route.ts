@@ -13,11 +13,9 @@ export async function GET(
     return NextResponse.json({ error: "Shop id not found" }, { status: 400 });
   }
 
-  let where ={
-    
+  let where: any = {
+    shopId: id,
   };
-
-  where.shopId = id;
 
   if (type) {
     where.type = type;

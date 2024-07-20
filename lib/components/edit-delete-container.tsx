@@ -11,6 +11,7 @@ const EditDeleteContainer = ({
   alertDelete = true,
   details,
   id,
+  data
 }: any) => {
   return (
     <div
@@ -19,7 +20,7 @@ const EditDeleteContainer = ({
       {!hideEdit && (
         <div
           className="rounded-full border p-2 hover:bg-muted/50 cursor-pointer"
-          onClick={() => handleEdit(id)}
+          onClick={() => handleEdit({id,data})}
         >
           <Icon name="Pencil" className="w-4 h-4" />
         </div>

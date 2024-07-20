@@ -118,3 +118,76 @@ export const getShopDetailsById = async (shopId: String) => {
   });
   return response;
 };
+
+export const createBill = async (data: any) => {
+  const response = await fetchApi({
+    endpoint: "/bill/create",
+    method: "POST",
+    data,
+  });
+  return response;
+};
+
+export const updateBill = async (billId:any ,data: any) => {
+  const response = await fetchApi({
+    endpoint: `/bill/${billId}`,
+    method: "PATCH",
+    data,
+  });
+  return response;
+};
+
+export const getBillDetailsById = async (billId: any) => {
+  const response = await fetchApi({
+    endpoint: `/bill/${billId}`,
+  });
+  return response;
+};
+
+export const createBillItems = async (data: any) => {
+  const response = await fetchApi({
+    endpoint: "/bill/bill-items/create",
+    method: "POST",
+    data,
+  });
+  return response;
+};
+
+export const getBillingItems = async (billId: any) => {
+  const response = await fetchApi({
+    endpoint: `/bill/bill-items/${billId}`,
+  });
+  return response;
+};
+
+export const updateBillItem = async (billItemId : any,data: any) => {
+  const response = await fetchApi({
+    endpoint: `/bill/bill-items/${billItemId}`,
+    method : "PATCH",
+    data
+  });
+  return response;
+};
+
+
+export const deleteBillItem = async (billId: any) => {
+  const response = await fetchApi({
+    endpoint: `/bill/bill-items/${billId}`,
+    method : "DELETE",
+  });
+  return response;
+};
+
+export const getCustomersByShopId = async (shopId: any) => {
+  const response = await fetchApi({
+    endpoint: `/customers/${shopId}`,
+  });
+  return response;
+};
+
+export const getBankDetailsById = async (id: any,type='shop') => {
+  const response = await fetchApi({
+    endpoint: `/bank/${id}?type=${type}`,
+  });
+  return response;
+};

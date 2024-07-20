@@ -76,7 +76,7 @@ export function DeleteAlert<TData>({ details, handleDelete }: any) {
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction
-            disabled={confirmationInput !== code.toUpperCase()}
+            disabled={confirmationInput !== code?.toUpperCase()}
             className="flex items-center bg-destructive hover:bg-destructive text-black dark:text-white"
             onClick={() => {
               handleDelete(details?.id);

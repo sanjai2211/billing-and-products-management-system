@@ -42,7 +42,7 @@ export default function AddProductScreen({ productDetails, session }: any) {
 
   const { mutate: onSubmit } = useAddEditDeleteProduct({
     shopId: session?.shopId,
-    method: "PATCH",
+    method: productDetails?.id ? "PATCH" : "",
   });
 
   return (

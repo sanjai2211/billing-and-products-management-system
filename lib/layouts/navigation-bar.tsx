@@ -1,15 +1,21 @@
-import React from "react";
-import { MenuData } from "@/lib/constants";
+import React, { useState } from "react";
+import { BillTypes, MenuData } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import { Icon } from "@/lib//icons";
 import { useRouter } from "next/navigation";
 import { ThemeSwitch, UserSettings } from "@/lib/components";
 import { ToolTip } from "@/components/ui/tooltip";
+import { useAddEditDeleteBill } from "@/lib/hooks";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 export const NavigationBar = ({ toggled, setToggle }: any) => {
   return (
     <div
-      className={` transition-all duration-500 ease-in-out min-h-screen h-full w-full border-r ${
+      className={` hidden md:block transition-all duration-500 ease-in-out min-h-screen h-full w-full border-r ${
         toggled ? "max-w-16" : "max-w-56"
       }`}
     >
@@ -27,15 +33,28 @@ export const NavigationBar = ({ toggled, setToggle }: any) => {
 };
 
 const TopBar = ({ toggled }: any) => {
+  const [open,setOpen] = useState(false)
+  const { mutate: onSubmit } = useAddEditDeleteBill({ shopId: "" });
+
   return (
     <div className="border-b p-2">
-      <Button className="w-full p-1">
-        <Icon
-          name="SquarePlus"
-          className={`w-5 h-5 ${toggled ? "" : "mr-2"}`}
-        />
-        {toggled ? null : "New Bill"}
-      </Button>
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <Button className="w-full p-1" onClick={()=>setOpen(true)}>
+            <Icon
+              name="SquarePlus"
+              className={`w-5 h-5 ${toggled ? "" : "mr-2"}`}
+            />
+            {toggled ? null : "New Bill"}
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-52 p-2" align="start">
+          <div className="grid gap-4"></div>
+          {BillTypes?.map((item: any) => (
+            <div onClick={() => onSubmit({type : item?.value})} className="text-sm hover:bg-muted cursor-pointer p-2 rounded-sm">{item?.label}</div>
+          ))}
+        </PopoverContent>
+      </Popover>
     </div>
   );
 };

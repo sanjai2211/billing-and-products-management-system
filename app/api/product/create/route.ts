@@ -10,7 +10,13 @@ export async function POST(request: Request) {
     const newProduct = await (prisma as any).product.create({
       data,
     });
-
+    const {openStock,stockValue,shopId,...rest } = data
+    await (prisma as any).productSnapshot.create({
+      data : {
+        ...rest,
+        productId : newProduct?.id
+      },
+    });
     if (!newProduct || !newProduct.id) {
       return NextResponse.json(
         { error: "Error in Creating a New Product" },

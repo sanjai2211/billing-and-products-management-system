@@ -12,9 +12,7 @@ const renderDynamicField = ({ form, data }: any) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 p-4">
       {data?.fields?.map((field: any) => (
-        <div key={field.id}>
-          <DynamicInputField form={form} data={field} />
-        </div>
+        <DynamicInputField key={field.id} form={form} data={field} />
       ))}
     </div>
   );

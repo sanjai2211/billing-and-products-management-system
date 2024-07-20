@@ -9,6 +9,9 @@ export interface DynamicInputFieldProps {
     component : string;
     list? :any;
     defaultValue? :string;
+    parent? :any;
+    condition? : any
+    disabled? : any
   };
 }
 

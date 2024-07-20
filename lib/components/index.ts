@@ -8,13 +8,22 @@ import {
 import { PageHeader } from "./page-header";
 import InformationTooltip from "./information-tooltip";
 import EditDeleteContainer from "./edit-delete-container";
+import { Section } from "./section";
+import { ShowDetails } from "./show-details";
+import { FieldWithBoxValues, FieldWithValues } from "./field-with-values";
+import { BillTemplate } from "./bill-template";
 export {
-    DynamicInputField,
-    EditDeleteContainer,
-    InformationTooltip,
-    PageHeader,
-    SectionWithAddableFields,
-    SectionWithDynamicFields,
-    ThemeSwitch,
-    UserSettings,
-}
+  BillTemplate,
+  DynamicInputField,
+  EditDeleteContainer,
+  FieldWithValues,
+  FieldWithBoxValues,
+  InformationTooltip,
+  PageHeader,
+  Section,
+  SectionWithAddableFields,
+  SectionWithDynamicFields,
+  ShowDetails,
+  ThemeSwitch,
+  UserSettings,
+};

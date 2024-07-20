@@ -14,7 +14,7 @@ export async function GET(
   }
 
   try {
-    const shop = await (prisma as any).shop.findUnique({
+    const shop = await (prisma as any).shop.findFirst({
       where: { id },
     });
     console.log({shop})

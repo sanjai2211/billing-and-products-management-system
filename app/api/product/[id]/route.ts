@@ -10,22 +10,19 @@ export async function GET(
   const { id } = params;
 
   if (!id) {
-    return NextResponse.json(
-      { error: "Product id not found" },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: "Bill id not found" }, { status: 400 });
   }
 
   try {
-    const product = await (prisma as any).product.findUnique({
-      where: { id },
+    const billItems = await (prisma as any).productSnapshot.findUnique({
+      where: { billId: id },
     });
 
-    if (!product) {
-      return NextResponse.json({ error: "Product not found" }, { status: 400 });
+    if (!billItems) {
+      return NextResponse.json({ error: "Product not found" }, { status: 404 });
     }
 
-    return NextResponse.json(product, { status: 200 });
+    return NextResponse.json(billItems, { status: 200 });
   } catch (error) {
     console.error(error);
     return NextResponse.json(
@@ -42,7 +39,6 @@ export async function PATCH(
   try {
     const { id } = params;
     const data = await req.json();
-    console.log({ aaaaaaaa: data, req, id });
 
     if (!id) {
       return NextResponse.json(
@@ -55,6 +51,18 @@ export async function PATCH(
       where: { id },
       data,
     });
+    console.log({ updatedProduct });
+    const { openStock, stockValue, shopId, ...rest } = data;
+
+    if (rest) {
+      await (prisma as any).productSnapshot.create({
+        data: {
+          ...rest,
+          productId: id,
+        },
+      });
+    }
+
     console.log({ updatedProduct });
 
     return NextResponse.json(
@@ -78,17 +86,14 @@ export async function DELETE(
     const { id } = params;
 
     if (!id) {
-      return NextResponse.json(
-        { error: "Product id not found" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Bill id not found" }, { status: 400 });
     }
 
-    const product = await (prisma as any).product.findUnique({
-      where: { id },
+    const billItems = await (prisma as any).productSnapshot.findUnique({
+      where: { billId: id },
     });
 
-    if (!product) {
+    if (!billItems) {
       return NextResponse.json({ error: "Product not found" }, { status: 404 });
     }
 

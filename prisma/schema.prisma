@@ -17,27 +17,39 @@ model User {
 }
 
 model Shop {
-  id           String    @id @default(auto()) @map("_id") @db.ObjectId
+  id           String     @id @default(auto()) @map("_id") @db.ObjectId
   name         String
   address      Address?
   email        String?
   phoneNumbers String
-  user         User      @relation(fields: [userId], references: [id])
-  userId       String    @unique @db.ObjectId
-  productCode  String    @default("PROD")
+  user         User       @relation(fields: [userId], references: [id])
+  userId       String     @unique @db.ObjectId
+  productCode  String     @default("PROD")
   products     Product[]
+  Customer     Customer[]
+  bankIds      String[]
+  Bill         Bill[]
+
+  banks Bank[] @relation("ShopBanks")
 }
 
-type Address {
-  addressLine1 String
-  addressLine2 String
-  city         String
-  state        String
-  zip          String
+model Customer {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  email        String?
+  faxNumber    String?
+  phoneNumbers String
+  shop         Shop     @relation(fields: [shopId], references: [id])
+  shopId       String   @db.ObjectId
+  address      Address?
+  gstIn        String?
+  bankId       String?  @db.ObjectId
+  bills        Bill[]
+  Bank         Bank[]
 }
 
 model Product {
-  id           String         @id @default(auto()) @map("_id") @db.ObjectId
+  id           String            @id @default(auto()) @map("_id") @db.ObjectId
   code         String
   productName  String?
   printName    String?
@@ -57,9 +69,49 @@ model Product {
   openStock    String?
   stockValue   String?
   status       ProductStatus?
-  createdAt    DateTime       @default(now())
-  shopId       String         @db.ObjectId
-  Shop         Shop?          @relation(fields: [shopId], references: [id])
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+  shopId       String            @db.ObjectId
+  Shop         Shop?             @relation(fields: [shopId], references: [id])
+  snapshots    ProductSnapshot[]
+}
+
+model ProductSnapshot {
+  id            String         @id @default(auto()) @map("_id") @db.ObjectId
+  productSnapId String         @db.ObjectId
+  code          String
+  productName   String?
+  printName     String?
+  category      String?
+  unit          String?
+  group         String?
+  brand         String?
+  cost          String?
+  mrp           String?
+  purchaseRate  String?
+  salesRate     String?
+  gstPurchase   String?
+  gstSales      String?
+  igstPurchase  String?
+  igstSales     String?
+  hsnCode       String?
+  createdAt     DateTime       @default(now())
+  status        ProductStatus?
+  Product       Product        @relation(fields: [productSnapId], references: [id])
+  BillingItems  BillingItems[]
+}
+
+model Bank {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  bankName      String
+  accountNumber String
+  branchName    String?
+  ifscCode      String
+  shopId        String?   @db.ObjectId
+  customerId    String?   @db.ObjectId
+  shop          Shop?     @relation("ShopBanks", fields: [shopId], references: [id])
+  customer      Customer? @relation(fields: [customerId], references: [id])
+  Bill          Bill[]
 }
 
 enum ProductStatus {
@@ -80,4 +132,79 @@ enum ProductStatus {
   RECALLED
   RESERVED
   UNAVAILABLE
+}
+
+model Bill {
+  id                 String            @id @default(auto()) @map("_id") @db.ObjectId
+  billNumber         String
+  items              BillingItems[]
+  type               BillType          @default(TAX_INVOICE)
+  customer           CustomerDetails?
+  transport          TransportDetails?
+  date               DateTime          @default(now())
+  dueDate            DateTime?
+  paymentTerms       PaymentTerms?
+  gst                Float             @default(0)
+  cgst               Float             @default(0)
+  sgst               Float             @default(0)
+  gstOnReverseCharge Float             @default(0)
+  discountedAmount   String?
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+  reverseCharge      Boolean           @default(false)
+  bankId             String?           @db.ObjectId
+  Bank               Bank?             @relation(fields: [bankId], references: [id])
+  Customer           Customer?         @relation(fields: [customerId], references: [id])
+  customerId         String?           @db.ObjectId
+  shopId             String            @db.ObjectId
+  Shop               Shop?             @relation(fields: [shopId], references: [id])
+}
+
+model BillingItems {
+  id            String          @id @default(auto()) @map("_id") @db.ObjectId
+  productSnapId String          @db.ObjectId
+  quantity      Int
+  cost          Float
+  discount      Float?
+  Bill          Bill?           @relation(fields: [billId], references: [id])
+  billId        String?         @db.ObjectId
+  product       ProductSnapshot @relation(fields: [productSnapId], references: [id])
+}
+
+type CustomerDetails {
+  customerName    String
+  phoneNumber     String
+  email           String?
+  faxNumber       String?
+  customerAddress Address
+  gstIn           String
+}
+
+type TransportDetails {
+  referenceNumber    String
+  transport          String
+  transportDetails   String?
+  ewayBill           String?
+  lorryReceiptNumber String?
+  postOrderNumber    String?
+  postOrderDate      DateTime?
+}
+
+type Address {
+  addressLine1 String
+  addressLine2 String
+  city         String
+  state        String
+  zip          String
+}
+
+enum BillType {
+  BILL
+  QUOTATION
+  TAX_INVOICE
+}
+
+enum PaymentTerms {
+  CREDIT
+  CASH
 }

@@ -46,7 +46,7 @@ const useAddEditDeleteProduct = ({ shopId, method }: any) => {
           title: `Product ${action}ed !`,
           description: `Your product has been ${action}ed successfully.`,
         });
-        if (action === "Creat") router.push("/products");
+        if (action === "Creat") router.push("/my-products");
         router.refresh();
       }
     },

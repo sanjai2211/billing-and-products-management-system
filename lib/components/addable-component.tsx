@@ -24,7 +24,6 @@ export function AddableComponent({ component, value = [], setValue, form, data }
   //     minLength: 4
   //   }
   // });
-  console.log({aaa : data?.zodName, control : form?.control})
 
 
   const handleOnAdd = (data: any) => {

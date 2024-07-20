@@ -11,7 +11,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 // import { priorities, statuses } from "../data/data"
 import { DataTableFacetedFilter } from "./data-table-faceted-filter";
 import { DynamicInputField, FieldWithBoxValues } from "@/lib/components";
-import calculateTotal from "@/lib/utils-helper/calculation/calculateTotal";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;

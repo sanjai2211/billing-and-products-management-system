@@ -518,3 +518,7 @@ export const BillTypes = [
   { value: "TAX_INVOICE", label: "Tax Invoice" },
   { value: "QUOTATION", label: "Quotation" },
 ];
+export const PaymentTypes = [
+  { label: "Credit", value: "CREDIT" },
+  { label: "Cash", value: "CASH" },
+];

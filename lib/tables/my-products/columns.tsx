@@ -3,7 +3,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "./data-table-column-header";
-import { formatDate } from "@/lib/utils-helper";
+// import { formatDate } from "@/lib/utils-helper";
 import { DataTableRowActions } from "./data-table-row-actions";
 
 export const columns: ColumnDef<any>[] = [
@@ -181,16 +181,16 @@ export const columns: ColumnDef<any>[] = [
     cell: ({ row }) => <div>{row.getValue("stockValue") || "-"}</div>,
   },
 
-  {
-    accessorKey: "createdAt",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Created At" />
-    ),
-    cell: ({ row }) => (
-      <div className="w-40">{formatDate(row.getValue("createdAt"))}</div>
-    ),
-    size: 48,
-  },
+  // {
+  //   accessorKey: "createdAt",
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader column={column} title="Created At" />
+  //   ),
+  //   cell: ({ row }) => (
+  //     <div className="w-40">{formatDate(row.getValue("createdAt"))}</div>
+  //   ),
+  //   size: 48,
+  // },
   // {
   //   id: "actions",
   //   header: ({ column }) => (

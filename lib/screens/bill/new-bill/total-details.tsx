@@ -323,6 +323,10 @@ export default function TotalDetails({ totalDetails, form }: any) {
   ];
   const cumulativeReport = [
     {
+      label: "Total Items",
+      field: totalDetails?.totalItems,
+    },
+    {
       label: "Taxable Value",
       field: totalDetails?.discountedTaxableValue,
       color: "purple",
@@ -464,13 +468,13 @@ export default function TotalDetails({ totalDetails, form }: any) {
                 </p>
               </div>
             </div>
-            {discountedRounded?.total &&
+            {/* {discountedRounded?.total &&
               discountedRounded?.total !== "0.00" && (
                 <p className="text-sm text-blue-500">
                   {numberToWords(discountedRounded?.total)} Only
                 </p>
-              )}
-            <DynamicInputField
+              )} */}
+            {/* <DynamicInputField
               form={form}
               data={{
                 id: "discountedAmount",
@@ -478,7 +482,7 @@ export default function TotalDetails({ totalDetails, form }: any) {
                 placeholder: "Discount Amount",
                 component: "inputField",
               }}
-            />
+            /> */}
           </div>
         </div>
       )}

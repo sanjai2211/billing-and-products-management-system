@@ -1,0 +1,250 @@
+"use client";
+
+import { ColumnDef } from "@tanstack/react-table";
+import { Checkbox } from "@/components/ui/checkbox";
+import { DataTableColumnHeader } from "./data-table-column-header";
+// import { formatDate } from "@/lib/utils-helper";
+import { DataTableRowActions } from "./data-table-row-actions";
+import { ShowDetails } from "@/lib/components";
+import { Badge } from "@/components/ui/badge";
+import { BillTypes, PaymentTypes } from "@/lib/constants";
+import { formatDate } from "@/lib/utils-helper/date/formatDate";
+import { billCalculation } from "@/lib/utils-helper/calculation/calculateTotal";
+import TotalDetails from "@/lib/screens/bill/new-bill/total-details";
+
+const getColor = (field: any, value: any) => {
+  switch (field) {
+    case "type":
+      if (value === "QUOTATION") return "pink";
+      else if (value === "TAX_INVOICE") return "purple";
+      else if (value === "BILL") return "yellow";
+    case "paymentTerms":
+      if (value === "CASH") return "violet";
+      else if (value === "CREDIT") return "orange";
+    case "totalValue":
+      if(value < 0) return 'red'
+      else if(value < 0 && value >= 250) return 'orange'
+      else if(value < 250 && value > 500) return 'yellow'
+      else return 'green'
+  }
+};
+
+const getBadge = (field: any, value: any) => {
+  switch (field) {
+    case "type":
+    case "type":
+      const type = BillTypes?.find((item: any) => item?.value === value)?.label;
+      const color = getColor(field, value);
+      const className = `border-${color}-900 bg-${color}-300 hover:bg-${color}-300 border-2 text-center`;
+      return <Badge className={className}>{type}</Badge>;
+    case "paymentTerms":
+      const paymentType = PaymentTypes?.find(
+        (item: any) => item?.value === value
+      )?.label;
+      const badgeColor = getColor(field, value);
+      if (paymentType)
+        return (
+          <Badge
+            className={`border-${badgeColor}-900 bg-${badgeColor}-300 hover:bg-${badgeColor}-300 border-2 text-center`}
+          >
+            {paymentType}
+          </Badge>
+        );
+      else return <div>-</div>;
+    default:
+      return null;
+  }
+};
+
+export const columns: ColumnDef<any>[] = [
+  // {
+  //   id: "select",
+  //   header: ({ table }) => (
+  //     <Checkbox
+  //       checked={
+  //         table.getIsAllPageRowsSelected() ||
+  //         (table.getIsSomePageRowsSelected() && "indeterminate")
+  //       }
+  //       onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+  //       aria-label="Select all"
+  //       className="translate-y-[2px]"
+  //     />
+  //   ),
+  //   cell: ({ row }) => (
+  //     <Checkbox
+  //       checked={row.getIsSelected()}
+  //       onCheckedChange={(value) => row.toggleSelected(!!value)}
+  //       aria-label="Select row"
+  //       className="translate-y-[2px]"
+  //     />
+  //   ),
+  //   enableSorting: false,
+  //   enableHiding: false,
+  // },
+
+  {
+    accessorKey: "sNo",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="S.No" />
+    ),
+    cell: ({ row }) => <div className="w-[80px]">{row.index + 1}</div>,
+  },
+  {
+    accessorKey: "billNumber",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Bill Number" />
+    ),
+    cell: ({ row }) => (
+      <div className="w-[80px]">{row.getValue("billNumber") || "-"}</div>
+    ),
+  },
+  {
+    accessorKey: "totalValue",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Total Value" />
+    ),
+    cell: ({ row }) => {
+      console.log({ row });
+
+      const totalDetails = billCalculation(row?.original?.items);
+      const color = getColor('totalValue',parseInt(totalDetails?.discountedRounded?.total ))
+      return (
+        <div className="flex justify-between gap-4 w-[120px]">
+          <div className={`w-[80px] text-${color}-500`}>
+            &#8377; {totalDetails?.discountedRounded?.total || "0.00"}
+          </div>
+          <ShowDetails
+            title={"Bill value Details"}
+            component={<TotalDetails totalDetails={totalDetails} />}
+          />
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "type",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Bill Type" />
+    ),
+    cell: ({ row }) => (
+      <div>{getBadge("type", row.getValue("type")) || "-"}</div>
+    ),
+  },
+  {
+    accessorKey: "Customer",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Customer" />
+    ),
+    cell: ({ row }) => {
+      const customer = row?.original?.Customer;
+
+      if (!customer) {
+        return <p className="text-sm">No customer data</p>;
+      }
+
+      const { address, id, shopId, bankId, ...rest } = customer;
+      const data = {
+        ...rest,
+        address: `${address?.addressLine1},<br/>${address?.addressLine2},<br/>${address?.city},<br/>${address?.state},<br/>India - ${address?.zip}`,
+      };
+
+      return (
+        <div className="flex justify-between gap-4 w-[240px]">
+          <div className="flex flex-col gap-1">
+            <p className="text-sm">{rest?.name}</p>
+            <p className="text-xs opacity-50">{rest?.phoneNumbers}</p>
+          </div>
+          <ShowDetails title={"Customer Details"} data={data} />
+        </div>
+      );
+    },
+  },
+
+  {
+    accessorKey: "date",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Bill Dated" />
+    ),
+    cell: ({ row }) => {
+      if (row.getValue("type") === "QUOTATION") {
+        return (
+          <div className="flex flex-col">
+            <p className="text-xs">
+              <span className="text-xs opacity-50">Dated : </span>
+              {formatDate(row.getValue("date"), false) || "-"}
+            </p>
+            <p className="text-xs">
+              <span className="text-xs opacity-50">Dued : </span>
+              {formatDate(row.getValue("date"), false) || "-"}
+            </p>
+          </div>
+        );
+      } else {
+        return (
+          <div className="w-40">
+            {formatDate(row.getValue("date"), false) || "-"}
+          </div>
+        );
+      }
+    },
+  },
+  {
+    accessorKey: "paymentTerms",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Payment" />
+    ),
+    cell: ({ row }) => (
+      <div>{getBadge("paymentTerms", row.getValue("paymentTerms")) || "-"}</div>
+    ),
+  },
+
+  {
+    accessorKey: "createdAt",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Created At" />
+    ),
+    cell: ({ row }) => (
+      <div className="w-40">{formatDate(row.getValue("createdAt")) || "-"}</div>
+    ),
+  },
+  {
+    accessorKey: "updatedAt",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Last Updated" />
+    ),
+    cell: ({ row }) => (
+      <div className="w-40">
+        {row.getValue("updatedAt") !== row.getValue("createdAt")
+          ? formatDate(row.getValue("updatedAt"))
+          : "-"}
+      </div>
+    ),
+  },
+  {
+    accessorKey: "id",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Id" className="hidden" />
+    ),
+    cell: ({ row }) => (
+      <div className="w-[80px] hidden">{row.getValue("id")}</div>
+    ),
+  },
+
+  // {
+  //   accessorKey: "createdAt",
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader column={column} title="Created At" />
+  //   ),
+  //   cell: ({ row }) => (
+  //     <div className="w-40">{formatDate(row.getValue("createdAt"))}</div>
+  //   ),
+  //   size: 48,
+  // },
+  // {
+  //   id: "actions",
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader column={column} title="Actions" />
+  //   ),
+  //   cell: ({ row }) => <DataTableRowActions row={row} />,
+  // },
+];

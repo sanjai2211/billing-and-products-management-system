@@ -51,7 +51,7 @@ const TopBar = ({ toggled }: any) => {
         <PopoverContent className="w-52 p-2" align="start">
           <div className="grid gap-4"></div>
           {BillTypes?.map((item: any) => (
-            <div onClick={() => onSubmit({type : item?.value})} className="text-sm hover:bg-muted cursor-pointer p-2 rounded-sm">{item?.label}</div>
+            <div onClick={() => onSubmit({type : item?.value,shopId : "669110d805505c07ea603856"})} className="text-sm hover:bg-muted cursor-pointer p-2 rounded-sm">{item?.label}</div>
           ))}
         </PopoverContent>
       </Popover>

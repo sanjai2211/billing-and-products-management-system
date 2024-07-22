@@ -1,4 +1,4 @@
-import { ArrowLeftToLine,ArrowRightToLine,BadgeCheck,BarChart3,Boxes,Cable, Check, ChevronDown, ChevronLeft, ChevronsUpDown, ChevronUp, CircleX, ClipboardList, ClipboardPlus, CloudCog, Eye, FileBarChart, FileBarChart2, HandCoins, Headset, Home, IndianRupee, Landmark, Layers, LayoutDashboard, LayoutList, LineChart, List,ListChecks,ListPlus, ListTodo,LogOut,Mail,MapPinned,Moon, MoreHorizontal, MoreVertical, Pen, Pencil, Percent, Phone, Plus, Receipt, ReceiptText, RefreshCcw, Save, Search, Settings,SlidersHorizontal,SquarePlus,Store,Sun, Trash, Trash2, User, UserCog, UserCog2 } from 'lucide-react';
+import { ArrowLeftToLine,ArrowRightToLine,BadgeCheck,BarChart3,Boxes,Cable, CalendarCheck, CalendarClock, Check, ChevronDown, ChevronLeft, ChevronsUpDown, ChevronUp, CircleCheckBig, CircleX, ClipboardList, ClipboardPlus, CloudCog, Eye, FileBarChart, FileBarChart2, FilePen, FileStack, FolderSymlink, HandCoins, Headset, Home, IndianRupee, Landmark, Layers, LayoutDashboard, LayoutList, LineChart, List,ListChecks,ListPlus, ListTodo,LogOut,Mail,MapPinned,Moon, MoreHorizontal, MoreVertical, Pen, Pencil, Percent, Phone, PhoneCall, Plus, Receipt, ReceiptText, RefreshCcw, Save, ScrollText, Search, Settings,SlidersHorizontal,SquarePlus,Store,Sun, Trash, Trash2, User, UserCog, UserCog2 } from 'lucide-react';
 import { FC } from 'react';
 
 const iconMap = {
@@ -8,11 +8,14 @@ const iconMap = {
     BadgeCheck,
     Boxes,
     Cable,
+    CalendarClock,
+    CalendarCheck,
     Check,
     ChevronDown,
     ChevronLeft,
     ChevronUp,
     ChevronsUpDown,
+    CircleCheckBig,
     CircleX,
     ClipboardList,
     ClipboardPlus,
@@ -20,6 +23,9 @@ const iconMap = {
     Eye,
     FileBarChart, 
     FileBarChart2,
+    FilePen,
+    FolderSymlink,
+    FileStack,
     HandCoins,
     Headset,
     Home,
@@ -44,9 +50,11 @@ const iconMap = {
     Percent,
     Plus,
     Phone,
+    PhoneCall,
     ReceiptText,
     RefreshCcw,
     Save,
+    ScrollText,
     Search,
     Settings,
     SlidersHorizontal,

@@ -19,29 +19,39 @@ import { useAddEditDeleteBill, useAddEditShop } from "@/lib/hooks";
 export default function NewBillScreen({ billDetails, billId, session }: any) {
   const [currentTab, setCurretTab] = useState("details");
 
-  console.log({ billDetails });
-  const {
-    Bank,
-    Customer,
-    Customer: { address },
-    bankId,
-    customerId,
-    ...rest
-  } = billDetails;
+  const Bank = billDetails?.Bank || {};
+  const Customer = billDetails?.Customer || {};
+  const bankId = billDetails?.bankId || "";
+  const customerId = billDetails?.customerId || "";
+  const rest = { ...billDetails };
+
+  let defaultValues: any = {
+    date: new Date(),
+    ...rest,
+  };
+
+  if (customerId) {
+    defaultValues = {
+      ...defaultValues,
+      name: { value: customerId, label: Customer?.name } || "",
+      phoneNumbers: { value: customerId, label: Customer?.phoneNumbers } || "",
+      email: { value: customerId, label: Customer?.email } || "",
+      gstIn: { value: customerId, label: Customer?.gstIn } || "",
+      ...Customer?.address,
+      ...Customer,
+    };
+  }
+
+  if (bankId) {
+    defaultValues = {
+      ...defaultValues,
+      ...Bank,
+      bankName: { value: bankId, label: Bank?.bankName } || "",
+    };
+  }
 
   const form = useForm<FormData>({
-    defaultValues: {
-      date: new Date(),
-      ...address,
-      ...Customer,
-      ...Bank,
-      name: { value: customerId, label: Customer?.name },
-      phoneNumbers: { value: customerId, label: Customer?.phoneNumbers },
-      email: { value: customerId, label: Customer?.email },
-      gstIn: { value: customerId, label: Customer?.gstIn },
-      bankName: { value: bankId, label: Bank?.bankName },
-      ...rest,
-    },
+    defaultValues,
   });
 
   const { mutate: onSubmit } = useAddEditDeleteBill({

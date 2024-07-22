@@ -11,8 +11,9 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
+import { addDays, format ,startOfDay, endOfDay} from "date-fns";
+import { DateRange } from "react-day-picker";
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>;
 
@@ -25,7 +26,7 @@ function Calendar({
   return (
     <DayPicker
       showOutsideDays={showOutsideDays}
-      className={cn("p-3", className)}    
+      className={cn("p-3", className)}
       classNames={{
         months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
         month: "space-y-4",
@@ -76,36 +77,78 @@ function Calendar({
 }
 Calendar.displayName = "Calendar";
 
-const CalendarPicker = ({ field, disabled, disableDates }: any) => {
+const normalizeDateToStartOfDay = (date: Date) => {
+  return startOfDay(date);
+};
+
+const normalizeDateToEndOfDay = (date: Date) => {
+  return endOfDay(date);
+};
+const DatePicker = ({
+  field,
+  disabled,
+  disableDates,
+  isMultipleDate = false,
+}: any) => {
+  const [date, setDate] = React.useState<any>(
+    isMultipleDate ? { from: null, to: null } : null
+  );
+
   return (
     <Popover>
       <PopoverTrigger asChild disabled={disabled}>
         <Button
           variant={"outline"}
-          className={cn(
-            "w-full pl-3 text-left font-normal",
-          )}
+          className="w-full pl-3 text-left font-normal"
         >
-          {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
+          {isMultipleDate ? (
+            date?.from ? (
+              date.to ? (
+                <>
+                  {format(normalizeDateToStartOfDay(date.from), "LLL dd, y")} -{" "}
+                  {format(normalizeDateToEndOfDay(date.to), "LLL dd, y")}
+                </>
+              ) : (
+                format(normalizeDateToStartOfDay(date.from), "LLL dd, y")
+              )
+            ) : (
+              <span className="opacity-50">From Date - To Date</span>
+            )
+          ) : field.value ? (
+            format(normalizeDateToStartOfDay(field.value), "PPP")
+          ) : (
+            <span>Pick a date</span>
+          )}
           <CalendarIcon className="ml-auto h-4 w-4 opacity-80" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent>
+      <PopoverContent className="w-full p-0" align="start">
         <Calendar
-          mode="single"
-          selected={field.value}
-          onSelect={field.onChange}
+          initialFocus
+          mode={isMultipleDate ? "range" : "single"}
+          selected={isMultipleDate ? date : normalizeDateToStartOfDay(field.value)}
+          onSelect={
+            isMultipleDate
+              ? (e: any) => {
+                  const normalizedRange = {
+                    from: e.from ? normalizeDateToStartOfDay(e.from) : null,
+                    to: e.to ? normalizeDateToEndOfDay(e.to) : null,
+                  };
+                  setDate(normalizedRange);
+                  field.onChange(normalizedRange);
+                }
+              : (e: any) => field.onChange(normalizeDateToStartOfDay(e))
+          }
           disabled={(date) => {
             if (disableDates) {
               return disableDates(date);
             }
             return date > new Date() || date < new Date("1900-01-01");
           }}
-          initialFocus
         />
       </PopoverContent>
     </Popover>
   );
 };
 
-export { Calendar, CalendarPicker };
+export { Calendar, DatePicker };

@@ -41,7 +41,6 @@ function calculateTotals({
 
   Object.keys(sum).forEach((key: any) => {
     const value = sum[key];
-    console.log({ value });
     if (typeof value === "number" || !isNaN(parseFloat(value))) {
       result[key] = value.toFixed(2);
     } else {
@@ -80,6 +79,7 @@ function billCalculation(billItems: any) {
   } = roundedOff(totalNonDiscountedAmount?.total);
 
   return {
+    totalItems : billItems?.length,
     discountedTotal: totalDiscountedAmount?.total,
     nonDiscountedTotal: totalNonDiscountedAmount?.total,
     discountedTotalTax: (

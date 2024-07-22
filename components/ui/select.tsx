@@ -8,12 +8,12 @@ const Select = SelectPrimitive.Root;
 
 const SelectGroup = SelectPrimitive.Group;
 
-// const SelectValue = SelectPrimitive.Value
 
-const SelectValue = React.forwardRef<
+let SelectValue = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Value>,
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Value>
 >(({ className, children, ...props }, ref) => {
+  console.log({className,children,props})
   return (
     <SelectPrimitive.Value
       ref={ref}
@@ -24,6 +24,9 @@ const SelectValue = React.forwardRef<
     </SelectPrimitive.Value>
   );
 });
+
+SelectValue = SelectPrimitive.Value
+
 SelectValue.displayName = SelectPrimitive.Value.displayName;
 
 const SelectTrigger = React.forwardRef<

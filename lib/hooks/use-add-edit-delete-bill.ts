@@ -31,6 +31,8 @@ const useAddEditDeleteBill = ({ billId, method }: any) => {
         addressLine2,
         city,
         state,
+        Bank,
+        Customer,
         zip,
         bankName,
         address,

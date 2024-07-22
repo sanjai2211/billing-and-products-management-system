@@ -7,6 +7,11 @@ export const MenuData = [
         icon: "LayoutDashboard",
         path: "/",
       },
+      {
+        name: "My Bills",
+        icon: "FileStack",
+        path: "/my-bills",
+      },
     ],
   },
 

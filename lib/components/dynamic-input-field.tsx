@@ -17,10 +17,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { SearchableInput } from "@/components/ui/searchable-input";
-import { CalendarPicker } from "@/components/ui/calendar";
+import { DatePicker } from "@/components/ui/calendar";
 import { useEffect, useState } from "react";
 
-const compareValues = (parentValue: any, basedOn: string, value: any) => {
+export const compareValues = (parentValue: any, basedOn: string, value: any) => {
   switch (basedOn) {
     case "equal":
       return parentValue === value;
@@ -39,7 +39,7 @@ const compareValues = (parentValue: any, basedOn: string, value: any) => {
   }
 };
 
-export function DynamicInputField({ form, data }: DynamicInputFieldProps) {
+export function DynamicInputField({ form, data }: any) {
   const renderFormControl = (field: any) => {
     const { component, id, ...rest } = data;
     switch (data?.component) {
@@ -56,7 +56,6 @@ export function DynamicInputField({ form, data }: DynamicInputFieldProps) {
             <SelectTrigger className="w-full">
               <SelectValue
                 placeholder={selectedValue?.label || rest?.placeholder}
-              
               />
             </SelectTrigger>
             <SelectContent>
@@ -77,7 +76,7 @@ export function DynamicInputField({ form, data }: DynamicInputFieldProps) {
         );
       case "datePicker":
         return (
-          <CalendarPicker
+          <DatePicker
             field={field}
             {...rest}
             disabled={shouldDisableField()}

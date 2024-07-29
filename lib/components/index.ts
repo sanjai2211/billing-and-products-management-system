@@ -12,10 +12,12 @@ import { Section } from "./section";
 import { ShowDetails } from "./show-details";
 import { FieldWithBoxValues, FieldWithValues } from "./field-with-values";
 import { BillTemplate } from "./bill-template";
+import { ExportButton } from "./export";
 export {
   BillTemplate,
   DynamicInputField,
   EditDeleteContainer,
+  ExportButton,
   FieldWithValues,
   FieldWithBoxValues,
   InformationTooltip,

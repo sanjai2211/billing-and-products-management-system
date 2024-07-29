@@ -7,6 +7,7 @@ import ShopSettingsScreen from "./settings/shop-settings/shop-settings-screen";
 import BillDetailsSlot from "./bill/new-bill/bill-details-slot";
 import BillTableSlot from "./bill/new-bill/bill-table-slot";
 import AddProductSlot from "./bill/new-bill/add-product-slot";
+import MyBillsScreen from "./bill/my-bills/my-bills-screen";
 export {
   AddProductSlot,
   AddProductScreen,
@@ -14,6 +15,7 @@ export {
   BillTableSlot,
   LoginScreen,
   MyProductsScreen,
+  MyBillsScreen,
   NewBillScreen,
   ShopSettingsScreen,
   SignupScreen,

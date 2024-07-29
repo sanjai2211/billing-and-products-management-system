@@ -3,10 +3,14 @@
 import * as React from "react";
 
 export function FieldWithValues({ title, value }: any) {
+  const formattedValue = typeof value === 'string' && value.includes('<br/>')
+    ? <span dangerouslySetInnerHTML={{ __html: value }} />
+    : value || "-";
+
   return (
-    <div>
-      <p className="text-xs opacity-50">{title}</p>
-      <p className="text-sm font-semibold">{value || "-"}</p>
+    <div className="space-y-1">
+      <p className="text-xs opacity-50 font-semibold">{title}</p>
+      <p className="text-sm">{formattedValue}</p>
     </div>
   );
 }

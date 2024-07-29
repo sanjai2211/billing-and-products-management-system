@@ -119,6 +119,13 @@ export const getShopDetailsById = async (shopId: String) => {
   return response;
 };
 
+export const getBillsByShopId = async (shopId: any,queryParams : any) => {
+  const response = await fetchApi({
+    endpoint: `/bill?id=${shopId}&${queryParams}`,
+  });
+  return response;
+}; 
+
 export const createBill = async (data: any) => {
   const response = await fetchApi({
     endpoint: "/bill/create",

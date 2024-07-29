@@ -6,8 +6,7 @@ import { useRouter } from "next/navigation";
 import { useAddEditDeleteProduct } from "@/lib/hooks";
 import { DataTable } from "@/lib/tables/bills/data-table";
 import { ExportOptionsMyBills } from "@/lib/constants";
-import PrintBills from "@/lib/components/print";
-import ViewPdf from "@/lib/components/print/view";
+
 
 export default function MyBillsScreen({ bills, session }: any) {
   const router = useRouter();
@@ -26,8 +25,6 @@ export default function MyBillsScreen({ bills, session }: any) {
       <div className="flex justify-between">
         <PageHeader title={`My Bills`} />{" "}
         <ExportButton data={ExportOptionsMyBills} exportData={bills} />
-        {/* <PrintBills /> */}
-        {/* <ViewPdf /> */}
       </div>
 
       <DataTable

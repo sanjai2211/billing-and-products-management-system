@@ -192,7 +192,7 @@ export const BankDetails = [
         label: "Account Number",
         placeholder: "Account Number",
         component: "inputField",
-        disabled: true,
+      
       },
       {
         id: "branchName",

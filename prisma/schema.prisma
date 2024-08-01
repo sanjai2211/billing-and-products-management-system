@@ -34,16 +34,18 @@ model Shop {
 }
 
 model Customer {
-  id           String   @id @default(auto()) @map("_id") @db.ObjectId
-  name         String
+  id           String         @id @default(auto()) @map("_id") @db.ObjectId
+  customerName String
+  printName    String
   email        String?
   faxNumber    String?
   phoneNumbers String
-  shop         Shop     @relation(fields: [shopId], references: [id])
-  shopId       String   @db.ObjectId
+  customerType CustomerType[]
+  shop         Shop           @relation(fields: [shopId], references: [id])
+  shopId       String         @db.ObjectId
   address      Address?
   gstIn        String?
-  bankId       String?  @db.ObjectId
+  bankId       String?        @db.ObjectId
   bills        Bill[]
   Bank         Bank[]
 }
@@ -207,4 +209,10 @@ enum BillType {
 enum PaymentTerms {
   CREDIT
   CASH
+}
+
+enum CustomerType {
+  CUSTOMER
+  SUPPLIER
+  AGENT
 }

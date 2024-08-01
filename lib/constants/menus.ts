@@ -44,6 +44,23 @@ export const MenuData = [
     ],
   },
   {
+    id: "customer",
+    sectionName: "Customer",
+    icon: "Boxes",
+    items: [
+      {
+        name: "Add Customer",
+        icon: "ListPlus",
+        path: "/add-customer",
+      },
+      {
+        name: "My Customer",
+        icon: "ListTodo",
+        path: "/my-customer",
+      },
+    ],
+  },
+  {
     id: "reports",
     sectionName: "Reports",
     icon: "BarChart3",

@@ -1,6 +1,7 @@
 import { SignupSchema, LoginSchema } from "./auth-form";
 import { ProductSchema } from "./add-product";
 import { ShopDetailsSchema } from "./shop-details";
+import { CustomerSchema } from "./add-customer";
 import {
   BillSchema,
   BillingItemsSchema,
@@ -13,6 +14,7 @@ export {
   BillSchema,
   BillingItemsSchema,
   CustomerDetailsSchema,
+  CustomerSchema,
   LoginSchema,
   ProductSchema,
   SignupSchema,

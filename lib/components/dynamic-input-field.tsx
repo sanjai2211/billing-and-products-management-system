@@ -5,7 +5,7 @@ import {
   FormDescription,
   FormField,
   FormItem,
-  FormLabel,
+  FormLabel
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { DynamicInputFieldProps } from "@/lib/types";
@@ -14,13 +14,25 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
+  SelectValue
 } from "@/components/ui/select";
 import { SearchableInput } from "@/components/ui/searchable-input";
 import { DatePicker } from "@/components/ui/calendar";
 import { useEffect, useState } from "react";
+import {
+  MultiSelector,
+  MultiSelectorContent,
+  MultiSelectorInput,
+  MultiSelectorItem,
+  MultiSelectorList,
+  MultiSelectorTrigger
+} from "@/components/ui/multi-select";
 
-export const compareValues = (parentValue: any, basedOn: string, value: any) => {
+export const compareValues = (
+  parentValue: any,
+  basedOn: string,
+  value: any
+) => {
   switch (basedOn) {
     case "equal":
       return parentValue === value;
@@ -46,11 +58,13 @@ export function DynamicInputField({ form, data }: any) {
       case "inputField":
         return <Input {...field} {...rest} disabled={shouldDisableField()} />;
       case "select":
-        const selectedValue = form?.getValues(id) ?  rest?.list?.find((item : any)=>item?.value === form?.getValues(id) ) : ''
+        const selectedValue = form?.getValues(id)
+          ? rest?.list?.find((item: any) => item?.value === form?.getValues(id))
+          : "";
         return (
           <Select
             onValueChange={field.onChange}
-            defaultValue={selectedValue?.value || rest?.defaultValue }
+            defaultValue={selectedValue?.value || rest?.defaultValue}
             disabled={shouldDisableField()}
           >
             <SelectTrigger className="w-full">
@@ -64,6 +78,26 @@ export function DynamicInputField({ form, data }: any) {
               ))}
             </SelectContent>
           </Select>
+        );
+      case "multipleSelect":
+        return (
+          <MultiSelector
+            onValuesChange={field.onChange}
+            values={field.value || []}
+          >
+            <MultiSelectorTrigger>
+              <MultiSelectorInput placeholder={rest.placeholder} />
+            </MultiSelectorTrigger>
+            <MultiSelectorContent>
+              <MultiSelectorList>
+                {rest?.list?.map((item: any) => (
+                  <MultiSelectorItem key={item?.value} value={item?.label}>
+                    {item?.label}
+                  </MultiSelectorItem>
+                ))}
+              </MultiSelectorList>
+            </MultiSelectorContent>
+          </MultiSelector>
         );
       case "searchableField":
         return (

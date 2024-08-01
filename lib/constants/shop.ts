@@ -1,4 +1,5 @@
 import { AddressDetails } from "./address";
+import { ContactDetails } from "./contact";
 
 export const ShopDetails = [
   {
@@ -14,25 +15,6 @@ export const ShopDetails = [
       },
     ],
   },
-  {
-    id: "contact-details",
-    sectionName: "Contact Details",
-    icon: "Phone",
-
-    fields: [
-      {
-        id: "phoneNumbers",
-        label: "Phone Number",
-        placeholder: "Enter Phone number",
-        component: "inputField",
-      },
-      {
-        id: "email",
-        label: "Email",
-        placeholder: "Enter Email address",
-        component: "inputField",
-      },
-    ],
-  },
+  ContactDetails,
   AddressDetails,
 ];

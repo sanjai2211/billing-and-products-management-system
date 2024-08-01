@@ -17,7 +17,7 @@ export async function GET(
     const shop = await (prisma as any).shop.findFirst({
       where: { id },
     });
-    console.log({shop})
+    console.log({ shop });
 
     if (!shop || !shop?.id) {
       return NextResponse.json(
@@ -27,7 +27,7 @@ export async function GET(
     }
 
     const products = await (prisma as any).product.findMany({
-      where: { shopId: id },
+      where: { shopId: id,status: { not: "DRAFT" } },
     });
 
     return NextResponse.json(products, { status: 200 });

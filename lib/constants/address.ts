@@ -26,7 +26,6 @@ export const AddressDetails = {
       label: "State",
       placeholder: "Enter state",
       component: "inputField",
-      disabled: true,
     },
     {
       id: "zip",

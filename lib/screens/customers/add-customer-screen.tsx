@@ -4,62 +4,47 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-import { ProductSchema } from "@/lib/form-schema";
+import { CustomerSchema } from "@/lib/form-schema";
 import { AddCustomer, AdddProduct } from "@/lib/constants";
 import { PageHeader, SectionWithDynamicFields } from "@/lib/components";
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { useAddEditDeleteProduct } from "@/lib/hooks";
+import { useAddEditDeleteCustomer, useAddEditDeleteProduct } from "@/lib/hooks";
 import { Icon } from "@/lib/icons";
 
-type FormData = z.infer<typeof ProductSchema>;
+type FormData = z.infer<typeof CustomerSchema>;
 
-export default function AddCustomerScreen({ productDetails, session }: any) {
+export default function AddCustomerScreen({ customerDetails, session }: any) {
   const form = useForm<FormData>({
-    resolver: zodResolver(ProductSchema),
+    resolver: zodResolver(CustomerSchema),
     defaultValues: {
-      code: "",
-      productName: "",
-      printName: "",
-      category: "",
-      unit: "",
-      group: "",
-      brand: "",
-      cost: "",
-      mrp: "",
-      purchaseRate: "",
-      salesRate: "",
-      gstPurchase: "",
-      gstSales: "",
-      igstPurchase: "",
-      igstSales: "",
-      hsnCode: "",
-      openStock: "",
-      stockValue: "",
-      ...productDetails,
+      ...customerDetails,
     },
   });
 
-  const { mutate: onSubmit } = useAddEditDeleteProduct({
+  console.log({customerDetails})
+
+  const { mutate: onSubmit } = useAddEditDeleteCustomer({
     shopId: session?.shopId,
-    method: productDetails?.id ? "PATCH" : "",
+    method: customerDetails?.id ? "PATCH" : "",
   });
 
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(
-          (data) => onSubmit({ ...data, productId: productDetails?.id }) as any
-        )}
+        onSubmit={form.handleSubmit((data) => {
+          console.log({ data });
+          onSubmit({ ...data, customerId: customerDetails?.id }) as any;
+        })}
       >
         <div className="flex flex-1 h-full flex-col gap-4">
           <div className="flex justify-between">
             <PageHeader
-              title={`${productDetails?.id ? "Edit" : "Add"} Customer`}
-              hasBack={!!productDetails?.id}
-              path="/my-customer"
+              title={`${customerDetails?.id ? "Edit" : "Add"} Customer`}
+              hasBack={!!customerDetails?.id}
+              path="/my-customers"
             />
-            {productDetails?.id ? (
+            {customerDetails?.id ? (
               <Button type="submit">
                 <Icon name="Pencil" className="h-4 w-4 mr-2" />
                 Save
@@ -67,7 +52,7 @@ export default function AddCustomerScreen({ productDetails, session }: any) {
             ) : (
               <div className="flex justify-end gap-4">
                 {" "}
-                <Button
+                {/* <Button
                   type="button"
                   variant="outline"
                   onClick={() =>
@@ -76,7 +61,7 @@ export default function AddCustomerScreen({ productDetails, session }: any) {
                 >
                   <Icon name="Save" className="h-4 w-4 mr-2" />
                   Save as Draft
-                </Button>
+                </Button> */}
                 <Button type="submit">
                   <Icon name="Plus" className="h-4 w-4 mr-2" />
                   Add

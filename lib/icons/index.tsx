@@ -67,6 +67,7 @@ import {
   Sheet,
   SlidersHorizontal,
   SquarePlus,
+  SquareUserRound,
   Store,
   Sun,
   Trash,
@@ -74,6 +75,8 @@ import {
   User,
   UserCog,
   UserCog2,
+  UserPlus,
+  Users,
 } from "lucide-react";
 import { FC } from "react";
 
@@ -145,6 +148,7 @@ const iconMap = {
   Sheet,
   SlidersHorizontal,
   SquarePlus,
+  SquareUserRound,
   Store,
   Sun,
   Trash,
@@ -152,6 +156,9 @@ const iconMap = {
   User,
   UserCog,
   UserCog2,
+  UserPlus,
+  Users,
+  
 } as const;
 
 type IconName = keyof typeof iconMap;

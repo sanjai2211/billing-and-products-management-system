@@ -9,6 +9,7 @@ import BillTableSlot from "./bill/new-bill/bill-table-slot";
 import AddProductSlot from "./bill/new-bill/add-product-slot";
 import MyBillsScreen from "./bill/my-bills/my-bills-screen";
 import AddCustomerScreen from "./customers/add-customer-screen";
+import MyCustomersScreen from "./customers/my-customers-screen"; 
 export {
   AddCustomerScreen,
   AddProductSlot,
@@ -16,6 +17,7 @@ export {
   BillDetailsSlot,
   BillTableSlot,
   LoginScreen,
+  MyCustomersScreen,
   MyProductsScreen,
   MyBillsScreen,
   NewBillScreen,

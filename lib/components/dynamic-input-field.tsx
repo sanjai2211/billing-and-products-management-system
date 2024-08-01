@@ -80,6 +80,9 @@ export function DynamicInputField({ form, data }: any) {
           </Select>
         );
       case "multipleSelect":
+
+        const [values, setValues] = useState(field.value || [])
+        console.log({values,field : field.value,form : form.onChange})
         return (
           <MultiSelector
             onValuesChange={field.onChange}

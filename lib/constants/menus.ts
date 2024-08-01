@@ -50,13 +50,13 @@ export const MenuData = [
     items: [
       {
         name: "Add Customer",
-        icon: "ListPlus",
+        icon: "UserPlus",
         path: "/add-customer",
       },
       {
         name: "My Customer",
-        icon: "ListTodo",
-        path: "/my-customer",
+        icon: "Users",
+        path: "/my-customers",
       },
     ],
   },

@@ -1,19 +1,19 @@
 export const MenuData = [
-  {
-    id: "base",
-    items: [
-      {
-        name: "Dashboard",
-        icon: "LayoutDashboard",
-        path: "/",
-      },
-      {
-        name: "My Bills",
-        icon: "FileStack",
-        path: "/my-bills",
-      },
-    ],
-  },
+  // {
+  //   id: "base",
+  //   items: [
+  //     {
+  //       name: "Dashboard",
+  //       icon: "LayoutDashboard",
+  //       path: "/",
+  //     },
+  //     {
+  //       name: "My Bills",
+  //       icon: "FileStack",
+  //       path: "/my-bills",
+  //     },
+  //   ],
+  // },
 
   // {
   //   id: "billing",
@@ -44,64 +44,64 @@ export const MenuData = [
     ],
   },
   {
-    id: "customer",
-    sectionName: "Customer",
+    id: "pepoles",
+    sectionName: "Peoples",
     icon: "Boxes",
     items: [
       {
-        name: "Add Customer",
+        name: "Add Peoples",
         icon: "UserPlus",
         path: "/add-customer",
       },
       {
-        name: "My Customer",
+        name: "My Peoples",
         icon: "Users",
         path: "/my-customers",
       },
     ],
   },
-  {
-    id: "reports",
-    sectionName: "Reports",
-    icon: "BarChart3",
-    items: [
-      {
-        name: "Bill Details",
-        icon: "ListTodo",
-        path: "/reports/products",
-      },
-      {
-        name: "Products Details",
-        icon: "FileBarChart",
-        path: "/reports/products",
-      },
-      {
-        name: "Purchase Details",
-        icon: "Cable",
-        path: "/reports/products",
-      },
-    ],
-  },
+  // {
+  //   id: "reports",
+  //   sectionName: "Reports",
+  //   icon: "BarChart3",
+  //   items: [
+  //     {
+  //       name: "Bill Details",
+  //       icon: "ListTodo",
+  //       path: "/reports/products",
+  //     },
+  //     {
+  //       name: "Products Details",
+  //       icon: "FileBarChart",
+  //       path: "/reports/products",
+  //     },
+  //     {
+  //       name: "Purchase Details",
+  //       icon: "Cable",
+  //       path: "/reports/products",
+  //     },
+  //   ],
+  // },
   {
     id: "settings",
     sectionName: "Settings",
     icon: "Settings",
     items: [
-      {
-        name: "Bill Settings",
-        icon: "ListTodo",
-        path: "/reports/products",
-      },
-      {
-        name: "Products Settings",
-        icon: "FileBarChart",
-        path: "/reports/products",
-      },
-      {
-        name: "Purchase Details",
-        icon: "Cable",
-        path: "/reports/products",
-      },
+      // {
+      //   name: "Bill Settings",
+      //   icon: "ListTodo",
+      //   path: "/reports/products",
+      // },
+      // {
+      //   name: "Products Settings",
+      //   icon: "FileBarChart",
+      //   path: "/reports/products",
+      // },
+      // {
+      //   name: "Purchase Details",
+      //   icon: "Cable",
+      //   path: "/reports/products",
+      // },
       {
         name: "Shop Settings",
         icon: "Store",

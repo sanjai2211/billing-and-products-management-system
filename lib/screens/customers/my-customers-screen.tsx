@@ -22,7 +22,7 @@ export default function MyCustomersScreen({ customers, session }: any) {
   const handleDelte = (id: String) => onSubmit({ productId: id });
   return (
     <div>
-      <PageHeader title={`My Customers`} />
+      <PageHeader title={`My Peoples`} />
       <DataTable
         data={customers}
         columns={columns}

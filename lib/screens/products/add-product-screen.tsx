@@ -67,7 +67,7 @@ export default function AddProductScreen({ productDetails, session }: any) {
             ) : (
               <div className="flex justify-end gap-4">
                 {" "}
-                <Button
+                {/* <Button
                   type="button"
                   variant="outline"
                   onClick={() =>
@@ -76,7 +76,7 @@ export default function AddProductScreen({ productDetails, session }: any) {
                 >
                   <Icon name="Save" className="h-4 w-4 mr-2" />
                   Save as Draft
-                </Button>
+                </Button> */}
                 <Button type="submit">
                   <Icon name="Plus" className="h-4 w-4 mr-2" />
                   Add

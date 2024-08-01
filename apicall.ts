@@ -69,11 +69,11 @@ export const getProductDetailsById = async (productId: any) => {
   return response;
 };
 
-export const updateProductDetails = async (productId: any,data: any) => {
+export const updateProductDetails = async (productId: any, data: any) => {
   const response = await fetchApi({
     endpoint: `/product/${productId}`,
-    method : "PATCH",
-    data
+    method: "PATCH",
+    data,
   });
   return response;
 };
@@ -81,14 +81,14 @@ export const updateProductDetails = async (productId: any,data: any) => {
 export const deleteProduct = async (productId: any) => {
   const response = await fetchApi({
     endpoint: `/product/${productId}`,
-    method : "DELETE",
+    method: "DELETE",
   });
   return response;
 };
 
-export const getProductsByShopId = async (shopId: any) => {
+export const getProductsByShopId = async (shopId: any, queryParams: any) => {
   const response = await fetchApi({
-    endpoint: `/products/${shopId}`,
+    endpoint: `/product?id=${shopId}&${queryParams}`,
   });
   return response;
 };
@@ -103,11 +103,11 @@ export const createShop = async (data: any) => {
 };
 
 export const updateShop = async (data: any) => {
-  const {shopId , ...rest} = data
+  const { shopId, ...rest } = data;
   const response = await fetchApi({
     endpoint: `/shop/${shopId}`,
-    method : "PATCH",
-    data : rest
+    method: "PATCH",
+    data: rest,
   });
   return response;
 };
@@ -119,12 +119,12 @@ export const getShopDetailsById = async (shopId: String) => {
   return response;
 };
 
-export const getBillsByShopId = async (shopId: any,queryParams : any) => {
+export const getBillsByShopId = async (shopId: any, queryParams: any) => {
   const response = await fetchApi({
     endpoint: `/bill?id=${shopId}&${queryParams}`,
   });
   return response;
-}; 
+};
 
 export const createBill = async (data: any) => {
   const response = await fetchApi({
@@ -135,7 +135,7 @@ export const createBill = async (data: any) => {
   return response;
 };
 
-export const updateBill = async (billId:any ,data: any) => {
+export const updateBill = async (billId: any, data: any) => {
   const response = await fetchApi({
     endpoint: `/bill/${billId}`,
     method: "PATCH",
@@ -167,38 +167,36 @@ export const getBillingItems = async (billId: any) => {
   return response;
 };
 
-export const updateBillItem = async (billItemId : any,data: any) => {
+export const updateBillItem = async (billItemId: any, data: any) => {
   const response = await fetchApi({
     endpoint: `/bill/bill-items/${billItemId}`,
-    method : "PATCH",
-    data
+    method: "PATCH",
+    data,
   });
   return response;
 };
-
 
 export const deleteBillItem = async (billId: any) => {
   const response = await fetchApi({
     endpoint: `/bill/bill-items/${billId}`,
-    method : "DELETE",
+    method: "DELETE",
   });
   return response;
 };
 
-export const getCustomersByShopId = async (shopId: any,queryParams : any) => {
+export const getCustomersByShopId = async (shopId: any, queryParams: any) => {
   const response = await fetchApi({
     endpoint: `/customer?id=${shopId}&${queryParams}`,
   });
   return response;
 };
 
-export const getBankDetailsById = async (id: any,type='shop') => {
+export const getBankDetailsById = async (id: any, type = "shop") => {
   const response = await fetchApi({
     endpoint: `/bank/${id}?type=${type}`,
   });
   return response;
 };
-
 
 export const createCustomer = async (data: any) => {
   const response = await fetchApi({
@@ -209,11 +207,11 @@ export const createCustomer = async (data: any) => {
   return response;
 };
 
-export const updateCustomer = async (customerId: any,data: any) => {
+export const updateCustomer = async (customerId: any, data: any) => {
   const response = await fetchApi({
     endpoint: `/customer/${customerId}`,
-    method : "PATCH",
-    data
+    method: "PATCH",
+    data,
   });
   return response;
 };
@@ -221,7 +219,7 @@ export const updateCustomer = async (customerId: any,data: any) => {
 export const deleteCustomer = async (customerId: any) => {
   const response = await fetchApi({
     endpoint: `/customer/${customerId}`,
-    method : "DELETE",
+    method: "DELETE",
   });
   return response;
 };

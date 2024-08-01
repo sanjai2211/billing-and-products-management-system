@@ -1,5 +1,4 @@
-import { DarkLoading, Loading } from "../lottie";
-import LottieAnimation from "../lottie/lottie";
+import { DarkLoading, Loading, LottieAnimation } from "../lottie";
 
 export default function Loader() {
   return (

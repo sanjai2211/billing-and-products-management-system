@@ -3,6 +3,7 @@ import authOptions from "@/lib/auth/authoptions";
 import { ShopSettingsScreen } from "@/lib/screens";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
+import Loading from "./loading";
 
 export const revalidate = 0;
 
@@ -20,9 +21,7 @@ export default async function ShopSettings() {
   }
 
   return (
-    <ShopSettingsScreen
-      shopDetails={{ ...shopDetails, ...shopDetails?.address }}
-      session={session}
-    />
+    // 
+    <Loading />
   );
 }

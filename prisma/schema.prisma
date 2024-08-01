@@ -101,7 +101,7 @@ model ProductSnapshot {
   hsnCode       String?
   createdAt     DateTime       @default(now())
   status        ProductStatus?
-  Product       Product        @relation(fields: [productSnapId], references: [id])
+  Product       Product?       @relation(fields: [productSnapId], references: [id])
   BillingItems  BillingItems[]
 }
 

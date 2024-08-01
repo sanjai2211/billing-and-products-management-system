@@ -39,8 +39,6 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { compareValues, DynamicInputField } from "./dynamic-input-field";
 import { formatDateToLocalString } from "../utils-helper/date/fotmatDateToLocalString";
 
-
-
 export function DynamicFilterField({ form, data }: any) {
   const searchParams = useSearchParams();
   const params = new URLSearchParams(searchParams);
@@ -92,6 +90,32 @@ export function DynamicFilterField({ form, data }: any) {
       router.replace(`${pathName}?${newParams.toString()}`);
       //   setOpen(false)
     };
+
+    const getDefaultValues = () => {
+      switch (data?.component) {
+        case "select":
+          return search
+            ? rest?.list?.find((item: any) => item?.value === search[0])
+            : "";
+        case "multipleSelect":
+          return search
+            ? rest?.list
+                ?.filter((item: any) => search.includes(item?.value))
+                ?.map((item: any) => item?.value)
+            : "";
+
+        case "datePicker":
+          return {
+            from: search[0],
+            to: search[1],
+          };
+        default:
+          return;
+      }
+    };
+
+    const selectedValue = getDefaultValues();
+
     switch (data?.component) {
       case "inputField":
         return (
@@ -103,9 +127,6 @@ export function DynamicFilterField({ form, data }: any) {
           />
         );
       case "select":
-        const selectedValue = form?.getValues(id)
-          ? rest?.list?.find((item: any) => item?.value === form?.getValues(id))
-          : "";
         return (
           <Select
             onValueChange={onChange}
@@ -126,14 +147,17 @@ export function DynamicFilterField({ form, data }: any) {
         );
       case "multipleSelect":
         return (
-          <MultiSelector onValuesChange={onChange} values={field.value || []}>
+          <MultiSelector
+            onValuesChange={onChange}
+            values={field.value || selectedValue || []}
+          >
             <MultiSelectorTrigger>
               <MultiSelectorInput placeholder={rest.placeholder} />
             </MultiSelectorTrigger>
             <MultiSelectorContent>
               <MultiSelectorList>
                 {rest?.list?.map((item: any) => (
-                  <MultiSelectorItem key={item?.value} value={item?.label}>
+                  <MultiSelectorItem key={item?.value} value={item?.value}>
                     {item?.label}
                   </MultiSelectorItem>
                 ))}
@@ -158,6 +182,7 @@ export function DynamicFilterField({ form, data }: any) {
             {...rest}
             disabled={shouldDisableField()}
             disableDates={disableDates}
+            defaultValue={selectedValue}
           />
         );
       default:

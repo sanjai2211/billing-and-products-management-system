@@ -54,7 +54,7 @@ export function DataTableToolbar<TData>({
       <Form {...form}>
         <form className="flex gap-4 items-center">
           {FilterCustomerData?.map((item: any) => (
-            <DynamicFilterField data={item} form={form} />
+            <DynamicFilterField data={item} form={form} key={item?.id} />
           ))}
         </form>
       </Form>

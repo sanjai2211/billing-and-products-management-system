@@ -12,7 +12,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { CalendarIcon } from "lucide-react";
-import { addDays, format ,startOfDay, endOfDay} from "date-fns";
+import { addDays, format, startOfDay, endOfDay } from "date-fns";
 import { DateRange } from "react-day-picker";
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>;
@@ -89,9 +89,12 @@ const DatePicker = ({
   disabled,
   disableDates,
   isMultipleDate = false,
+  defaultValue = { from: null, to: null },
 }: any) => {
   const [date, setDate] = React.useState<any>(
-    isMultipleDate ? { from: null, to: null } : null
+    isMultipleDate
+      ? { from: defaultValue?.from || null, to: defaultValue?.to || null }
+      : null
   );
 
   return (
@@ -126,7 +129,9 @@ const DatePicker = ({
         <Calendar
           initialFocus
           mode={isMultipleDate ? "range" : "single"}
-          selected={isMultipleDate ? date : normalizeDateToStartOfDay(field.value)}
+          selected={
+            isMultipleDate ? date : normalizeDateToStartOfDay(field.value)
+          }
           onSelect={
             isMultipleDate
               ? (e: any) => {

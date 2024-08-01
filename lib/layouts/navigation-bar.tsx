@@ -21,7 +21,7 @@ export const NavigationBar = ({ toggled, setToggle }: any) => {
     >
       <div className="flex flex-col justify-between h-screen">
         <div className={`${toggled ? "h-[75%]" : "h-[85%]"}`}>
-          <TopBar toggled={toggled} />
+          {/* <TopBar toggled={toggled} /> */}
           <div className="h-full overflow-y-auto hide-scrollbar">
             <MenuBar toggled={toggled} />
           </div>

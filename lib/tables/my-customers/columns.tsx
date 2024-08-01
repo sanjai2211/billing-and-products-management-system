@@ -64,7 +64,7 @@ export const columns: ColumnDef<any>[] = [
   {
     accessorKey: "customerName",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Customer Name" />
+      <DataTableColumnHeader column={column} title="People Name" />
     ),
     cell: ({ row }) => (
       <div className="w-40">{row.getValue("customerName") || "-"}</div>

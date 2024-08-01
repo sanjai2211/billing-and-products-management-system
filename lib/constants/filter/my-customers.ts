@@ -21,7 +21,7 @@ export const FilterCustomerData = [
 export const SearchCustomerData = [
   {
     value : 'customerName',
-    label : 'Customer Name',
+    label : 'People Name',
     icon : "User",
   },
   {

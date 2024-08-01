@@ -40,7 +40,7 @@ export default function AddCustomerScreen({ customerDetails, session }: any) {
         <div className="flex flex-1 h-full flex-col gap-4">
           <div className="flex justify-between">
             <PageHeader
-              title={`${customerDetails?.id ? "Edit" : "Add"} Customer`}
+              title={`${customerDetails?.id ? "Edit" : "Add"} People`}
               hasBack={!!customerDetails?.id}
               path="/my-customers"
             />

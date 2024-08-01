@@ -13,6 +13,7 @@ import { ShowDetails } from "./show-details";
 import { FieldWithBoxValues, FieldWithValues } from "./field-with-values";
 import { BillTemplate } from "./bill-template";
 import { ExportButton } from "./export";
+import Loader from "./loader";
 export {
   BillTemplate,
   DynamicInputField,
@@ -21,6 +22,7 @@ export {
   FieldWithValues,
   FieldWithBoxValues,
   InformationTooltip,
+  Loader,
   PageHeader,
   Section,
   SectionWithAddableFields,

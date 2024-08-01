@@ -24,7 +24,7 @@ export function UserSettings() {
       </PopoverTrigger>
       <PopoverContent className="w-40 p-0" align="start" side="top">
         <div>
-          <div className="flex items-center text-xs border-b p-2">
+          {/* <div className="flex items-center text-xs border-b p-2">
             User name
           </div>
           <div
@@ -35,7 +35,7 @@ export function UserSettings() {
           >
             <Icon name="User" className="w-4 h-4 mr-2" />
             My Profile
-          </div>
+          </div> */}
           <div
             className="flex items-center text-xs cursor-pointer p-2"
             onClick={() => {

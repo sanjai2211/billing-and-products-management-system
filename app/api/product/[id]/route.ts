@@ -14,15 +14,15 @@ export async function GET(
   }
 
   try {
-    const billItems = await (prisma as any).productSnapshot.findUnique({
-      where: { billId: id },
+    const product = await (prisma as any).product.findUnique({
+      where: {  id },
     });
 
-    if (!billItems) {
+    if (!product) {
       return NextResponse.json({ error: "Product not found" }, { status: 404 });
     }
 
-    return NextResponse.json(billItems, { status: 200 });
+    return NextResponse.json(product, { status: 200 });
   } catch (error) {
     console.error(error);
     return NextResponse.json(
@@ -58,7 +58,7 @@ export async function PATCH(
       await (prisma as any).productSnapshot.create({
         data: {
           ...rest,
-          productId: id,
+          productSnapId: id,
         },
       });
     }
@@ -89,13 +89,13 @@ export async function DELETE(
       return NextResponse.json({ error: "Bill id not found" }, { status: 400 });
     }
 
-    const billItems = await (prisma as any).productSnapshot.findUnique({
-      where: { billId: id },
-    });
+    // const billItems = await (prisma as any).productSnapshot.findUnique({
+    //   where: { productSnapId: id },
+    // });
 
-    if (!billItems) {
-      return NextResponse.json({ error: "Product not found" }, { status: 404 });
-    }
+    // if (!billItems) {
+    //   return NextResponse.json({ error: "Product not found" }, { status: 404 });
+    // }
 
     await (prisma as any).product.delete({
       where: { id },

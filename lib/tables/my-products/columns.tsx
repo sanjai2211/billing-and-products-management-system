@@ -5,6 +5,9 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "./data-table-column-header";
 // import { formatDate } from "@/lib/utils-helper";
 import { DataTableRowActions } from "./data-table-row-actions";
+import { formatDate } from "@/lib/utils-helper/date/formatDate";
+import { ProductCategories, ProductStatuses, ProductUnits } from "@/lib/constants/products";
+import { getBadge, getValues } from "../components/table-badge";
 
 export const columns: ColumnDef<any>[] = [
   // {
@@ -31,13 +34,7 @@ export const columns: ColumnDef<any>[] = [
   //   enableSorting: false,
   //   enableHiding: false,
   // },
-  {
-    accessorKey: "id",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Id" className="hidden" />
-    ),
-    cell: ({ row }) => <div className="w-[80px] hidden">{row.getValue('id')}</div>,
-  },
+
   {
     accessorKey: "sNo",
     header: ({ column }) => (
@@ -73,21 +70,28 @@ export const columns: ColumnDef<any>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Status" />
     ),
-    cell: ({ row }) => <div>{row.getValue("status") || "-"}</div>,
+    cell: ({ row }) => <div className="w-28">
+    {getBadge("status", row.getValue("status"), ProductStatuses) || "-"}
+  </div>,
   },
   {
     accessorKey: "category",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Category" />
     ),
-    cell: ({ row }) => <div>{row.getValue("category") || "-"}</div>,
-  },
-  {
-    accessorKey: "unit",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Unit" />
+    cell: ({ row }) => (
+      <div className="w-36">
+        {getBadge("category", row.getValue("category"), ProductCategories) || "-"}
+      </div>
     ),
-    cell: ({ row }) => <div>{row.getValue("stockValue") || "-"}</div>,
+  },
+
+  {
+    accessorKey: "openStock",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Open Stock" />
+    ),
+    cell: ({ row }) => <div>{row.getValue("openStock") || "-"}  {getValues(row.original.unit, ProductUnits) || "-"}</div>,
   },
   {
     accessorKey: "group",
@@ -166,19 +170,44 @@ export const columns: ColumnDef<any>[] = [
     ),
     cell: ({ row }) => <div>{row.getValue("hsnCode") || "-"}</div>,
   },
+  
+  // {
+  //   accessorKey: "stockValue",
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader column={column} title="Stock Value" />
+  //   ),
+  //   cell: ({ row }) => <div>{row.getValue("stockValue") || "-"}</div>,
+  // },
   {
-    accessorKey: "openStock",
+    accessorKey: "createdAt",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Open Stock" />
+      <DataTableColumnHeader column={column} title="Created At" />
     ),
-    cell: ({ row }) => <div>{row.getValue("openStock") || "-"}</div>,
+    cell: ({ row }) => (
+      <div className="w-40">{formatDate(row.getValue("createdAt")) || "-"}</div>
+    ),
   },
   {
-    accessorKey: "stockValue",
+    accessorKey: "updatedAt",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Stock Value" />
+      <DataTableColumnHeader column={column} title="Last Updated" />
     ),
-    cell: ({ row }) => <div>{row.getValue("stockValue") || "-"}</div>,
+    cell: ({ row }) => (
+      <div className="w-40">
+        {row.getValue("updatedAt") !== row.getValue("createdAt")
+          ? formatDate(row.getValue("updatedAt"))
+          : "-"}
+      </div>
+    ),
+  },
+  {
+    accessorKey: "id",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Id" className="hidden" />
+    ),
+    cell: ({ row }) => (
+      <div className="w-[80px] hidden">{row.getValue("id")}</div>
+    ),
   },
 
   // {

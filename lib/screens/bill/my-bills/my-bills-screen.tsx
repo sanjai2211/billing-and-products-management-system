@@ -10,7 +10,7 @@ import { ExportOptionsMyBills } from "@/lib/constants";
 
 export default function MyBillsScreen({ bills, session }: any) {
   const router = useRouter();
-  const handleEdit = (id: string) => {
+  const handleEdit = ({id}: any) => {
     router.push(`/add-product/${id}`);
   };
 

@@ -9,7 +9,7 @@ import { useAddEditDeleteProduct } from "@/lib/hooks";
 export default function MyProductsScreen({ products, session }: any) {
   // const colData = getProductColumns(session?.shopId)
   const router = useRouter();
-  const handleEdit = (id: string) => {
+  const handleEdit = ({id}: any) => {
     router.push(`/add-product/${id}`);
   };
 

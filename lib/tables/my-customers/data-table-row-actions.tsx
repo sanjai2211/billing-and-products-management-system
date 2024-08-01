@@ -53,6 +53,7 @@ export function DataTableRowActions<TData>({
       handleDelete={handleDelete}
       details={{ name, code }}
       id={productId}
+      alertDelete={false}
     />
   );
 }

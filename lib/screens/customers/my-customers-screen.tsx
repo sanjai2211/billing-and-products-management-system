@@ -4,7 +4,7 @@ import { PageHeader } from "@/lib/components";
 import { DataTable } from "@/lib/tables/my-customers/data-table";
 import { columns } from "@/lib/tables/my-customers/columns";
 import { useRouter } from "next/navigation";
-import { useAddEditDeleteProduct } from "@/lib/hooks";
+import { useAddEditDeleteCustomer, useAddEditDeleteProduct } from "@/lib/hooks";
 
 export default function MyCustomersScreen({ customers, session }: any) {
   // const colData = getProductColumns(session?.shopId)
@@ -14,12 +14,12 @@ export default function MyCustomersScreen({ customers, session }: any) {
     router.push(`/add-customer/${id}`);
   };
 
-  const { mutate: onSubmit } = useAddEditDeleteProduct({
+  const { mutate: onSubmit } = useAddEditDeleteCustomer({
     shopId: session?.shopId,
     method: "DELETE",
   });
 
-  const handleDelte = (id: String) => onSubmit({ productId: id });
+  const handleDelte = (id: String) => onSubmit({ customerId : id });
   return (
     <div>
       <PageHeader title={`My Peoples`} />

@@ -185,9 +185,9 @@ export const deleteBillItem = async (billId: any) => {
   return response;
 };
 
-export const getCustomersByShopId = async (shopId: any) => {
+export const getCustomersByShopId = async (shopId: any,queryParams : any) => {
   const response = await fetchApi({
-    endpoint: `/customers/${shopId}`,
+    endpoint: `/customer?id=${shopId}&${queryParams}`,
   });
   return response;
 };
@@ -195,6 +195,40 @@ export const getCustomersByShopId = async (shopId: any) => {
 export const getBankDetailsById = async (id: any,type='shop') => {
   const response = await fetchApi({
     endpoint: `/bank/${id}?type=${type}`,
+  });
+  return response;
+};
+
+
+export const createCustomer = async (data: any) => {
+  const response = await fetchApi({
+    endpoint: "/customer/create",
+    method: "POST",
+    data,
+  });
+  return response;
+};
+
+export const updateCustomer = async (customerId: any,data: any) => {
+  const response = await fetchApi({
+    endpoint: `/customer/${customerId}`,
+    method : "PATCH",
+    data
+  });
+  return response;
+};
+
+export const deleteCustomer = async (customerId: any) => {
+  const response = await fetchApi({
+    endpoint: `/customer/${customerId}`,
+    method : "DELETE",
+  });
+  return response;
+};
+
+export const getCustomerDetailsById = async (customerId: any) => {
+  const response = await fetchApi({
+    endpoint: `/customer/${customerId}`,
   });
   return response;
 };

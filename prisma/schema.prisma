@@ -34,20 +34,22 @@ model Shop {
 }
 
 model Customer {
-  id           String         @id @default(auto()) @map("_id") @db.ObjectId
+  id           String       @id @default(auto()) @map("_id") @db.ObjectId
   customerName String
   printName    String
   email        String?
   faxNumber    String?
   phoneNumbers String
-  customerType CustomerType[]
-  shop         Shop           @relation(fields: [shopId], references: [id])
-  shopId       String         @db.ObjectId
+  customerType CustomerType
+  shop         Shop         @relation(fields: [shopId], references: [id])
+  shopId       String       @db.ObjectId
   address      Address?
   gstIn        String?
-  bankId       String?        @db.ObjectId
+  bankId       String?      @db.ObjectId
   bills        Bill[]
   Bank         Bank[]
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
 }
 
 model Product {
@@ -193,11 +195,11 @@ type TransportDetails {
 }
 
 type Address {
-  addressLine1 String
-  addressLine2 String
-  city         String
-  state        String
-  zip          String
+  addressLine1 String?
+  addressLine2 String?
+  city         String?
+  state        String?
+  zip          String?
 }
 
 enum BillType {

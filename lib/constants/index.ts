@@ -11,6 +11,10 @@ import { FilterBillData ,SearchBillData} from "./filter/my-bills";
 import { ExportOptionsMyBills } from "./export/my-bills";
 import { AddCustomer } from "./customers";
 import { Contact } from "lucide-react";
+import { CustomerTypes } from "./customers";
+import { FilterCustomerData ,SearchCustomerData} from "./filter/my-customers";
+
+
 export {
     AddCustomer,
     AdddProduct,
@@ -21,11 +25,14 @@ export {
     BillTypes,
     Contact,
     CustomerDetails,
+    CustomerTypes,
     DisabledAddressSection,
     ExportOptionsMyBills,
     FilterBillData,
+    FilterCustomerData,
     LoginConstants,
     SearchBillData,
+    SearchCustomerData,
     SignupConstants,
     PaymentTypes,
     MenuData,

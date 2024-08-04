@@ -22,7 +22,7 @@ const getColor = (field: any, value: any) => {
     case "paymentTerms":
       if (value === "CASH") return "green";
       else if (value === "CREDIT") return "orange";
-      else return 'red';
+      else return "red";
     case "totalValue":
       if (value <= 0) return "red";
       else if (value < 50) return "orange";
@@ -129,10 +129,12 @@ export const columns: ColumnDef<any>[] = [
         return <p className="text-sm">No customer data</p>;
       }
 
-      const { address, id, shopId, bankId, ...rest } = customer;
+      const { address, id, shopId, bankId,createdAt,updatedAt, ...rest } = customer;
       const data = {
         ...rest,
-        address: `${address?.addressLine1},<br/>${address?.addressLine2},<br/>${address?.city},<br/>${address?.state},<br/>India - ${address?.zip}`,
+        address: address
+          ? `${address?.addressLine1},<br/>${address?.addressLine2},<br/>${address?.city},<br/>${address?.state},<br/>India - ${address?.zip}`
+          : "-",
       };
 
       return (

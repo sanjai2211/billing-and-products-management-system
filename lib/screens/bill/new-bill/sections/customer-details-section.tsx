@@ -5,6 +5,7 @@ import { SectionWithDynamicFields } from "@/lib/components";
 import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getCustomersByShopId } from "@/apicall";
+import { getList } from "@/lib/utils-helper/screens/getList";
 
 export default function CustomerDetailsSection({ session, form }: any) {
   const { data, isLoading, isFetching, error } = useQuery({
@@ -13,14 +14,6 @@ export default function CustomerDetailsSection({ session, form }: any) {
     enabled: !!session?.shopId,
   });
 
-  const getList = (field: string, subField = "name") => {
-    return data?.map((item: any) => ({
-      value: item?.id,
-      label: item[field],
-      subField: item[subField],
-    }));
-  };
-
   const handleCustomerSelect = (selectedProduct: any) => {
     const { value } = selectedProduct;
     const {
@@ -28,7 +21,7 @@ export default function CustomerDetailsSection({ session, form }: any) {
       address,
       bankDetails,
       shopId,
-      name,
+      customerName,
       phoneNumbers,
       email,
       gstIn,
@@ -36,7 +29,7 @@ export default function CustomerDetailsSection({ session, form }: any) {
     } = data?.find((item: any) => item?.id === value);
     Object.entries({
       ...address,
-      name: { value, label: name },
+      customerName: { value, label: customerName },
       phoneNumbers: { value, label: phoneNumbers },
       email: { value, label: email },
       gstIn: { value, label: gstIn },
@@ -61,31 +54,31 @@ export default function CustomerDetailsSection({ session, form }: any) {
         icon: "User",
         fields: [
           {
-            id: "name",
+            id: "customerName",
             label: "Customer Name",
             placeholder: "Customer Name",
-            list: getList("name", "phoneNumbers"),
+            list: getList(data,"customerName", "phoneNumbers"),
             ...commonField,
           },
           {
             id: "phoneNumbers",
             label: "Phone Number",
             placeholder: "Phone Number",
-            list: getList("phoneNumbers"),
+            list: getList(data,"phoneNumbers","customerName"),
             ...commonField,
           },
           {
             id: "email",
             label: "Email",
             placeholder: "Email",
-            list: getList("email"),
+            list: getList(data,"email","customerName"),
             ...commonField,
           },
           {
             id: "gstIn",
             label: "GSTIN",
             placeholder: "GSTIN",
-            list: getList("gstIn"),
+            list: getList(data,"gstIn","customerName"),
             ...commonField,
           },
         ],

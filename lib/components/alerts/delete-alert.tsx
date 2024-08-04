@@ -21,30 +21,39 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { REGEXP_ONLY_DIGITS_AND_CHARS } from "input-otp";
+import { Button } from "@/components/ui/button";
 
-export function DeleteAlert<TData>({ details, handleDelete }: any) {
+export function DeleteAlert<TData>({
+  details,
+  handleDelete,
+  title = "Are you sure you want to delete",
+  subTitle = "This action cannot be undone!",
+  type = "icon",
+}: any) {
   const [confirmationInput, setConfirmationInput] = useState("");
   const { name, code } = details;
 
   return (
     <AlertDialog>
       <AlertDialogTrigger>
-        <div
-          className="text-destructive rounded-full border p-2 hover:bg-muted/50 cursor-pointer"
-        >
-          <Icon name="Trash2" className="w-4 h-4" />
-        </div>
+        {type === "icon" ? (
+          <div className="text-destructive rounded-full border p-2 hover:bg-muted/50 cursor-pointer">
+            <Icon name="Trash2" className="w-4 h-4" />
+          </div>
+        ) : (
+          <Button type="button" variant={"destructive"}>
+            <Icon name="Trash2" className="h-4 w-4 mr-2" />
+            Delete
+          </Button>
+        )}
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>
-            Are you sure you want to delete{" "}
-            <span className="font-bold">{name?.toUpperCase()}</span>?
+            {title} <span className="font-bold">{name?.toUpperCase()}</span>?
           </AlertDialogTitle>
           <AlertDialogDescription>
-            <p className="text-xs opacity-50 text-red-500">
-              This action cannot be undone!
-            </p>
+            <p className="text-xs opacity-50 text-red-500">{subTitle}</p>
             <div className="my-4 space-y-2">
               <div className="flex items-center justify-between">
                 <p className="flex items-center gap-2">
@@ -79,7 +88,7 @@ export function DeleteAlert<TData>({ details, handleDelete }: any) {
             disabled={confirmationInput !== code?.toUpperCase()}
             className="flex items-center bg-destructive hover:bg-destructive text-black dark:text-white"
             onClick={() => {
-              handleDelete(details?.id);
+              handleDelete({ id: details?.id });
             }}
           >
             <Icon name="Trash2" className="w-4 h-5 mr-2" />

@@ -29,8 +29,8 @@ model Shop {
   Customer     Customer[]
   bankIds      String[]
   Bill         Bill[]
-
-  banks Bank[] @relation("ShopBanks")
+  banks        Bank[]     @relation("ShopBanks")
+  Stock        Stock[]
 }
 
 model Customer {
@@ -50,6 +50,7 @@ model Customer {
   Bank         Bank[]
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @updatedAt
+  Stock        Stock[]
 }
 
 model Product {
@@ -70,7 +71,7 @@ model Product {
   igstPurchase String?
   igstSales    String?
   hsnCode      String?
-  openStock    String?
+  openStock    Int?              @default(0)
   stockValue   String?
   status       ProductStatus?
   createdAt    DateTime          @default(now())
@@ -99,10 +100,12 @@ model ProductSnapshot {
   igstPurchase  String?
   igstSales     String?
   hsnCode       String?
+  openStock     Int?           @default(0)
   createdAt     DateTime       @default(now())
   status        ProductStatus?
   Product       Product?       @relation(fields: [productSnapId], references: [id])
   BillingItems  BillingItems[]
+  StockItem     StockItem[]
 }
 
 model Bank {
@@ -116,6 +119,43 @@ model Bank {
   shop          Shop?     @relation("ShopBanks", fields: [shopId], references: [id])
   customer      Customer? @relation(fields: [customerId], references: [id])
   Bill          Bill[]
+  Stock         Stock[]
+}
+
+model Stock {
+  id         String      @id @default(auto()) @map("_id") @db.ObjectId
+  stockCode  String?
+  stockItems StockItem[]
+  shopId     String      @db.ObjectId
+  bankId     String?     @db.ObjectId
+  customerId String?     @db.ObjectId
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  dataStatus Status      @default(NOT_COMPLETED)
+  Shop       Shop?       @relation(fields: [shopId], references: [id])
+  Bank       Bank?       @relation(fields: [bankId], references: [id])
+  Customer   Customer?   @relation(fields: [customerId], references: [id])
+}
+
+model StockItem {
+  id            String           @id @default(auto()) @map("_id") @db.ObjectId
+  stockId       String           @db.ObjectId
+  productSnapId String           @db.ObjectId
+  cost          Float
+  quantity      Int
+  product       ProductSnapshot? @relation(fields: [productSnapId], references: [id])
+  Stock         Stock?           @relation(fields: [stockId], references: [id])
+}
+
+model BillingItems {
+  id            String           @id @default(auto()) @map("_id") @db.ObjectId
+  productSnapId String           @db.ObjectId
+  quantity      Int
+  cost          Float
+  discount      Float?
+  Bill          Bill?            @relation(fields: [billId], references: [id])
+  billId        String?          @db.ObjectId
+  product       ProductSnapshot? @relation(fields: [productSnapId], references: [id])
 }
 
 enum ProductStatus {
@@ -164,17 +204,6 @@ model Bill {
   Shop               Shop?             @relation(fields: [shopId], references: [id])
 }
 
-model BillingItems {
-  id            String          @id @default(auto()) @map("_id") @db.ObjectId
-  productSnapId String          @db.ObjectId
-  quantity      Int
-  cost          Float
-  discount      Float?
-  Bill          Bill?           @relation(fields: [billId], references: [id])
-  billId        String?         @db.ObjectId
-  product       ProductSnapshot @relation(fields: [productSnapId], references: [id])
-}
-
 type CustomerDetails {
   customerName    String
   phoneNumber     String
@@ -217,4 +246,10 @@ enum CustomerType {
   CUSTOMER
   SUPPLIER
   AGENT
+}
+
+enum Status {
+  COMPLETED
+  DRAFT
+  NOT_COMPLETED
 }

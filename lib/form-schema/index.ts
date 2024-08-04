@@ -9,7 +9,9 @@ import {
   TransportDetailsSchema,
   BankDetailsSchema,
 } from "./bill";
+import { AddStockSchema,StockDetailsSchema } from "./add-stock";
 export {
+  AddStockSchema,
   BankDetailsSchema,
   BillSchema,
   BillingItemsSchema,
@@ -19,5 +21,6 @@ export {
   ProductSchema,
   SignupSchema,
   ShopDetailsSchema,
+  StockDetailsSchema,
   TransportDetailsSchema,
 };

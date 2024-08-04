@@ -26,9 +26,9 @@ export function ShowDetails({
         </div>
       </PopoverTrigger>
       <PopoverContent className="w-72 mt-2" align="end">
-        <div className="grid gap-4">
+        <div className="grid gap-2">
           <p className="font-medium leading-none text-sm">{title}</p>
-          <div className="grid gap-4 max-h-56 h-full overflow-y-scroll hide-scrollbar">
+          <div className="grid gap-4 max-h-56 h-full overflow-y-scroll hide-scrollbar border rounded p-2">
             {component
               ? component
               : Object.entries(data)?.map(([key, value], index) => (

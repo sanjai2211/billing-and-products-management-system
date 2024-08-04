@@ -6,7 +6,7 @@ export const FilterBillData = [
     sectionName: "Bill Type",
     icon: "FolderSymlink",
     component: "multipleSelect",
-    placeholder :"Bill Types",
+    placeholder: "Bill Types",
     list: BillTypes,
   },
   {
@@ -14,14 +14,14 @@ export const FilterBillData = [
     sectionName: "Bill Dated",
     icon: "CalendarCheck",
     component: "datePicker",
-    isMultipleDate:true
+    isMultipleDate: true,
   },
   {
     id: "dueDate",
     sectionName: "Due Dated",
     icon: "CalendarClock",
     component: "datePicker",
-    isMultipleDate: true
+    isMultipleDate: true,
   },
   {
     id: "paymentTerms",
@@ -36,35 +36,34 @@ export const FilterBillData = [
     sectionName: "Created At",
     icon: "Pencil",
     component: "datePicker",
-    isMultipleDate : true
+    isMultipleDate: true,
   },
 ];
 
 export const SearchBillData = [
   {
-    value : 'billNumber',
-    label : 'Bill Number',
-    icon : "ScrollText",
+    value: "billNumber",
+    label: "Bill Number",
+    icon: "ScrollText",
   },
   {
-    value : 'name',
-    label : 'Customer Name',
-    icon : "User",
+    value: "customer Name",
+    label: "Customer Name",
+    icon: "User",
   },
   {
-    value : 'phoneNumbers',
-    label : 'Phone Number',
-    icon : "PhoneCall",
+    value: "phoneNumbers",
+    label: "Phone Number",
+    icon: "PhoneCall",
   },
   {
-    value : 'email',
-    label : 'Customer Email',
-    icon : "Mail",
+    value: "email",
+    label: "Customer Email",
+    icon: "Mail",
   },
   {
-    value : 'gstIn',
-    label : 'Gst-In Number',
-    icon : "HandCoins",
+    value: "gstIn",
+    label: "Gst-In Number",
+    icon: "HandCoins",
   },
-  
-]
+];

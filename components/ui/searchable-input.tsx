@@ -13,7 +13,9 @@ const SearchableInput = (props: any) => {
     form,
     onSelect,
     id,
+    disabled
   } = props;
+  console.log({props})
   const [isOpen, setIsOpen] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [isScrollable, setIsScrollable] = useState(false);
@@ -116,9 +118,10 @@ const SearchableInput = (props: any) => {
         </div>
       ) : (
         <Button
-          className="border rounded px-4 py-2 w-full flex justify-between gap-2"
+          className={`border rounded px-4 py-2 w-full flex justify-between gap-2 ${disabled ? 'cursor-not-allowed' : ''}`}
           onClick={toggleInputMode}
           variant="outline"
+          disabled={disabled}
         >
           <p>
             {selectedOption?.label || selectedOption || placeholder || "Select"}

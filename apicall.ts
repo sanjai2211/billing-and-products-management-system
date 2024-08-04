@@ -86,7 +86,7 @@ export const deleteProduct = async (productId: any) => {
   return response;
 };
 
-export const getProductsByShopId = async (shopId: any, queryParams: any) => {
+export const getProductsByShopId = async (shopId: any, queryParams='') => {
   const response = await fetchApi({
     endpoint: `/product?id=${shopId}&${queryParams}`,
   });
@@ -184,7 +184,7 @@ export const deleteBillItem = async (billId: any) => {
   return response;
 };
 
-export const getCustomersByShopId = async (shopId: any, queryParams: any) => {
+export const getCustomersByShopId = async (shopId: any, queryParams='') => {
   const response = await fetchApi({
     endpoint: `/customer?id=${shopId}&${queryParams}`,
   });
@@ -204,8 +204,17 @@ export const createCustomer = async (data: any) => {
     method: "POST",
     data,
   });
+  return response
+};
+
+export const getStockDetailsById = async (stockId: any) => {
+  const response = await fetchApi({
+    endpoint: `/stock/${stockId}`,
+  });
   return response;
 };
+
+
 
 export const updateCustomer = async (customerId: any, data: any) => {
   const response = await fetchApi({
@@ -213,8 +222,9 @@ export const updateCustomer = async (customerId: any, data: any) => {
     method: "PATCH",
     data,
   });
-  return response;
 };
+
+
 
 export const deleteCustomer = async (customerId: any) => {
   const response = await fetchApi({
@@ -230,3 +240,72 @@ export const getCustomerDetailsById = async (customerId: any) => {
   });
   return response;
 };
+
+export const createStock = async (data: any, checkExisting = true) => {
+  const response = await fetchApi({
+    endpoint: `/stock/create?checkExisiting=${checkExisting}`,
+    method: "POST",
+    data,
+  });
+  return response;
+};
+
+export const updateStock = async (stockId: any, data: any) => {
+  const response = await fetchApi({
+    endpoint: `/stock/${stockId}`,
+    method: "PATCH",
+    data,
+  });
+  return response;
+};
+
+export const deleteStock = async (stockId: any) => {
+  const response = await fetchApi({
+    endpoint: `/stock/${stockId}`,
+    method: "DELETE",
+  });
+  return response;
+};
+
+export const stockClearAll = async (stockId: any) => {
+  const response = await fetchApi({
+    endpoint: `/stock/${stockId}/clear-all`,
+    method: "DELETE",
+  });
+  return response;
+};
+
+export const createStockItems = async (data: any) => {
+  const response = await fetchApi({
+    endpoint: `/stock/stock-items/create`,
+    method: "POST",
+    data,
+  });
+  return response;
+};
+
+export const updateStockItems = async (stockItemId: any, data: any) => {
+  const response = await fetchApi({
+    endpoint: `/stock/stock-items/${stockItemId}`,
+    method: "PATCH",
+    data,
+  });
+  return response
+};
+
+export const deleteStockItems = async (stockItemId: any) => {
+  const response = await fetchApi({
+    endpoint: `/stock/stock-items/${stockItemId}`,
+    method: "DELETE",
+  });
+  return response
+};
+
+export const getStocksByShopId = async (shopId: any, queryParams='' as any) => {
+  const response = await fetchApi({
+    endpoint: `/stock?shopId=${shopId}&${queryParams}`,
+  });
+  return response;
+};
+
+

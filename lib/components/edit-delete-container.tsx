@@ -15,7 +15,7 @@ const EditDeleteContainer = ({
 }: any) => {
   return (
     <div
-      className={`absolute right-0 flex items-center justify-center gap-2 w-28 bg-background h-full ${className}`}
+      className={`absolute right-0 flex items-center justify-evenly gap-4 w-fit px-4 bg-background h-full ${className}`}
     >
       {!hideEdit && (
         <div
@@ -34,7 +34,7 @@ const EditDeleteContainer = ({
         ) : (
           <div
             className="text-destructive rounded-full border p-2 hover:bg-muted/50 cursor-pointer"
-            onClick={() => handleDelete(id)}
+            onClick={() => handleDelete({id})}
           >
             <Icon name="Trash2" className="w-4 h-4" />
           </div>

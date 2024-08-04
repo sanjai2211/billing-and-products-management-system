@@ -10,16 +10,20 @@ import AddProductSlot from "./bill/new-bill/add-product-slot";
 import MyBillsScreen from "./bill/my-bills/my-bills-screen";
 import AddCustomerScreen from "./customers/add-customer-screen";
 import MyCustomersScreen from "./customers/my-customers-screen"; 
+import MyStocksScreen from "./stocks/my-stocks/my-stocks-screen";
+import AddStockScreen from "./stocks/add-stock/add-stock-screen";
 export {
   AddCustomerScreen,
   AddProductSlot,
   AddProductScreen,
+  AddStockScreen,
   BillDetailsSlot,
   BillTableSlot,
   LoginScreen,
   MyCustomersScreen,
   MyProductsScreen,
   MyBillsScreen,
+  MyStocksScreen,
   NewBillScreen,
   ShopSettingsScreen,
   SignupScreen,

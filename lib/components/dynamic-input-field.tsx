@@ -5,7 +5,7 @@ import {
   FormDescription,
   FormField,
   FormItem,
-  FormLabel
+  FormLabel,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { DynamicInputFieldProps } from "@/lib/types";
@@ -14,19 +14,21 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue
+  SelectValue,
 } from "@/components/ui/select";
 import { SearchableInput } from "@/components/ui/searchable-input";
 import { DatePicker } from "@/components/ui/calendar";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   MultiSelector,
   MultiSelectorContent,
   MultiSelectorInput,
   MultiSelectorItem,
   MultiSelectorList,
-  MultiSelectorTrigger
+  MultiSelectorTrigger,
 } from "@/components/ui/multi-select";
+import { Button } from "@/components/ui/button";
+import { Icon } from "../icons";
 
 export const compareValues = (
   parentValue: any,
@@ -80,9 +82,7 @@ export function DynamicInputField({ form, data }: any) {
           </Select>
         );
       case "multipleSelect":
-
-        const [values, setValues] = useState(field.value || [])
-        console.log({values,field : field.value,form : form.onChange})
+        const [values, setValues] = useState(field.value || []);
         return (
           <MultiSelector
             onValuesChange={field.onChange}
@@ -111,6 +111,18 @@ export function DynamicInputField({ form, data }: any) {
             disabled={shouldDisableField()}
           />
         );
+      case "button":
+        return (
+          <Button
+            variant={rest.variant || "default"}
+            size={rest.size || "default"}
+            className="space-x-2"
+            type={rest.type || "button"}
+          >
+            <Icon name={rest.iconName} className="h-4 w-4" />
+            <p>{rest.buttonLabel}</p>
+          </Button>
+        );
       case "datePicker":
         return (
           <DatePicker
@@ -120,8 +132,10 @@ export function DynamicInputField({ form, data }: any) {
             disableDates={disableDates}
           />
         );
+      case component:
+        return component;
 
-      default:
+        default:
         return null;
     }
   };

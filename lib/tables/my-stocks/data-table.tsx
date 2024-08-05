@@ -14,6 +14,7 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
+  Row,
 } from "@tanstack/react-table";
 
 import {
@@ -34,26 +35,22 @@ import { DataTableRowActions } from "./data-table-row-actions";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  handleDelete?: any
-  handleEdit? :any
+  handleDelete?: any;
+  handleEdit?: any;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   handleDelete,
-  handleEdit
+  handleEdit,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
-  const [hoveredRow, setHoveredRow] = React.useState<string | number | null>(
-    null
-  );
+  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
+  const [hoveredRow, setHoveredRow] = React.useState<string | number | null>(null);
   const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [expanded, setExpanded] = React.useState({});
 
   const table = useReactTable({
     data,
@@ -63,23 +60,37 @@ export function DataTable<TData, TValue>({
       columnVisibility,
       rowSelection,
       columnFilters,
+      expanded,
     },
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
+    onExpandedChange: setExpanded,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
+    getSubRows: (row : any) => row.items || [],
   });
 
+  const renderSubRow = (subRow: Row<any>) => {
+    return (
+      <TableRow key={subRow.id}>
+        {subRow.getVisibleCells().map((cell) => (
+          <TableCell key={cell.id}>
+            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+          </TableCell>
+        ))}
+      </TableRow>
+    );
+  };
+
   return (
-    <div className="flex flex-col gap-4 w-full h-[calc(100vh-84px)] ">
-      {/* <DataTableToolbar table={table} /> */}
+    <div className="flex flex-col gap-4 w-full h-[calc(100vh-84px)] overflow-y-auto  ">
       <div className="rounded-md border h-full overflow-auto">
         <Table>
           <TableHeader>
@@ -90,10 +101,7 @@ export function DataTable<TData, TValue>({
                     <TableHead key={header.id} colSpan={header.colSpan}>
                       {header.isPlaceholder
                         ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                        : flexRender(header.column.columnDef.header, header.getContext())}
                     </TableHead>
                   );
                 })}
@@ -103,32 +111,32 @@ export function DataTable<TData, TValue>({
           <TableBody>
             {table.getRowModel()?.rows?.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                  onMouseEnter={() => setHoveredRow(row.id)}
-                  onMouseLeave={() => setHoveredRow(null)}
-                  className="relative"
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                  {hoveredRow === row.id && (
-                     <DataTableRowActions row={row} handleEdit={handleEdit} handleDelete={handleDelete} alertDelete={row.getValue('dataStatus') !== 'DRAFT'} />
-                  )}
-                </TableRow>
+                <React.Fragment key={row.id}>
+                  <TableRow
+                    data-state={row.getIsSelected() && "selected"}
+                    className="relative"
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {row.getCanExpand() ? (
+                          <span
+                            // {...row.getToggleExpandedProps()}
+                            style={{ cursor: "pointer" }}
+                          >
+                            {row.getIsExpanded() ? "👇" : "👉"}
+                          </span>
+                        ) : null}
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      </TableCell>
+                    ))}
+                  
+                  </TableRow>
+                  {row.getIsExpanded() && row.subRows.map(renderSubRow)}
+                </React.Fragment>
               ))
             ) : (
               <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
+                <TableCell colSpan={columns.length} className="h-24 text-center">
                   No results.
                 </TableCell>
               </TableRow>
@@ -136,7 +144,6 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <DataTablePagination table={table} />
     </div>
   );
 }

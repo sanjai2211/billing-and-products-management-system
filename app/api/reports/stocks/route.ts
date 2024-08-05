@@ -7,17 +7,15 @@ const prisma = new PrismaClient();
 export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl;
 
-  const { productId, type, ...rest } = parseQueryParams(searchParams);
+  const { productId,customerId, type, ...rest } = parseQueryParams(searchParams);
   let where: any = {};
   let selectItem: any = {};
 
-  const product = await (prisma as any).productSnapshot.findMany({
-    where: {
-      productSnapId: productId,
-    },
-  });
+  if(!productId && !customerId){
+    return NextResponse.json([], { status: 200 });
 
-  console.log({ prrrr: product });
+  }
+
 
   if (type === "customers") {
     where = {
@@ -59,7 +57,7 @@ export async function GET(req: NextRequest) {
         Stock: {
           include : {
             Customer : true
-          }
+          },
         },
         // Product: true,
       }

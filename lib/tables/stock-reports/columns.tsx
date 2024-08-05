@@ -18,7 +18,7 @@ export const columns: ColumnDef<any>[] = [
       <DataTableColumnHeader column={column} title="Supplier" />
     ),
     cell: ({ row }) => (
-      <PeopleDetails data={row?.original?.Stock?.Customer} people="Supplier" />
+      <PeopleDetails data={row.original.Stock.Customer} people="Supplier" />
     ),
   },
   {
@@ -33,9 +33,7 @@ export const columns: ColumnDef<any>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Quantity" />
     ),
-    cell: ({ row }) => (
-      <div className="">{row.getValue("quantity")}</div>
-    ),
+    cell: ({ row }) => <div className="">{row.getValue("quantity")}</div>,
   },
   {
     accessorKey: "totalValue",
@@ -44,15 +42,17 @@ export const columns: ColumnDef<any>[] = [
     ),
     cell: ({ row } : any) => (
       <div className="">
-       &#8377; {row.getValue("cost") * row.getValue("quantity")}
+        &#8377; {row.getValue("cost") * row.getValue("quantity")}
       </div>
     ),
   },
   {
-    accessorKey: "date",
+    accessorKey: "createdAt",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Date" />
     ),
-    cell: ({ row }) => <div className="">{row.index + 1}</div>,
+    cell: ({ row }) => (
+      <div className="">{new Date(row.getValue("createdAt")).toLocaleDateString()}</div>
+    ),
   },
 ];

@@ -61,6 +61,28 @@ export const MenuData = [
     ],
   },
   {
+    id: "stocks",
+    sectionName: "Stocks",
+    icon: "Boxes",
+    items: [
+      {
+        name: "Add Stock",
+        icon: "PackagePlus",
+        path: "/add-stock",
+      },
+      {
+        name: "My Stocks",
+        icon: "Layers",
+        path: "/my-stocks",
+      },
+      {
+        name: "Stocks Reports",
+        icon: "Blocks",
+        path: "/stock-reports",
+      },
+    ],
+  },
+  {
     id: "reports",
     sectionName: "Reports",
     icon: "BarChart3",

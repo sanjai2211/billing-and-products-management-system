@@ -308,4 +308,10 @@ export const getStocksByShopId = async (shopId: any, queryParams='' as any) => {
   return response;
 };
 
+export const getStockReportsByShopId = async (shopId: any, queryParams='' as any) => {
+  const response = await fetchApi({
+    endpoint: `/reports/stocks?shopId=${shopId}&${queryParams}`,
+  });
+  return response;
+};
 

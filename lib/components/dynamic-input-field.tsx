@@ -53,7 +53,7 @@ export const compareValues = (
   }
 };
 
-export function DynamicInputField({ form, data }: any) {
+export function DynamicInputField({ form, data, onChange = () => {} }: any) {
   const renderFormControl = (field: any) => {
     const { component, id, ...rest } = data;
     switch (data?.component) {
@@ -182,7 +182,9 @@ export function DynamicInputField({ form, data }: any) {
         return (
           <FormItem>
             <FormLabel>{data?.label}</FormLabel>
-            <FormControl>{renderFormControl(field)}</FormControl>
+            <FormControl>
+              {renderFormControl({ ...field, ...(onChange && onChange) })}
+            </FormControl>
             {data?.description && (
               <FormDescription>{data?.description}</FormDescription>
             )}

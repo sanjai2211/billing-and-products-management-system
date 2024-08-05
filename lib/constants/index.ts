@@ -17,6 +17,7 @@ import { FilterProductData ,SearchProductData} from "./filter/my-products";
 import { FilterStockData ,SearchStockData} from "./filter/my-stocks";
 import { DataStatuses ,DataStatusesWithoutDraft} from "./data-status";
 import { StockBasicDetails } from "./stock";
+import { StockReportsTab } from "./tabs";
 
 
 export {
@@ -48,5 +49,6 @@ export {
     PaymentTypes,
     ProductStatuses,
     MenuData,
-    ShopDetails
+    ShopDetails,
+    StockReportsTab
 }

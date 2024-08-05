@@ -79,7 +79,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="flex flex-col gap-4 w-full h-[calc(100vh-84px)] ">
-      {/* <DataTableToolbar table={table} /> */}
+      <DataTableToolbar table={table} />
       <div className="rounded-md border h-full overflow-auto">
         <Table>
           <TableHeader>
@@ -119,7 +119,7 @@ export function DataTable<TData, TValue>({
                     </TableCell>
                   ))}
                   {hoveredRow === row.id && (
-                     <DataTableRowActions row={row} handleEdit={handleEdit} handleDelete={handleDelete} alertDelete={row.getValue('dataStatus') !== 'DRAFT'} />
+                     <DataTableRowActions row={row} handleEdit={handleEdit} handleDelete={handleDelete} />
                   )}
                 </TableRow>
               ))

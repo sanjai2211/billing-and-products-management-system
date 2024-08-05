@@ -75,6 +75,11 @@ export const MenuData = [
         icon: "Layers",
         path: "/my-stocks",
       },
+      {
+        name: "Stocks Reports",
+        icon: "Blocks",
+        path: "/stock-reports",
+      },
     ],
   },
   {

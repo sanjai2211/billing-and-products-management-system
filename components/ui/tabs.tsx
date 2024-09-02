@@ -56,7 +56,7 @@ const CustomizedTab = ({ defaultValue, data = [], setTab }: any) => {
   return (
     <Tabs
       defaultValue={defaultValue || data?.[0]?.value}
-      className={`w-[${20 * data?.length}px]`}
+      className={'flex justify-center'}
     >
       <TabsList className="h-10 rounded-md">
         {data?.map((item: any) => (

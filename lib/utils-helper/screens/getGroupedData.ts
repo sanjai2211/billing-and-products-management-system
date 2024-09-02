@@ -1,7 +1,7 @@
 export function getGrouppedData(array: any, path: any) {
   const pathArray = path.split("/");
 
-  return array.reduce((acc: any, item: any) => {
+  return array?.reduce((acc: any, item: any) => {
     const key = pathArray.reduce((obj: any, key: any) => obj[key], item);
 
     if (!acc[key]) {
@@ -13,14 +13,14 @@ export function getGrouppedData(array: any, path: any) {
   }, {});
 }
 
-export function getGrouppedTableData(array : any, path : any, keyName : any) {
+export function groupDataByField(array : any, path : any, keyName : any) {
   if (array.length === 0) {
     return array;
   }
 
   const pathArray = path.split('/');
 
-  const groupedObject = array.reduce((acc : any, item : any) => {
+  const groupedObject = array?.reduce((acc : any, item : any) => {
     const key = pathArray.reduce((obj: any, key: any) => obj[key], item);
     
     if (!acc[key]) {

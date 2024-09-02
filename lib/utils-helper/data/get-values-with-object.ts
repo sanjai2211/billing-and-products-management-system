@@ -1,4 +1,4 @@
-export const getArrayWithFieldValues = (data : any, path : any) => {
+export const getValuesWithObject = (data : any, path : any) => {
   const pathParts = path.split('/');
 
   return data.map((item : any) => {

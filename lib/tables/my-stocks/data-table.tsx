@@ -28,27 +28,19 @@ import {
 
 import { DataTablePagination } from "./data-table-pagination";
 import { DataTableToolbar } from "./data-table-toolbar";
-import { Icon } from "@/lib/icons";
-import { EditDeleteContainer } from "@/lib/components";
-import { DataTableRowActions } from "./data-table-row-actions";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  handleDelete?: any;
-  handleEdit?: any;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
-  handleDelete,
-  handleEdit,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
-  const [hoveredRow, setHoveredRow] = React.useState<string | number | null>(null);
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [expanded, setExpanded] = React.useState({});
 
@@ -74,62 +66,46 @@ export function DataTable<TData, TValue>({
     getSortedRowModel: getSortedRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
-    getSubRows: (row : any) => row.items || [],
+    getSubRows: (row:any) => row?.items || [],
   });
 
-  const renderSubRow = (subRow: Row<any>) => {
-    return (
-      <TableRow key={subRow.id}>
-        {subRow.getVisibleCells().map((cell) => (
-          <TableCell key={cell.id}>
-            {flexRender(cell.column.columnDef.cell, cell.getContext())}
-          </TableCell>
-        ))}
-      </TableRow>
-    );
-  };
+  const renderSubRow = (subRow: Row<any>) => (
+    <TableRow key={subRow.id}>
+      {subRow.getVisibleCells().map((cell) => (
+        <TableCell key={cell.id} className='p-2'>
+          {flexRender(cell.column.columnDef.cell, cell.getContext())}
+        </TableCell>
+      ))}
+    </TableRow>
+  );
 
   return (
-    <div className="flex flex-col gap-4 w-full h-[calc(100vh-84px)] overflow-y-auto  ">
+    <div className="flex flex-col gap-4 w-full h-[calc(100vh-420px)] overflow-y-auto">
       <div className="rounded-md border h-full overflow-auto">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id} colSpan={header.colSpan}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(header.column.columnDef.header, header.getContext())}
-                    </TableHead>
-                  );
-                })}
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id} colSpan={header.colSpan}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(header.column.columnDef.header, header.getContext())}
+                  </TableHead>
+                ))}
               </TableRow>
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel()?.rows?.length ? (
+            {table.getRowModel().rows.length ? (
               table.getRowModel().rows.map((row) => (
                 <React.Fragment key={row.id}>
-                  <TableRow
-                    data-state={row.getIsSelected() && "selected"}
-                    className="relative"
-                  >
+                  <TableRow data-state={row.getIsSelected() && "selected"} >
                     {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
-                        {row.getCanExpand() ? (
-                          <span
-                            // {...row.getToggleExpandedProps()}
-                            style={{ cursor: "pointer" }}
-                          >
-                            {row.getIsExpanded() ? "👇" : "👉"}
-                          </span>
-                        ) : null}
+                      <TableCell key={cell.id} className="p-2">
                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                       </TableCell>
                     ))}
-                  
                   </TableRow>
                   {row.getIsExpanded() && row.subRows.map(renderSubRow)}
                 </React.Fragment>
@@ -144,6 +120,7 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
+      {/* <DataTablePagination table={table} /> */}
     </div>
   );
 }

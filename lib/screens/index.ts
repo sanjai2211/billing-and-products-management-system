@@ -12,7 +12,7 @@ import AddCustomerScreen from "./customers/add-customer-screen";
 import MyCustomersScreen from "./customers/my-customers-screen"; 
 import MyStocksScreen from "./stocks/my-stocks/my-stocks-screen";
 import AddStockScreen from "./stocks/add-stock/add-stock-screen";
-import StockReportsScreen from "./stocks/stock-reports-screen";
+import StockReportsScreen from "./stocks/reports/stock-reports-screen";
 export {
   AddCustomerScreen,
   AddProductSlot,

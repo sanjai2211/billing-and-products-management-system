@@ -5,7 +5,7 @@ import { SectionWithDynamicFields } from "@/lib/components";
 import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getCustomersByShopId } from "@/apicall";
-import { getList } from "@/lib/utils-helper/screens/getList";
+import { getList } from "@/lib/utils-helper/data/get-list";
 
 export default function CustomerDetailsSection({ session, form }: any) {
   const { data, isLoading, isFetching, error } = useQuery({

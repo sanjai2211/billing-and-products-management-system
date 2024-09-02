@@ -15,9 +15,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "@/components/ui/form";
 import { useAddEditDeleteBill, useAddEditShop } from "@/lib/hooks";
+import { handlePrintBill } from "@/lib/utils-helper/export/print-bill";
 
 export default function NewBillScreen({ billDetails, billId, session }: any) {
-  const [currentTab, setCurretTab] = useState("details");
+  const [currentTab, setCurretTab] = useState("bill");
 
   const Bank = billDetails?.Bank || {};
   const Customer = billDetails?.Customer || {};
@@ -87,7 +88,7 @@ export default function NewBillScreen({ billDetails, billId, session }: any) {
                 }
                 content={"Bill Number"}
               />
-              <Tabs defaultValue="details" className="w-fit">
+              <Tabs defaultValue="bill" className="w-fit">
                 <TabsList className="h-11">
                   <TabsTrigger
                     value="bill"
@@ -108,6 +109,10 @@ export default function NewBillScreen({ billDetails, billId, session }: any) {
 
               <Button type="submit" className="flex items-center gap-2 ">
                 <p>Create Bill</p>
+                <Icon name="ClipboardPlus" className="h-4 w-4" />
+              </Button>
+              <Button type="button" className="flex items-center gap-2 " onClick={()=>handlePrintBill({data: form.getValues()})}>
+                <p>Print Bill</p>
                 <Icon name="ClipboardPlus" className="h-4 w-4" />
               </Button>
             </div>

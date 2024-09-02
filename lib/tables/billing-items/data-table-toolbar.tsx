@@ -11,6 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 // import { priorities, statuses } from "../data/data"
 import { DataTableFacetedFilter } from "./data-table-faceted-filter";
 import { DynamicInputField, FieldWithBoxValues } from "@/lib/components";
+import { calculateTotals } from "@/lib/utils-helper/calculation/calculateTotal";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -24,16 +25,16 @@ export function DataTableToolbar<TData>({
   total,
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
-  // const totalAmount = calculateTotal({
-  //   data: total,
-  //   fields: [
-  //     "total",
-  //     "taxableValue",
-  //     "cgstTotalAmount",
-  //     "sgstTotalAmount",
-  //     "igstTotalAmount",
-  //   ],
-  // });
+  const totalAmount = calculateTotals({
+    data: total,
+    fields: [
+      "total",
+      "taxableValue",
+      "cgstTotalAmount",
+      "sgstTotalAmount",
+      "igstTotalAmount",
+    ],
+  });
 
   const discountField = {
     id: "total",
@@ -84,7 +85,7 @@ export function DataTableToolbar<TData>({
           </TabsTrigger>
         </TabsList>
       </Tabs>
-      {/* <div className="flex items-end gap-2">
+       <div className="flex items-end gap-2">
         <FieldWithBoxValues
           title="Taxable Value"
           value={totalAmount?.taxableValue}
@@ -118,7 +119,7 @@ export function DataTableToolbar<TData>({
         <p className="text-xl border rounded-sm px-2.5 py-1.5 font-semibold text-green-500">
           &#8377; {totalAmount?.total || "00.00"}
         </p>
-      </div> */}
+      </div> 
     </div>
   );
 }

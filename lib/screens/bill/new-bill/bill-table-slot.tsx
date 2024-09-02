@@ -21,7 +21,7 @@ import { Icon } from "@/lib/icons";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import AddBill from "./add-bill";
-import { DataTable } from "@/lib/tables/billing-items/data-table";
+import { DynamicAddTable } from "@/lib/tables/billing-items/data-table";
 import { itemsColumns, totalColumns } from "@/lib/tables/billing-items/columns";
 import { getTaxCalculationByHsn } from "@/lib/utils-helper/calculation/getTaxCalculation";
 
@@ -37,7 +37,7 @@ export default function BillTableSlot({
 
   return (
     <div>
-      <DataTable
+      <DynamicAddTable
         data={selecetdTab === "items" ? items : total}
         total={total}
         handleEdit={handleEdit}

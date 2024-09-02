@@ -14,7 +14,7 @@ export async function POST(request: Request) {
     await (prisma as any).productSnapshot.create({
       data : {
         ...rest,
-        productId : newProduct?.id
+        productSnapId : newProduct?.id
       },
     });
     if (!newProduct || !newProduct.id) {

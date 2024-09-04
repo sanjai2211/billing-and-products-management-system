@@ -1,45 +1,67 @@
 import { PrismaClient } from "@prisma/client";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+import { generateNewNumber } from "../../generate-code/route";
 
 const prisma = new PrismaClient();
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
     const input = await request.json();
-    
 
-    const lastBill = (await prisma.bill.findFirst({
-      orderBy: { createdAt: "desc" },
-    })) as any;
+    const { searchParams } = request.nextUrl;
 
-    let newBillNumber = "100001";
+    const checkExisiting = searchParams.get("checkExisiting");
 
-    if (lastBill) {
-      const lastNumber = parseInt(lastBill.billNumber, 10);
-      newBillNumber = (lastNumber + 1).toString().padStart(6, "0");
+    if (checkExisiting) {
+      const getExisitingData = await (prisma as any).bill.findFirst({
+        where: {
+          shopId: input.shopId,
+          dataStatus : 'IN_PROGRESS',
+          type : input.type
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
+
+      if (getExisitingData && getExisitingData.dataStatus === "IN_PROGRESS") {
+        return NextResponse.json(
+          {
+            id: getExisitingData.id,
+            message: "Stock got successfully!",
+          },
+          { status: 200 }
+        );
+      }
     }
 
-    let data : any = {
-      billNumber: newBillNumber,
-    };
-
-    if (input) {
-      data = {
-        ...data,
-        ...input,
-      };
+    const initialNumber : any = {
+      BILL : '100001',
+      TAX_INVOICE : '400001',
+      QUOTATION : '500001'
     }
+
+    const billNumber = await generateNewNumber({
+      modelName: "bill",
+      incrementField: "billNumber",
+      initialNumber: initialNumber[input?.type] ,
+      where: {
+        dataStatus: {
+          not: "DRAFT",
+        },
+      },
+    });
 
     // Create the new bill
     const newBill = await prisma.bill.create({
-      data,
+      data: { ...input, billNumber },
     });
 
     return NextResponse.json(
       {
         id: newBill.id,
         message: "Bill created successfully!",
-        billNumber: newBillNumber,
+        billNumber,
       },
       { status: 200 }
     );

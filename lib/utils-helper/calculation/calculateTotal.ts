@@ -20,7 +20,7 @@ function calculateTotals({
       // Calculate totals for specified fields
       fields.forEach((field) => {
         if (typeof parseFloat(item[field]) === "number") {
-          acc[field] = (acc[field] || 0) + parseFloat(item[field]);
+        acc[field] = (acc[field] || 0) + parseFloat(item[field]);
         }
       });
     } else {
@@ -50,11 +50,12 @@ function calculateTotals({
   return result;
 }
 
-function billCalculation(billItems: any) {
-  const discounted= getTaxCalculationByHsn({ data: billItems });
+function billCalculation({data,isIntraTrade = true}: any) {
+  const discounted = getTaxCalculationByHsn({ data,isIntraTrade });
   const nonDiscounted = getTaxCalculationByHsn({
-    data: billItems,
+    data: data,
     includeDiscount: false,
+    isIntraTrade
   });
   const totalDiscountedAmount = calculateTotals({
     data: discounted,
@@ -79,27 +80,28 @@ function billCalculation(billItems: any) {
   } = roundedOff(totalNonDiscountedAmount?.total);
 
   return {
-    totalItems : billItems?.length,
-    discountedTotal: totalDiscountedAmount?.total,
-    nonDiscountedTotal: totalNonDiscountedAmount?.total,
+    totalItems: data?.length || 0,
+    discountedTotal: totalDiscountedAmount?.total || 0,
+    nonDiscountedTotal: totalNonDiscountedAmount?.total || 0,
     discountedTotalTax: (
       parseFloat(totalDiscountedAmount?.cgstTotal || 0) +
       parseFloat(totalDiscountedAmount?.sgstTotal || 0) +
       parseFloat(totalDiscountedAmount?.igstTotal || 0)
     ).toFixed(2),
     nonDiscountedTotalTax:
-      totalNonDiscountedAmount?.cgstTotal +
-      totalNonDiscountedAmount?.sgstTotal +
-      totalNonDiscountedAmount?.igstTotal,
-    totalDiscount :'',
-    discountedTaxableValue: totalDiscountedAmount?.taxableValue,
-    nonDiscountedTaxableValue: totalNonDiscountedAmount?.taxableValue,
-    discountedCgstTotal: totalDiscountedAmount?.cgstTotal,
-    nonDiscountedCgstTotal: totalNonDiscountedAmount?.cgstTotal,
-    discountedSgstTotal: totalDiscountedAmount?.sgstTotal,
-    nonDiscountedSgstTotal: totalNonDiscountedAmount?.sgstTotal,
-    discountedIgstTotal: totalDiscountedAmount?.igstTotal,
-    nonDiscountedIgstTotal: totalNonDiscountedAmount?.igstTotal,
+      totalNonDiscountedAmount?.cgstTotal ||
+      0 + totalNonDiscountedAmount?.sgstTotal ||
+      0 + totalNonDiscountedAmount?.igstTotal ||
+      0,
+    totalDiscount: "",
+    discountedTaxableValue: totalDiscountedAmount?.taxableValue || 0,
+    nonDiscountedTaxableValue: totalNonDiscountedAmount?.taxableValue || 0,
+    discountedCgstTotal: totalDiscountedAmount?.cgstTotal || 0,
+    nonDiscountedCgstTotal: totalNonDiscountedAmount?.cgstTotal || 0,
+    discountedSgstTotal: totalDiscountedAmount?.sgstTotal || 0,
+    nonDiscountedSgstTotal: totalNonDiscountedAmount?.sgstTotal || 0,
+    discountedIgstTotal: totalDiscountedAmount?.igstTotal || 0,
+    nonDiscountedIgstTotal: totalNonDiscountedAmount?.igstTotal || 0,
     discountedAmount: (
       parseFloat(totalNonDiscountedAmount?.taxableValue || 0) -
       parseFloat(totalDiscountedAmount?.taxableValue || 0)
@@ -117,14 +119,14 @@ function billCalculation(billItems: any) {
       originalAmount: totalNonDiscountedAmount?.total,
     }),
     discountedRounded: {
-      total: roundedDiscountedTotal,
-      value: roundedDiscountedValue,
-      symbol: roundedDiscountedSymbol,
+      total: roundedDiscountedTotal || 0,
+      value: roundedDiscountedValue || 0,
+      symbol: roundedDiscountedSymbol || 0,
     },
     nonDiscountedRounded: {
-      total: roundedNonDiscountedTotal,
-      value: roundedNonDiscountedValue,
-      symbol: roundeNondDiscountedSymbol,
+      total: roundedNonDiscountedTotal || 0,
+      value: roundedNonDiscountedValue || 0,
+      symbol: roundeNondDiscountedSymbol || 0,
     },
   };
 }

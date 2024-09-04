@@ -16,6 +16,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "@/components/ui/form";
 import { useAddEditDeleteBill, useAddEditShop } from "@/lib/hooks";
 import { handlePrintBill } from "@/lib/utils-helper/export/print-bill";
+import { StateCodes } from "@/lib/constants";
 
 export default function NewBillScreen({ billDetails, billId, session }: any) {
   const [currentTab, setCurretTab] = useState("bill");
@@ -26,12 +27,22 @@ export default function NewBillScreen({ billDetails, billId, session }: any) {
   const customerId = billDetails?.customerId || "";
   const { Shop, ...rest } = billDetails;
 
+  const getStateCode = (state: any) => {
+    return StateCodes?.find((item: any) => item?.label === state)?.value;
+  };
+
+  if (Shop) {
+    billDetails.Shop.address.stateCode =  getStateCode(Shop?.address?.state);;
+  }
+
   let defaultValues: any = {
     date: new Date(),
     ...rest,
   };
 
   if (customerId) {
+    const customerStateCode = getStateCode(Customer?.address?.state);
+    Customer.address.stateCode = customerStateCode;
     defaultValues = {
       ...defaultValues,
       name: { value: customerId, label: Customer?.name } || "",
@@ -78,9 +89,7 @@ export default function NewBillScreen({ billDetails, billId, session }: any) {
           <div className="flex md:flex-row flex-col justify-between">
             <PageHeader title={`New Bill`} />
             <div className="flex items-center gap-2 h-full ">
-              <ViewBillTemplate
-                billDetails={{ ...form.getValues(), Shop }}
-              />
+              <ViewBillTemplate billDetails={{ ...form.getValues(), Shop }} />
 
               <ToolTip
                 trigger={

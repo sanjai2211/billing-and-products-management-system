@@ -1,22 +1,23 @@
 export const getTaxCalculationByHsn = ({
   data,
   includeDiscount = true,
+  isIntraTrade = true
 }: any) => {
   const groupedByHsnCode = data?.reduce((acc: any, item: any) => {
-    const { hsnCode, gstPurchase, gstSales, igstPurchase, igstSales } =
+    const { hsnCode, gstPurchase } =
       item.product;
     const { cost, quantity, discount } = item;
-    const rateOfCgst = parseFloat(gstPurchase);
-    const rateOfSgst = parseFloat(gstSales);
-    const rateOfIgst = parseFloat(igstPurchase);
+    const rateOfCgst = parseFloat(gstPurchase)/2;
+    const rateOfSgst = parseFloat(gstPurchase)/2;
+    const rateOfIgst = parseFloat(gstPurchase);
     const rate = parseFloat(cost);
     const qty = quantity;
     const disc = includeDiscount ? (discount ? parseFloat(discount) : 0) : 0
 
     const taxableValue = rate * qty - (rate * qty * disc) / 100;
-    const cgstTotal = (taxableValue * rateOfCgst) / 100;
-    const sgstTotal = (taxableValue * rateOfSgst) / 100;
-    const igstTotal = (taxableValue * rateOfIgst) / 100;
+    const cgstTotal = isIntraTrade ? (taxableValue * rateOfCgst) / 100 : 0;
+    const sgstTotal = isIntraTrade ? (taxableValue * rateOfSgst) / 100 : 0;
+    const igstTotal = !isIntraTrade ? (taxableValue * rateOfIgst) / 100 : 0;
 
     if (!acc[hsnCode]) {
       acc[hsnCode] = {
@@ -33,9 +34,9 @@ export const getTaxCalculationByHsn = ({
     }
 
     acc[hsnCode].taxableValue += taxableValue;
-    acc[hsnCode].cgstTotal += cgstTotal;
-    acc[hsnCode].sgstTotal += sgstTotal;
-    acc[hsnCode].igstTotal += igstTotal;
+    acc[hsnCode].cgstTotal += isIntraTrade ? cgstTotal : 0;
+    acc[hsnCode].sgstTotal += isIntraTrade ? sgstTotal : 0;
+    acc[hsnCode].igstTotal += !isIntraTrade ? igstTotal : 0;
     acc[hsnCode].total +=
       taxableValue + cgstTotal + sgstTotal + igstTotal;
 

@@ -126,9 +126,9 @@ export const getBillsByShopId = async (shopId: any, queryParams: any) => {
   return response;
 };
 
-export const createBill = async (data: any) => {
+export const createBill = async (data: any,checkExisting =true) => {
   const response = await fetchApi({
-    endpoint: "/bill/create",
+    endpoint: `/bill/create?checkExisiting=${checkExisting}`,
     method: "POST",
     data,
   });

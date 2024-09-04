@@ -1,6 +1,7 @@
 import { BillTemplate } from "./bill-template";
 
 import { CreatePDFDocument } from "./create-pdf-document";
+import { TemplateList } from "./template-lists";
 
 const replaceTemplatePlaceholders = (template: any, data: any) => {
   return template?.replace(
@@ -9,4 +10,4 @@ const replaceTemplatePlaceholders = (template: any, data: any) => {
   );
 };
 
-export { replaceTemplatePlaceholders, BillTemplate, CreatePDFDocument };
+export { replaceTemplatePlaceholders, BillTemplate, CreatePDFDocument,TemplateList };

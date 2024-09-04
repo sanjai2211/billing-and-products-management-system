@@ -24,6 +24,7 @@ export async function GET(
         },
         Bank: true,
         Customer: true,
+        Shop : true
       },
     });
 

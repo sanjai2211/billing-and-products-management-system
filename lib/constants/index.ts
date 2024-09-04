@@ -5,7 +5,7 @@ import { MenuData } from "./menus";
 import { AdddProduct,ProductStatuses } from "./products";
 import { ShopDetails } from "./shop";
 import { BillData,BillBasicDetails,BillDetails,BillTypes,CustomerDetails } from "./bill";
-import { AddressDetails ,DisabledAddressSection} from "./address";
+import { AddressDetails ,DisabledAddressSection,StateCodes} from "./address";
 import { PaymentTypes } from "./bill";
 import { FilterBillData ,SearchBillData} from "./filter/my-bills";
 import { ExportOptionsMyBills } from "./export/my-bills";
@@ -44,6 +44,7 @@ export {
     SearchProductData,
     SearchStockData,
     SignupConstants,
+    StateCodes,
     StockBasicDetails,
     PaymentTypes,
     ProductStatuses,

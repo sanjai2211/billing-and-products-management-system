@@ -23,7 +23,7 @@ const useAddEditDeleteCustomer = ({ shopId, method }: any) => {
         addressLine1,
         addressLine2,
         city,
-        state,
+        state : state?.label,
         zip,
       };
       console.log({ data });

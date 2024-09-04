@@ -30,9 +30,9 @@ export function DataTableToolbar<TData>({
     fields: [
       "total",
       "taxableValue",
-      "cgstTotalAmount",
-      "sgstTotalAmount",
-      "igstTotalAmount",
+      "cgstTotal",
+      "sgstTotal",
+      "igstTotal",
     ],
   });
 
@@ -95,14 +95,14 @@ export function DataTableToolbar<TData>({
         <p className="mb-1.5">+</p>
         <FieldWithBoxValues
           title="CSGT"
-          value={totalAmount?.cgstTotalAmount}
+          value={totalAmount?.cgstTotal}
           edgeCaseValue={"0.0"}
           color='pink'
         />{" "}
         <p className="mb-1.5">+</p>
         <FieldWithBoxValues
           title="SSGT"
-          value={totalAmount?.sgstTotalAmount}
+          value={totalAmount?.sgstTotal}
           edgeCaseValue={"0.0"}
           color="orange"
 
@@ -110,7 +110,7 @@ export function DataTableToolbar<TData>({
         <p className="mb-1.5">+</p>
         <FieldWithBoxValues
           title="IGST"
-          value={totalAmount?.igstTotalAmount}
+          value={totalAmount?.igstTotal}
           edgeCaseValue={"0.0"}
           color='fuchsia'
         />{" "}

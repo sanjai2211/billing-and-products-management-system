@@ -89,7 +89,7 @@ export function DynamicAddTable<TData, TValue>({
   });
 
   return (
-    <div className="flex flex-col gap-4 h-[calc(100vh-84px)] w-full ">
+    <div className="flex flex-col gap-4 h-[calc(100vh-84px)] w-[70%] ">
       <DataTableToolbar table={table} setSelectedTab={setSelectedTab} total={total} />
       <div className="rounded-md border h-full overflow-auto">
         <Table>

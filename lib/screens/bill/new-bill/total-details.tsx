@@ -369,14 +369,14 @@ export default function TotalDetails({ totalDetails, form }: any) {
       <div className="flex justify-between items-start">
         <p>Bill details</p>
 
-        <div
+        {/* <div
           className={`${
             showDetails ? " bg-muted " : " border"
           } p-1 cursor-pointer rounded-md `}
           onClick={() => setShowDetails(!showDetails)}
         >
           <Icon name="Percent" className="h-4 w-4" />
-        </div>
+        </div> */}
       </div>
       {showDetails ? (
         <div className="space-y-8 max-h-[field(100vh-230px)] h-full hide-scrollbar overflow-y-auto">

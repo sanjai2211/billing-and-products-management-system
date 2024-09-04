@@ -26,7 +26,7 @@ export const getColor = (field: any, value: any) => {
       return "red";
     case "dataStatus":
       if (value === "COMPLETED") return "voilet";
-      if (value === "NOT_COMPLETED") return "amber";
+      if (value === "IN_PROGRESS") return "amber";
       return "gray";
     case "paymentTerms":
       if (value === "CASH") return "green";

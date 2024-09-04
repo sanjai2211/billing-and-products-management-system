@@ -1,7 +1,7 @@
 "use client";
 
 import { ShopDetailsSchema } from "@/lib/form-schema";
-import { BillTemplate, PageHeader } from "@/lib/components";
+import { ViewBillTemplate, PageHeader } from "@/lib/components";
 import { Button } from "@/components/ui/button";
 import { Icon } from "@/lib/icons";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -24,7 +24,7 @@ export default function NewBillScreen({ billDetails, billId, session }: any) {
   const Customer = billDetails?.Customer || {};
   const bankId = billDetails?.bankId || "";
   const customerId = billDetails?.customerId || "";
-  const rest = { ...billDetails };
+  const { Shop, ...rest } = billDetails;
 
   let defaultValues: any = {
     date: new Date(),
@@ -78,7 +78,9 @@ export default function NewBillScreen({ billDetails, billId, session }: any) {
           <div className="flex md:flex-row flex-col justify-between">
             <PageHeader title={`New Bill`} />
             <div className="flex items-center gap-2 h-full ">
-              <BillTemplate billDetails={billDetails} />
+              <ViewBillTemplate
+                billDetails={{ ...form.getValues(), Shop }}
+              />
 
               <ToolTip
                 trigger={
@@ -111,7 +113,11 @@ export default function NewBillScreen({ billDetails, billId, session }: any) {
                 <p>Create Bill</p>
                 <Icon name="ClipboardPlus" className="h-4 w-4" />
               </Button>
-              <Button type="button" className="flex items-center gap-2 " onClick={()=>handlePrintBill({data: form.getValues()})}>
+              <Button
+                type="button"
+                className="flex items-center gap-2 "
+                onClick={() => handlePrintBill({ data: form.getValues() })}
+              >
                 <p>Print Bill</p>
                 <Icon name="ClipboardPlus" className="h-4 w-4" />
               </Button>

@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
 
       console.log({ getExisitingData });
 
-      if (getExisitingData && getExisitingData.dataStatus === "NOT_COMPLETED") {
+      if (getExisitingData && getExisitingData.dataStatus === "IN_PROGRESS") {
         return NextResponse.json(
           {
             id: getExisitingData.id,

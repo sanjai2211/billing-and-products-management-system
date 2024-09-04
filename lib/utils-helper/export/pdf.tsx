@@ -17,7 +17,7 @@ const handlePdfGeneration = async ({ data, fileName, zip, template }: any) => {
 
 export const exportToPdf = async ({ data, exportOptions, zip }: any) => {
 
-  const zipInstance = !zip ? new JSZip() : zip;
+  const zipInstance = !zip && data?.length > 1 ? new JSZip() : zip;
 
   for (const option of Object.values(exportOptions as any)) {
     if ((option as any).isMultiplePage) {

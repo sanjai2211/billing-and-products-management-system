@@ -95,7 +95,7 @@ const useAddEditDeleteBill = ({ billId, method }: any) => {
           description: `We encountered an issue while ${action}ing your product. Please try again.`,
         });
       } else {
-        if (action === "Creat") router.push(`/new-bill/${data?.id}`);
+        if (method === "Creat") router.push(`/new-bill/${data?.id}`);
         else router.refresh();
         toast({
           title: `Bill ${action}ed !`,

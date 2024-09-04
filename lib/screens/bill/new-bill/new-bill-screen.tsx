@@ -17,6 +17,9 @@ import { Form } from "@/components/ui/form";
 import { useAddEditDeleteBill, useAddEditShop } from "@/lib/hooks";
 import { handlePrintBill } from "@/lib/utils-helper/export/print-bill";
 import { StateCodes } from "@/lib/constants";
+import { MultiplSelectButton } from "@/components/ui/multiple-select-button";
+import { exportToPdf } from "@/lib/utils-helper/export/pdf";
+import TemplateOne from "@/lib/templates/tax-invoice/template-1";
 
 export default function NewBillScreen({ billDetails, billId, session }: any) {
   const [currentTab, setCurretTab] = useState("bill");
@@ -32,7 +35,7 @@ export default function NewBillScreen({ billDetails, billId, session }: any) {
   };
 
   if (Shop) {
-    billDetails.Shop.address.stateCode =  getStateCode(Shop?.address?.state);;
+    billDetails.Shop.address.stateCode = getStateCode(Shop?.address?.state);
   }
 
   let defaultValues: any = {
@@ -71,21 +74,75 @@ export default function NewBillScreen({ billDetails, billId, session }: any) {
     method: "FINAL",
   });
 
-  const handleSubmitBill = (data: any) => {
-    if (data?.items?.length === 0) {
-      toast({
-        title: "No items on Bill !",
-        description: "Atleat add one item to create the bill",
-      });
-      return;
-    }
-    onSubmit({ ...data, shopId: session?.shopId });
+  const handleSaveBill = (dataStatus: string) =>
+    onSubmit({ dataStatus, shopId: session?.shopId });
+
+  const handlePrintBills = () => handlePrintBill({ data: form.getValues() });
+
+  const handleGenerate = () => {
+    handleSaveBill("COMPLETED");
+    handlePrintBills();
   };
+
+  const handleDownloadBill = async () =>
+    await exportToPdf({
+      data: [billDetails],
+      exportOptions: [
+        {
+          templateId: "billTemplate",
+          pdfNameField: "billNumber",
+          template: TemplateOne,
+        },
+      ],
+    });
+
+  const multipleSelectList = [
+    {
+      id: "generate-bill",
+      onClick: handleGenerate,
+      label: "Generate Bill",
+      icon: "Route",
+      disabled: !billDetails?.items?.length,
+      description: "Save and Print the Bill",
+    },
+    {
+      id: "print-bill",
+      label: "Print Bill",
+      icon: "Printer",
+      onClick: handlePrintBills,
+      disabled: !billDetails?.items?.length,
+      description: "Print the Bill",
+    },
+    {
+      id: "save-bill",
+      label: "Save Bill",
+      icon: "Save",
+      onClick: handleSaveBill,
+      disabled: !billDetails?.items?.length,
+      description: "Save the Bill",
+    },
+    {
+      id: "save-as-draft",
+      label: "Save As Draft",
+      icon: "FileBox",
+      onClick: () => handleSaveBill("DRAFT"),
+      disabled: !billDetails?.items?.length,
+      description: "Save the Bill as Draft",
+    },
+    {
+      id: "download-bill",
+      label: "Download Bill",
+      icon: "Download",
+      onClick: handleDownloadBill,
+      disabled: !billDetails?.items?.length,
+      description: "Download the Bill",
+    },
+  ];
 
   return (
     <div className="flex flex-1 h-full flex-col gap-4">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(handleSubmitBill)}>
+        <form>
           <div className="flex md:flex-row flex-col justify-between">
             <PageHeader title={`New Bill`} />
             <div className="flex items-center gap-2 h-full ">
@@ -118,7 +175,7 @@ export default function NewBillScreen({ billDetails, billId, session }: any) {
                 </TabsList>
               </Tabs>
 
-              <Button type="submit" className="flex items-center gap-2 ">
+              {/* <Button type="submit" className="flex items-center gap-2 ">
                 <p>Create Bill</p>
                 <Icon name="ClipboardPlus" className="h-4 w-4" />
               </Button>
@@ -129,7 +186,8 @@ export default function NewBillScreen({ billDetails, billId, session }: any) {
               >
                 <p>Print Bill</p>
                 <Icon name="ClipboardPlus" className="h-4 w-4" />
-              </Button>
+              </Button> */}
+              <MultiplSelectButton list={multipleSelectList} />
             </div>
           </div>
 

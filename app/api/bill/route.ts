@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl;
 
-  const { id, billNumber, name, phoneNumbers, email, gstIn,dataStatus, ...rest } =
+  const { id, billNumber, customerName, phoneNumbers, email, gstIn,dataStatus, ...rest } =
     parseQueryParams(searchParams);
 
   if (!id) {
@@ -27,9 +27,9 @@ export async function GET(req: NextRequest) {
     }),
     ...rest,
     Customer: {
-      ...(name && {
-        name: {
-          contains: name,
+      ...(customerName && {
+        customerName: {
+          contains: customerName,
           mode: "insensitive",
         },
       }),

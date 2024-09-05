@@ -17,11 +17,10 @@ export const revalidate = 0;
 export default async function NewBill({ params, searchParams }: any) {
   const session = await accessPage();
   const { id } = params;
-  console.log({ searchParams, params });
 
   if (!id || id?.length === 0) {
     const newBill = await createBill(
-      { type: searchParams?.type, shopId: session?.shopId },
+      { type: searchParams?.type || 'BILL', shopId: session?.shopId },
       true
     );
     console.log({ newBill: newBill?.id });

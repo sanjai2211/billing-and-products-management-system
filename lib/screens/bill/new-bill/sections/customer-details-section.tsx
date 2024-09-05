@@ -6,16 +6,23 @@ import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getCustomersByShopId } from "@/apicall";
 import { getList } from "@/lib/utils-helper/screens/getList";
+import { useAddEditDeleteBill } from "@/lib/hooks";
 
-export default function CustomerDetailsSection({ session, form }: any) {
+export default function CustomerDetailsSection({ session, form,billId }: any) {
   const { data, isLoading, isFetching, error } = useQuery({
     queryKey: ["customers", session?.shopId],
     queryFn: () => getCustomersByShopId(session?.shopId),
     enabled: !!session?.shopId,
   });
 
-  const handleCustomerSelect = (selectedProduct: any) => {
+  const { mutate: onSubmit } = useAddEditDeleteBill({
+    billId,
+    method: "PATCH",
+  });
+
+  const handleCustomerSelect = async(selectedProduct: any) => {
     const { value } = selectedProduct;
+    await onSubmit({customerId : value})
     const {
       id,
       address,

@@ -77,9 +77,6 @@ function Calendar({
 }
 Calendar.displayName = "Calendar";
 
-const normalizeDateToStartOfDay = (date: Date) => {
-  return startOfDay(date);
-};
 
 const normalizeDateToEndOfDay = (date: Date) => {
   return endOfDay(date);
@@ -88,6 +85,7 @@ const DatePicker = ({
   field,
   disabled,
   disableDates,
+  onHandleChange,
   isMultipleDate = false,
   defaultValue = { from: null, to: null },
 }: any) => {
@@ -96,7 +94,13 @@ const DatePicker = ({
       ? { from: defaultValue?.from || null, to: defaultValue?.to || null }
       : null
   );
+  const normalizeDateToStartOfDay = (date: Date) => {
+    console.log({fieldssss: date,field})
+    return startOfDay(date);
+  };
+  
 
+  console.log({field})
   return (
     <Popover>
       <PopoverTrigger asChild disabled={disabled}>
@@ -117,8 +121,9 @@ const DatePicker = ({
             ) : (
               <span className="opacity-50">From Date - To Date</span>
             )
-          ) : field.value ? (
-            format(normalizeDateToStartOfDay(field.value), "PPP")
+          ) :
+           field?.value ? (
+            format(normalizeDateToStartOfDay(field?.value), "PPP")
           ) : (
             <span>Pick a date</span>
           )}
@@ -140,9 +145,9 @@ const DatePicker = ({
                     to: e.to ? normalizeDateToEndOfDay(e.to) : null,
                   };
                   setDate(normalizedRange);
-                  field.onChange(normalizedRange);
+                  onHandleChange(normalizedRange);
                 }
-              : (e: any) => field.onChange(normalizeDateToStartOfDay(e))
+              : (e: any) => onHandleChange(normalizeDateToStartOfDay(e))
           }
           disabled={(date) => {
             if (disableDates) {

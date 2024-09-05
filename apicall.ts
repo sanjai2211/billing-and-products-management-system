@@ -4,10 +4,12 @@ async function fetchApi({
   endpoint,
   method = "GET",
   data,
+  cache,
 }: {
   endpoint: string;
   method?: string;
   data?: any;
+  cache?: any;
 }) {
   const url = `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api${endpoint}`;
 
@@ -20,6 +22,10 @@ async function fetchApi({
 
   if (data) {
     options.body = JSON.stringify(data);
+  }
+
+  if (cache) {
+    options.cache = cache;
   }
 
   try {
@@ -86,7 +92,7 @@ export const deleteProduct = async (productId: any) => {
   return response;
 };
 
-export const getProductsByShopId = async (shopId: any, queryParams='') => {
+export const getProductsByShopId = async (shopId: any, queryParams = "") => {
   const response = await fetchApi({
     endpoint: `/product?id=${shopId}&${queryParams}`,
   });
@@ -126,11 +132,12 @@ export const getBillsByShopId = async (shopId: any, queryParams: any) => {
   return response;
 };
 
-export const createBill = async (data: any,checkExisting =true) => {
+export const createBill = async (data: any, checkExisting = true) => {
   const response = await fetchApi({
     endpoint: `/bill/create?checkExisiting=${checkExisting}`,
     method: "POST",
     data,
+    cache: "no-store",
   });
   return response;
 };
@@ -184,7 +191,7 @@ export const deleteBillItem = async (billId: any) => {
   return response;
 };
 
-export const getCustomersByShopId = async (shopId: any, queryParams='') => {
+export const getCustomersByShopId = async (shopId: any, queryParams = "") => {
   const response = await fetchApi({
     endpoint: `/customer?id=${shopId}&${queryParams}`,
   });
@@ -204,7 +211,7 @@ export const createCustomer = async (data: any) => {
     method: "POST",
     data,
   });
-  return response
+  return response;
 };
 
 export const getStockDetailsById = async (stockId: any) => {
@@ -214,8 +221,6 @@ export const getStockDetailsById = async (stockId: any) => {
   return response;
 };
 
-
-
 export const updateCustomer = async (customerId: any, data: any) => {
   const response = await fetchApi({
     endpoint: `/customer/${customerId}`,
@@ -223,8 +228,6 @@ export const updateCustomer = async (customerId: any, data: any) => {
     data,
   });
 };
-
-
 
 export const deleteCustomer = async (customerId: any) => {
   const response = await fetchApi({
@@ -290,7 +293,7 @@ export const updateStockItems = async (stockItemId: any, data: any) => {
     method: "PATCH",
     data,
   });
-  return response
+  return response;
 };
 
 export const deleteStockItems = async (stockItemId: any) => {
@@ -298,14 +301,15 @@ export const deleteStockItems = async (stockItemId: any) => {
     endpoint: `/stock/stock-items/${stockItemId}`,
     method: "DELETE",
   });
-  return response
+  return response;
 };
 
-export const getStocksByShopId = async (shopId: any, queryParams='' as any) => {
+export const getStocksByShopId = async (
+  shopId: any,
+  queryParams = "" as any
+) => {
   const response = await fetchApi({
     endpoint: `/stock?shopId=${shopId}&${queryParams}`,
   });
   return response;
 };
-
-

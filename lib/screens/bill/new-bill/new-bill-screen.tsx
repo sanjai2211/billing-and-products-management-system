@@ -40,7 +40,6 @@ export default function NewBillScreen({ billDetails, billId, session }: any) {
 
   let defaultValues: any = {
     date: new Date(),
-    ...rest,
   };
 
   if (customerId) {
@@ -64,6 +63,7 @@ export default function NewBillScreen({ billDetails, billId, session }: any) {
       bankName: { value: bankId, label: Bank?.bankName } || "",
     };
   }
+  defaultValues = {...defaultValues,...rest}
 
   const form = useForm<FormData>({
     defaultValues,
@@ -96,13 +96,16 @@ export default function NewBillScreen({ billDetails, billId, session }: any) {
       ],
     });
 
+  const items = form.watch('items')
+  console.log({items})
+
   const multipleSelectList = [
     {
       id: "generate-bill",
       onClick: handleGenerate,
       label: "Generate Bill",
       icon: "Route",
-      disabled: !billDetails?.items?.length,
+      disabled: !items?.length,
       description: "Save and Print the Bill",
     },
     {
@@ -110,7 +113,7 @@ export default function NewBillScreen({ billDetails, billId, session }: any) {
       label: "Print Bill",
       icon: "Printer",
       onClick: handlePrintBills,
-      disabled: !billDetails?.items?.length,
+      disabled: !items?.length,
       description: "Print the Bill",
     },
     {
@@ -118,7 +121,7 @@ export default function NewBillScreen({ billDetails, billId, session }: any) {
       label: "Save Bill",
       icon: "Save",
       onClick: handleSaveBill,
-      disabled: !billDetails?.items?.length,
+      disabled: !items?.length,
       description: "Save the Bill",
     },
     {
@@ -126,7 +129,7 @@ export default function NewBillScreen({ billDetails, billId, session }: any) {
       label: "Save As Draft",
       icon: "FileBox",
       onClick: () => handleSaveBill("DRAFT"),
-      disabled: !billDetails?.items?.length,
+      disabled: !items?.length,
       description: "Save the Bill as Draft",
     },
     {
@@ -134,7 +137,7 @@ export default function NewBillScreen({ billDetails, billId, session }: any) {
       label: "Download Bill",
       icon: "Download",
       onClick: handleDownloadBill,
-      disabled: !billDetails?.items?.length,
+      disabled: !items?.length,
       description: "Download the Bill",
     },
   ];
@@ -199,7 +202,7 @@ export default function NewBillScreen({ billDetails, billId, session }: any) {
               form={form}
             />
           ) : (
-            <BillDetailsSlot session={session} form={form} />
+            <BillDetailsSlot session={session} form={form} billId={billId}  />
           )}
         </form>
       </Form>

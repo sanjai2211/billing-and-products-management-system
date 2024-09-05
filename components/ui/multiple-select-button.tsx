@@ -25,7 +25,7 @@ function MultiplSelectButton({ list }: any) {
         type={current?.type || "button"}
         className="rounded-r-none border-r py-2 flex justify-start gap-2"
         onClick={current?.onClick}
-        disabled={current?.disabled}
+        // disabled={current?.disabled}
       >
         <Icon name={current?.icon} className="h-4 w-4" />
         <p>{current?.label}</p>

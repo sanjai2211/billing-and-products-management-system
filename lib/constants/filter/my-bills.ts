@@ -1,14 +1,14 @@
 import { BillTypes, PaymentTypes } from "../bill";
 
 export const FilterBillData = [
-  {
-    id: "type",
-    sectionName: "Bill Type",
-    icon: "FolderSymlink",
-    component: "multipleSelect",
-    placeholder: "Bill Types",
-    list: BillTypes,
-  },
+  // {
+  //   id: "type",
+  //   sectionName: "Bill Type",
+  //   icon: "FolderSymlink",
+  //   component: "multipleSelect",
+  //   placeholder: "Bill Types",
+  //   list: BillTypes,
+  // },
   {
     id: "date",
     sectionName: "Bill Dated",

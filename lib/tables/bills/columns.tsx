@@ -7,7 +7,7 @@ import { DataTableColumnHeader } from "./data-table-column-header";
 import { DataTableRowActions } from "./data-table-row-actions";
 import { ShowDetails } from "@/lib/components";
 import { Badge } from "@/components/ui/badge";
-import { BillTypes, PaymentTypes } from "@/lib/constants";
+import { BillTypes, DataStatuses, PaymentTypes } from "@/lib/constants";
 import { formatDate } from "@/lib/utils-helper/date/formatDate";
 import { billCalculation } from "@/lib/utils-helper/calculation/calculateTotal";
 import TotalDetails from "@/lib/screens/bill/new-bill/total-details";
@@ -90,7 +90,14 @@ export const columns: ColumnDef<any>[] = [
       <DataTableColumnHeader column={column} title="Total Value" />
     ),
     cell: ({ row }) => {
-      const totalDetails = billCalculation(row?.original?.items);
+      console.log("row", row, row?.getValue("Customer"));
+      const isIntraTrade =
+        row?.original?.Customer?.address?.state ===
+        row?.original?.Shop?.address?.state;
+      const totalDetails: any = billCalculation({
+        data: row?.original?.items,
+        isIntraTrade,
+      });
       const color = getColor(
         "totalValue",
         parseInt(totalDetails?.discountedRounded?.total)
@@ -129,7 +136,8 @@ export const columns: ColumnDef<any>[] = [
         return <p className="text-sm">No customer data</p>;
       }
 
-      const { address, id, shopId, bankId,createdAt,updatedAt, ...rest } = customer;
+      const { address, id, shopId, bankId, createdAt, updatedAt, ...rest } =
+        customer;
       const data = {
         ...rest,
         address: address
@@ -140,7 +148,7 @@ export const columns: ColumnDef<any>[] = [
       return (
         <div className="flex justify-between gap-4 w-[240px]">
           <div className="flex flex-col gap-1">
-            <p className="text-sm">{rest?.name}</p>
+            <p className="text-sm">{rest?.customerName}</p>
             <p className="text-xs opacity-50">{rest?.phoneNumbers}</p>
           </div>
           <ShowDetails title={"Customer Details"} data={data} />
@@ -148,7 +156,6 @@ export const columns: ColumnDef<any>[] = [
       );
     },
   },
-
   {
     accessorKey: "date",
     header: ({ column }) => (
@@ -157,7 +164,7 @@ export const columns: ColumnDef<any>[] = [
     cell: ({ row }) => {
       if (row.getValue("type") === "QUOTATION") {
         return (
-          <div className="flex flex-col">
+          <div className="flex flex-col w-40">
             <p className="text-xs">
               <span className="text-xs opacity-50">Dated : </span>
               {formatDate(row.getValue("date"), false) || "-"}
@@ -176,6 +183,18 @@ export const columns: ColumnDef<any>[] = [
         );
       }
     },
+  },
+  {
+    accessorKey: "dataStatus",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Status" />
+    ),
+    cell: ({ row }) => (
+      <div className="w-28">
+        {getBadge("dataStatus", row.getValue("dataStatus"), DataStatuses) ||
+          "-"}
+      </div>
+    ),
   },
   {
     accessorKey: "paymentTerms",

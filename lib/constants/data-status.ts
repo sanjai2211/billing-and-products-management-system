@@ -4,7 +4,7 @@ export const DataStatusesWithoutDraft = [
 ];
 
 export const DataStatuses = [
-  { value: "COMPLETED", label: "Added" },
+  { value: "COMPLETED", label: "Completed" },
   { value: "IN_PROGRESS", label: "In Progress" },
   { value: "DRAFT", label: "Draft" },
 ];

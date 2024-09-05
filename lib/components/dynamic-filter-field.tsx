@@ -223,30 +223,22 @@ export function DynamicFilterField({ form, data }: any) {
   return (
     <div className="relative">
       <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>
-          <Button
-            variant="outline"
-            size="icon"
-            type="button"
-            onClick={() => setOpen(true)}
-          >
-            <Icon name={data?.icon} className="h-5 w-5" />
-          </Button>
-
-          {/* <ToolTip
-          trigger={
-             <Button
-          variant="outline"
-          size="icon"
-          type="button"
-          onClick={() => setOpen(true)}
-        >
-          <Icon name={data?.icon} className="h-5 w-5" />
-        </Button>
-                       }
-          content={data?.sectionName}
-          align="end"
-        /> */}
+        <PopoverTrigger>
+          <ToolTip
+            trigger={
+              <Button
+                variant="outline"
+                size="icon"
+                type="button"
+                onClick={() => setOpen(true)}
+              >
+                <Icon name={data?.icon} className="h-5 w-5" />
+              </Button>
+            }
+            content={data?.sectionName}
+            align="end"
+            side='bottom'    
+          />
         </PopoverTrigger>
         <PopoverContent className="p-0" align="end">
           {shouldRenderField() ? (

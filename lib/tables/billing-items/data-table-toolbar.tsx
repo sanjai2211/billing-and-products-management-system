@@ -25,10 +25,10 @@ export function DataTableToolbar<TData>({
   setSelectedTab,
   total,
 }: DataTableToolbarProps<TData>) {
-  const totalAmount = calculateTotals({
-    data: total,
-    fields: ["total", "taxableValue", "cgstTotal", "sgstTotal", "igstTotal"],
-  });
+  // const totalAmount = calculateTotals({
+  //   data: total,
+  //   fields: ["total", "taxableValue", "cgstTotal", "sgstTotal", "igstTotal"],
+  // });
 
   const discountField = {
     id: "total",

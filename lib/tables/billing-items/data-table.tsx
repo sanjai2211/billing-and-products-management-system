@@ -27,8 +27,7 @@ import {
 
 import { DataTablePagination } from "./data-table-pagination";
 import { DataTableToolbar } from "./data-table-toolbar";
-import { Icon } from "@/lib/icons";
-import { DynamicInputField, EditDeleteContainer } from "@/lib/components";
+import { DynamicInputField } from "@/lib/components";
 import { DataTableRowActions } from "./data-table-row-actions";
 import { DynamicTableInputField } from "@/lib/components/dynamic-table-input-field";
 
@@ -39,7 +38,7 @@ interface DataTableProps<TData, TValue> {
   columns?: any;
   editAndDeletable?: boolean;
   setSelectedTab?: any;
-  total?: any;
+  totalAmount?: any;
   dynamicFields?: any;
   form?: any;
 }
@@ -51,7 +50,7 @@ export function DynamicAddTable<TData, TValue>({
   columns,
   editAndDeletable = true,
   setSelectedTab,
-  total = [],
+  totalAmount = [],
   form,
   dynamicFields = [],
 }: DataTableProps<TData, TValue>) {
@@ -89,16 +88,29 @@ export function DynamicAddTable<TData, TValue>({
   });
 
   return (
-    <div className="flex flex-col gap-4 h-[calc(100vh-84px)] w-[70%] ">
-      <DataTableToolbar table={table} setSelectedTab={setSelectedTab} total={total} />
-      <div className="rounded-md border h-full overflow-auto">
+    <div className="flex flex-col h-[calc(100vh-84px)] w-[70%] ">
+      <DataTableToolbar
+        table={table}
+        setSelectedTab={setSelectedTab}
+        total={totalAmount}
+      />
+
+      <div className="flex-grow overflow-auto rounded-md border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id} colSpan={header.colSpan}>
+                    <TableHead
+                      key={header.id}
+                      colSpan={header.colSpan}
+                      className={
+                        header.column.id === "hsnCode"
+                          ? "sticky left-0 z-10 bg-background shadow-2xl"
+                          : ""
+                      }
+                    >
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -129,7 +141,14 @@ export function DynamicAddTable<TData, TValue>({
                   className="relative"
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell
+                      key={cell.id}
+                      className={
+                        cell.column.id === "hsnCode"
+                          ? "sticky left-0 z-10 bg-background"
+                          : ""
+                      }
+                    >
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -155,6 +174,25 @@ export function DynamicAddTable<TData, TValue>({
                 </TableCell>
               </TableRow>
             )}
+            {/* <TableFooter> */}
+            {table.getRowModel()?.rows?.length
+              ? table.getFooterGroups().map((footerGroup) => (
+                  <TableRow key={footerGroup.id}>
+                    {footerGroup.headers.map((header) => (
+                      <TableCell key={header.id} className="py-2">
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.footer,
+                              header.getContext()
+                            )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              : null}
+
+            {/* </TableFooter> */}
           </TableBody>
         </Table>
       </div>

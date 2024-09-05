@@ -63,7 +63,7 @@ export default function NewBillScreen({ billDetails, billId, session }: any) {
       bankName: { value: bankId, label: Bank?.bankName } || "",
     };
   }
-  defaultValues = {...defaultValues,...rest}
+  defaultValues = { ...defaultValues, ...rest };
 
   const form = useForm<FormData>({
     defaultValues,
@@ -74,13 +74,14 @@ export default function NewBillScreen({ billDetails, billId, session }: any) {
     method: "FINAL",
   });
 
-  const handleSaveBill = (dataStatus: string) =>
-    onSubmit({ dataStatus, shopId: session?.shopId });
+  const handleSaveBill = ({ dataStatus, effectStock }: any) => {
+    onSubmit({ dataStatus, effectStock, shopId: session?.shopId });
+  };
 
   const handlePrintBills = () => handlePrintBill({ data: form.getValues() });
 
-  const handleGenerate = () => {
-    handleSaveBill("COMPLETED");
+  const handleGenerate = ({effectStock} : any) => {
+    handleSaveBill({ dataStatus: "COMPLETED", effectStock });
     handlePrintBills();
   };
 
@@ -96,51 +97,101 @@ export default function NewBillScreen({ billDetails, billId, session }: any) {
       ],
     });
 
-  const items = form.watch('items')
-  console.log({items})
+  const items : any = form.watch("items");
+  console.log({ items });
 
   const multipleSelectList = [
     {
-      id: "generate-bill",
-      onClick: handleGenerate,
-      label: "Generate Bill",
-      icon: "Route",
-      disabled: !items?.length,
-      description: "Save and Print the Bill",
+      id: "stock-effect",
+      label: "Stock Impacts",
+      icon: "Users",
+      items: [
+        {
+          id: "generate-bill",
+          onClick: ()=>handleGenerate({effectStock : true}),
+          label: "Generate Bill",
+          icon: "Route",
+          disabled: !items?.length,
+          description: "Save and Print the Bill",
+        },
+        {
+          id: "save-bill",
+          label: "Save Bill",
+          icon: "Save",
+          onClick: () =>
+            handleSaveBill({ dataStatus: "COMPLETED", effectStock: true }),
+          disabled: !items?.length,
+          description: "Save the Bill",
+        },
+        {
+          id: "save-as-draft",
+          label: "Save As Draft",
+          icon: "FileBox",
+          onClick: () =>
+            handleSaveBill({ dataStatus: "DRAFT", effectStock: true }),
+          disabled: !items?.length,
+          description: "Save the Bill as Draft",
+        },
+      ],
     },
     {
-      id: "print-bill",
-      label: "Print Bill",
-      icon: "Printer",
-      onClick: handlePrintBills,
-      disabled: !items?.length,
-      description: "Print the Bill",
+      id: "no-stock-effect",
+      label: "Without Stock Impacts",
+      icon: "Users",
+      items: [
+        {
+          id: "no-effect-generate-bill",
+          onClick: ()=>handleGenerate({effectStock : false}),
+          label: "Generate Bill (No Effect)",
+          icon: "Route",
+          disabled: !items?.length,
+          description: "Save and Print the Bill",
+        },
+        {
+          id: "no-effect-save-bill",
+          label: "Save Bill (No Effect)",
+          icon: "Save",
+          onClick: () =>
+            handleSaveBill({ dataStatus: "COMPLETED", effectStock: false }),
+          disabled: !items?.length,
+          description: "Save the Bill",
+        },
+        {
+          id: "no-effect-save-as-draft",
+          label: "Save As Draft (No Effect)",
+          icon: "FileBox",
+          onClick: () =>
+            handleSaveBill({ dataStatus: "DRAFT", effectStock: false }),
+          disabled: !items?.length,
+          description: "Save the Bill as Draft",
+        },
+      ],
     },
     {
-      id: "save-bill",
-      label: "Save Bill",
-      icon: "Save",
-      onClick: handleSaveBill,
-      disabled: !items?.length,
-      description: "Save the Bill",
-    },
-    {
-      id: "save-as-draft",
-      label: "Save As Draft",
-      icon: "FileBox",
-      onClick: () => handleSaveBill("DRAFT"),
-      disabled: !items?.length,
-      description: "Save the Bill as Draft",
-    },
-    {
-      id: "download-bill",
-      label: "Download Bill",
-      icon: "Download",
-      onClick: handleDownloadBill,
-      disabled: !items?.length,
-      description: "Download the Bill",
+      id: "others",
+      label: "Other Actions",
+      icon: "Users",
+      items: [
+        {
+          id: "print-bill",
+          label: "Print Bill",
+          icon: "Printer",
+          onClick: handlePrintBills,
+          disabled: !items?.length,
+          description: "Print the Bill",
+        },
+        {
+          id: "download-bill",
+          label: "Download Bill",
+          icon: "Download",
+          onClick: handleDownloadBill,
+          disabled: !items?.length,
+          description: "Download the Bill",
+        },
+      ],
     },
   ];
+  
 
   return (
     <div className="flex flex-1 h-full flex-col gap-4">
@@ -178,18 +229,6 @@ export default function NewBillScreen({ billDetails, billId, session }: any) {
                 </TabsList>
               </Tabs>
 
-              {/* <Button type="submit" className="flex items-center gap-2 ">
-                <p>Create Bill</p>
-                <Icon name="ClipboardPlus" className="h-4 w-4" />
-              </Button>
-              <Button
-                type="button"
-                className="flex items-center gap-2 "
-                onClick={() => handlePrintBill({ data: form.getValues() })}
-              >
-                <p>Print Bill</p>
-                <Icon name="ClipboardPlus" className="h-4 w-4" />
-              </Button> */}
               <MultiplSelectButton list={multipleSelectList} />
             </div>
           </div>
@@ -202,7 +241,7 @@ export default function NewBillScreen({ billDetails, billId, session }: any) {
               form={form}
             />
           ) : (
-            <BillDetailsSlot session={session} form={form} billId={billId}  />
+            <BillDetailsSlot session={session} form={form} billId={billId} />
           )}
         </form>
       </Form>

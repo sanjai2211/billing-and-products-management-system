@@ -11,6 +11,7 @@ import { BillTypes, DataStatuses, PaymentTypes } from "@/lib/constants";
 import { formatDate } from "@/lib/utils-helper/date/formatDate";
 import { billCalculation } from "@/lib/utils-helper/calculation/calculateTotal";
 import TotalDetails from "@/lib/screens/bill/new-bill/total-details";
+import { Icon } from "@/lib/icons";
 
 const getColor = (field: any, value: any) => {
   switch (field) {
@@ -195,6 +196,36 @@ export const columns: ColumnDef<any>[] = [
           "-"}
       </div>
     ),
+  },
+  {
+    accessorKey: "effectStock",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Stock Impact" />
+    ),
+    cell: ({ row }) => {
+      console.log({ rrr: row.getValue("effectStock"), row });
+      return (
+<Icon
+          name={
+            row?.getValue("dataStatus") === "IN_PROGRESS"
+              ? "Ellipsis"
+              : row.getValue("effectStock")
+              ? "PackageCheck"
+              : "PackageX"
+          }
+          className={`
+            ${row?.getValue("dataStatus") === "IN_PROGRESS"
+              ? "text-yellow-500"
+              : row.getValue("effectStock")
+              ? "text-green-500"
+              : "text-red-500"}
+              mx-8
+              `
+          }
+        />
+        
+      );
+    },
   },
   {
     accessorKey: "paymentTerms",

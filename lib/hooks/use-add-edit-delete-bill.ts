@@ -22,7 +22,6 @@ const useAddEditDeleteBill = ({ billId, method }: any) => {
       const {
         id,
         shopId,
-        bankId,
         name,
         phoneNumbers,
         email,
@@ -42,7 +41,6 @@ const useAddEditDeleteBill = ({ billId, method }: any) => {
         faxNumber,
         createdAt,
         updatedAt,
-        customerId,
         items,
         ...rest
       } = data;
@@ -66,8 +64,6 @@ const useAddEditDeleteBill = ({ billId, method }: any) => {
 
       const datas = {
         ...rest,
-        customerId: name?.value,
-        bankId: bankName?.value,
         shopId,
       };
 

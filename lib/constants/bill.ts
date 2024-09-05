@@ -5,40 +5,40 @@ export const BillBasicDetails = {
   sectionName: "Basic Details",
   icon: "ClipboardList",
   fields: [
-    {
-      id: "type",
-      label: "Bill Type",
-      placeholder: "Bill Type",
-      component: "select",
-      list: [
-        { label: "Bill", value: "BILL" },
-        { label: "Quotation", value: "QUOTATION" },
-        { label: "Tax Invoice", value: "TAX_INVOICE" },
-      ],
-    },
+    // {
+    //   id: "type",
+    //   label: "Bill Type",
+    //   placeholder: "Bill Type",
+    //   component: "select",
+    //   list: [
+    //     { label: "Bill", value: "BILL" },
+    //     { label: "Quotation", value: "QUOTATION" },
+    //     { label: "Tax Invoice", value: "TAX_INVOICE" },
+    //   ],
+    // },
     {
       id: "date",
       label: "Date",
       placeholder: "Date",
       component: "datePicker",
     },
-    {
-      id: "dueDate",
-      label: "Due Date",
-      placeholder: "Due Date",
-      component: "datePicker",
-      parent: "type",
-      condition: {
-        display: {
-          value: "QUOTATION",
-          basedOn: "equal",
-        },
-        disabled: {
-          valueField: "date",
-          basedOn: "greater_than",
-        },
-      },
-    },
+    // {
+    //   id: "dueDate",
+    //   label: "Due Date",
+    //   placeholder: "Due Date",
+    //   component: "datePicker",
+    //   parent: "type",
+    //   condition: {
+    //     display: {
+    //       value: "QUOTATION",
+    //       basedOn: "equal",
+    //     },
+    //     disabled: {
+    //       valueField: "date",
+    //       basedOn: "greater_than",
+    //     },
+    //   },
+    // },
     {
       id: "paymentTerms",
       label: "Payment Terms",

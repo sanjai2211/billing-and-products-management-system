@@ -3,8 +3,9 @@ import { SectionWithDynamicFields } from "@/lib/components";
 import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getBankDetailsById } from "@/apicall";
+import { useAddEditDeleteBill } from "@/lib/hooks";
 
-export default function BankDetailsSection({ session, form }: any) {
+export default function BankDetailsSection({ session, form,billId }: any) {
   const { data, isLoading, isFetching, error } = useQuery({
     queryKey: ["bank", session?.shopId],
     queryFn: () => getBankDetailsById(session?.shopId),
@@ -17,19 +18,23 @@ export default function BankDetailsSection({ session, form }: any) {
     label: item?.bankName,
   }));
 
-  const handleCustomerSelect = (selectedProduct: any) => {
+  const { mutate: onSubmit } = useAddEditDeleteBill({
+    billId,
+    method: "PATCH",
+  });
+
+  const handleCustomerSelect = async(selectedProduct: any) => {
     const { value } = selectedProduct;
+    await onSubmit({bankId : value})
     const { id, bankName,shopId,customerId, ...rest } = data?.find(
       (item: any) => item?.id === value
     );
-    console.log({id,bankName,rest})
     Object.entries({
       bankName: { value, label: bankName },
       ...rest,
     }).forEach(([field, value]: any) => {
       form.setValue(field, value);
     });
-    console.log({aaaa : form.getValues()})
   };
 
   const field = useMemo(

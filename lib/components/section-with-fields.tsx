@@ -3,27 +3,29 @@ import { useState } from "react";
 import { DynamicInputField } from "./dynamic-input-field";
 import { Section } from "./section";
 import { AddableComponent } from "./addable-component";
-import { CloudCog } from "lucide-react";
-import { useFieldArray, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Form } from "@/components/ui/form";
 
-const renderDynamicField = ({ form, data }: any) => {
+const renderDynamicField = ({ form, data, onBlur,onChange }: any) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 p-4">
       {data?.fields?.map((field: any) => (
-        <DynamicInputField key={field.id} form={form} data={field} />
+        <DynamicInputField
+          key={field.id}
+          form={form}
+          data={field}
+          onBlur={onBlur}
+          onChange={onChange}
+        />
       ))}
     </div>
   );
 };
 
-export function SectionWithDynamicFields({ form, data }: any) {
+export function SectionWithDynamicFields({ form, data, onBlur,onChange }: any) {
   return (
     <Section
       name={data?.sectionName}
       icon={data?.icon}
-      component={renderDynamicField({ form, data })}
+      component={renderDynamicField({ form, data,onBlur,onChange })}
     />
   );
 }

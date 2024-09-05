@@ -522,3 +522,9 @@ export const PaymentTypes = [
   { label: "Credit", value: "CREDIT" },
   { label: "Cash", value: "CASH" },
 ];
+
+export const StocksImpact = [
+  { label: "Stocks Effected", value: true },
+  { label: "Stocks Not Effected", value: false },
+
+]

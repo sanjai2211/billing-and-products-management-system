@@ -203,6 +203,7 @@ model Bill {
   shopId             String            @db.ObjectId
   Shop               Shop?             @relation(fields: [shopId], references: [id])
   dataStatus         Status            @default(IN_PROGRESS)
+  effectStock        Boolean?
 }
 
 type CustomerDetails {

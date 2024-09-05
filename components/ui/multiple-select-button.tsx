@@ -18,7 +18,7 @@ import {
 import { Icon } from "../../lib/icons";
 
 function MultiplSelectButton({ list }: any) {
-  const [current, setCurrent] = useState(list[0]);
+  const [current, setCurrent] = useState(list?.[0]?.items?.[0]);
   return (
     <div className="flex">
       <Button
@@ -37,34 +37,42 @@ function MultiplSelectButton({ list }: any) {
             size="icon"
             className="rounded-l-none outline-none ring-0"
           >
-            <Icon name="ChevronDown" />
+            <Icon name="ChevronDown" className="h-5 w-5" />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-56 rounded-lg px-2" align="end">
-          {/* <DropdownMenuLabel>My Account</DropdownMenuLabel>
-          <DropdownMenuSeparator /> */}
-          <DropdownMenuGroup className="space-y-2">
-            {list?.map((item: any) => (
-              <DropdownMenuItem
-                onClick={() => {
-                  setCurrent(item);
-                  // item?.onClick();
-                }}
-                className={`flex justify-start flex-col items-start ${
-                  item?.id === current.id ? "bg-secondary" : ""
-                }
+        <DropdownMenuContent className="w-56 rounded-lg" align="end">
+          {list?.map((data: any) => (
+            <>
+              <DropdownMenuLabel>{data?.label}</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuGroup className="space-y-2">
+                {data?.items?.map((item: any) => (
+                  <DropdownMenuItem
+                    onClick={() => {
+                      setCurrent(item);
+                      // item?.onClick();
+                    }}
+                    className={`flex justify-start flex-col items-start ${
+                      item?.id === current.id ? "bg-secondary" : ""
+                    }
                 ${item?.disabled ? "opacity-75" : ""}`}
-              >
-                <div className="flex gap-2">
-                  <Icon name={item?.icon} className="h-4 w-4" />
-                  <span>{item?.label}</span>
-                </div>
+                  >
+                    <div className="flex gap-2">
+                      <Icon name={item?.icon} className="h-4 w-4" />
+                      <span>{item?.label}</span>
+                    </div>
 
-                <span className="text-xs opacity-50">{item?.description}</span>
-                {/* <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut> */}
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuGroup>
+                    <span className="text-xs opacity-50">
+                      {item?.description}
+                    </span>
+                    {/* <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut> */}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuGroup>
+              <DropdownMenuSeparator />
+
+            </>
+          ))}
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

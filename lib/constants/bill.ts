@@ -528,3 +528,9 @@ export const StocksImpact = [
   { label: "Stocks Not Effected", value: false },
 
 ]
+
+export const RecordType = {
+  BILL : 'Bill',
+  TAX_INVOICE : 'Invoice',
+  QUOTATION : 'Quotation'
+}

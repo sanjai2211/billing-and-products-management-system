@@ -42,9 +42,9 @@ function calculateTotals({
   Object.keys(sum).forEach((key: any) => {
     const value = sum[key];
     if (typeof value === "number" || !isNaN(parseFloat(value))) {
-      result[key] = value.toFixed(2);
+      result[key] = (value || 0).toFixed(2);
     } else {
-      result[key] = value;
+      result[key] = value || 0;
     }
   });
   return result;

@@ -48,7 +48,7 @@ export const SearchBillData = [
     icon: "ScrollText",
   },
   {
-    value: "customer Name",
+    value: "customerName",
     label: "Customer Name",
     icon: "User",
   },

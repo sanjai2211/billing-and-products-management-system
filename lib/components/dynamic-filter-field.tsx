@@ -73,6 +73,7 @@ export function DynamicFilterField({ form, data }: any) {
           newParams.set(data?.id, value?.target?.value);
           break;
         case "datePicker":
+          console.log({newParams})
           newParams.delete(data?.id);
           if (value?.from) {
             newParams.append(data?.id, formatDateToLocalString(value?.from));
@@ -178,8 +179,9 @@ export function DynamicFilterField({ form, data }: any) {
       case "datePicker":
         return (
           <DatePicker
-            field={{ ...field, onChange }}
+            field={{ ...field }}
             {...rest}
+            onHandleChange={onChange}
             disabled={shouldDisableField()}
             disableDates={disableDates}
             defaultValue={selectedValue}

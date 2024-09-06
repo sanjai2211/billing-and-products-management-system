@@ -8,15 +8,13 @@ import { DataTable } from "@/lib/tables/bills/data-table";
 import { ExportOptionsMyBills } from "@/lib/constants";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-
-
 export default function MyBillsScreen({ bills, session }: any) {
   const router = useRouter();
   const pathName = usePathname();
   const searchParams = useSearchParams();
 
   const newParams = new URLSearchParams(searchParams);
-  const handleEdit = ({id}: any) => {
+  const handleEdit = ({ id }: any) => {
     router.push(`/new-bill/${id}`);
   };
 
@@ -25,32 +23,31 @@ export default function MyBillsScreen({ bills, session }: any) {
     method: "DELETE",
   });
 
-  const sectionName : any = {
-    BILL : 'Bill',
-    TAX_INVOICE : 'Invoice',
-    QUOATATION : 'Quoation',
-    DRAFT : 'Draft',
-  }
+  const sectionName: any = {
+    BILL: "Bill",
+    TAX_INVOICE: "Invoice",
+    QUOATATION: "Quoation",
+    DRAFT: "Draft",
+  };
 
-  const param = newParams.get("dataStatus")
+  const param = newParams.get("dataStatus");
 
   const handleDelte = (id: String) => onSubmit({ productId: id });
   return (
     <div className="space-y-4">
       <div className="flex justify-between">
         <PageHeader title={`My Bills`} />
-        <Tabs
-            defaultValue={
-              newParams.get("dataStatus") || 'all'
-            }
+        <div className="flex gap-2">
+          <Tabs
+            defaultValue={newParams.get("dataStatus") || "all"}
             className="w-fit"
           >
             <TabsList className="h-11">
               <TabsTrigger
                 value="all"
                 onClick={() => {
-                  newParams.delete("dataStatus","DRAFT");
-                  newParams.delete("type")
+                  newParams.delete("dataStatus", "DRAFT");
+                  newParams.delete("type");
                   router.replace(`${pathName}?${newParams.toString()}`);
                 }}
                 className="h-full"
@@ -60,8 +57,8 @@ export default function MyBillsScreen({ bills, session }: any) {
               <TabsTrigger
                 value="TAX_INVOICE"
                 onClick={() => {
-                  newParams.delete("dataStatus","DRAFT");
-                  newParams.set("type","TAX_INVOICE")
+                  newParams.delete("dataStatus", "DRAFT");
+                  newParams.set("type", "TAX_INVOICE");
                   router.replace(`${pathName}?${newParams.toString()}`);
                 }}
                 className="h-full"
@@ -71,8 +68,8 @@ export default function MyBillsScreen({ bills, session }: any) {
               <TabsTrigger
                 value="BILL"
                 onClick={() => {
-                  newParams.delete("dataStatus","DRAFT");
-                  newParams.set("type","BILL")
+                  newParams.delete("dataStatus", "DRAFT");
+                  newParams.set("type", "BILL");
                   router.replace(`${pathName}?${newParams.toString()}`);
                 }}
                 className="h-full"
@@ -82,8 +79,8 @@ export default function MyBillsScreen({ bills, session }: any) {
               <TabsTrigger
                 value="QUOTATION"
                 onClick={() => {
-                  newParams.delete("dataStatus","DRAFT");
-                  newParams.set("type","QUOTATION")
+                  newParams.delete("dataStatus", "DRAFT");
+                  newParams.set("type", "QUOTATION");
                   router.replace(`${pathName}?${newParams.toString()}`);
                 }}
                 className="h-full"
@@ -94,7 +91,7 @@ export default function MyBillsScreen({ bills, session }: any) {
                 value="DRAFT"
                 onClick={() => {
                   newParams.append("dataStatus", "DRAFT");
-                  newParams.delete("type")
+                  newParams.delete("type");
                   router.replace(`${pathName}?${newParams.toString()}`);
                 }}
                 className="h-full"
@@ -103,9 +100,9 @@ export default function MyBillsScreen({ bills, session }: any) {
               </TabsTrigger>
             </TabsList>
           </Tabs>
-        {/* <ExportButton data={ExportOptionsMyBills} exportData={bills} /> */}
+          {/* <ExportButton data={ExportOptionsMyBills} exportData={bills} /> */}
+        </div>
       </div>
-      
 
       <DataTable
         data={bills}

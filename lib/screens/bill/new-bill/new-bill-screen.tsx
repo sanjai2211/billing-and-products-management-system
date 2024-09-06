@@ -16,19 +16,24 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "@/components/ui/form";
 import { useAddEditDeleteBill, useAddEditShop } from "@/lib/hooks";
 import { handlePrintBill } from "@/lib/utils-helper/export/print-bill";
-import { StateCodes } from "@/lib/constants";
+import { RecordType, StateCodes } from "@/lib/constants";
 import { MultiplSelectButton } from "@/components/ui/multiple-select-button";
 import { exportToPdf } from "@/lib/utils-helper/export/pdf";
 import TemplateOne from "@/lib/templates/tax-invoice/template-1";
+import { billCalculation } from "@/lib/utils-helper/calculation/calculateTotal";
 
 export default function NewBillScreen({ billDetails, billId, session }: any) {
   const [currentTab, setCurretTab] = useState("bill");
+  console.log({ billDetailsssssss: billDetails });
 
   const Bank = billDetails?.Bank || {};
   const Customer = billDetails?.Customer || {};
   const bankId = billDetails?.bankId || "";
   const customerId = billDetails?.customerId || "";
   const { Shop, ...rest } = billDetails;
+  const sessionName = (RecordType as any)[billDetails?.type];
+  console.log({ sessionName });
+  console.log({ sessionName });
 
   const getStateCode = (state: any) => {
     return StateCodes?.find((item: any) => item?.label === state)?.value;
@@ -80,7 +85,7 @@ export default function NewBillScreen({ billDetails, billId, session }: any) {
 
   const handlePrintBills = () => handlePrintBill({ data: form.getValues() });
 
-  const handleGenerate = ({effectStock} : any) => {
+  const handleGenerate = ({ effectStock }: any) => {
     handleSaveBill({ dataStatus: "COMPLETED", effectStock });
     handlePrintBills();
   };
@@ -97,9 +102,6 @@ export default function NewBillScreen({ billDetails, billId, session }: any) {
       ],
     });
 
-  const items : any = form.watch("items");
-  console.log({ items });
-
   const multipleSelectList = [
     {
       id: "stock-effect",
@@ -108,20 +110,20 @@ export default function NewBillScreen({ billDetails, billId, session }: any) {
       items: [
         {
           id: "generate-bill",
-          onClick: ()=>handleGenerate({effectStock : true}),
-          label: "Generate Bill",
+          onClick: () => handleGenerate({ effectStock: true }),
+          label: `Generate ${sessionName}`,
           icon: "Route",
-          disabled: !items?.length,
-          description: "Save and Print the Bill",
+          disabled: !billDetails?.items?.length,
+          description: `Save and Print the ${sessionName}`,
         },
         {
           id: "save-bill",
-          label: "Save Bill",
+          label: `Save ${sessionName}`,
           icon: "Save",
           onClick: () =>
             handleSaveBill({ dataStatus: "COMPLETED", effectStock: true }),
-          disabled: !items?.length,
-          description: "Save the Bill",
+          disabled: !billDetails?.items?.length,
+          description: `Save the ${sessionName}`,
         },
         {
           id: "save-as-draft",
@@ -129,32 +131,33 @@ export default function NewBillScreen({ billDetails, billId, session }: any) {
           icon: "FileBox",
           onClick: () =>
             handleSaveBill({ dataStatus: "DRAFT", effectStock: true }),
-          disabled: !items?.length,
-          description: "Save the Bill as Draft",
+          disabled: !billDetails?.items?.length,
+          description: `Save the ${sessionName} as Draft`,
         },
       ],
     },
     {
       id: "no-stock-effect",
       label: "Without Stock Impacts",
+
       icon: "Users",
       items: [
         {
           id: "no-effect-generate-bill",
-          onClick: ()=>handleGenerate({effectStock : false}),
-          label: "Generate Bill (No Effect)",
+          onClick: () => handleGenerate({ effectStock: false }),
+          label: `Generate ${sessionName} (No Effect)`,
           icon: "Route",
-          disabled: !items?.length,
-          description: "Save and Print the Bill",
+          disabled: !billDetails?.items?.length,
+          description: `Save and Print the ${sessionName}`,
         },
         {
           id: "no-effect-save-bill",
-          label: "Save Bill (No Effect)",
+          label: `Save ${sessionName} (No Effect)`,
           icon: "Save",
           onClick: () =>
             handleSaveBill({ dataStatus: "COMPLETED", effectStock: false }),
-          disabled: !items?.length,
-          description: "Save the Bill",
+          disabled: !billDetails?.items?.length,
+          description: `Save the ${sessionName}`,
         },
         {
           id: "no-effect-save-as-draft",
@@ -162,8 +165,8 @@ export default function NewBillScreen({ billDetails, billId, session }: any) {
           icon: "FileBox",
           onClick: () =>
             handleSaveBill({ dataStatus: "DRAFT", effectStock: false }),
-          disabled: !items?.length,
-          description: "Save the Bill as Draft",
+          disabled: !billDetails?.items?.length,
+          description: `Save the ${sessionName} as Draft`,
         },
       ],
     },
@@ -174,33 +177,94 @@ export default function NewBillScreen({ billDetails, billId, session }: any) {
       items: [
         {
           id: "print-bill",
-          label: "Print Bill",
+          label: `Print ${sessionName}`,
           icon: "Printer",
           onClick: handlePrintBills,
-          disabled: !items?.length,
-          description: "Print the Bill",
+          disabled: !billDetails?.items?.length,
+          description: `Print the ${sessionName}`,
         },
         {
           id: "download-bill",
-          label: "Download Bill",
+          label: `Download ${sessionName}`,
           icon: "Download",
           onClick: handleDownloadBill,
-          disabled: !items?.length,
-          description: "Download the Bill",
+          disabled: !billDetails?.items?.length,
+          description: `Download the ${sessionName}`,
         },
       ],
     },
   ];
-  
+  console.log({ multipleSelectList });
+
+  const isIntraTrade = !Customer
+    ? true
+    : Shop?.address?.stateCode === Customer?.address?.stateCode;
+
+  const totalDetails = billCalculation({
+    data: billDetails?.items,
+    isIntraTrade,
+  });
+
+  console.log({ totalDetails });
+
+  const cumulativeReport = [
+    {
+      label: "Total Items",
+      field: totalDetails?.totalItems,
+    },
+    {
+      label: "Taxable Value",
+      field: totalDetails?.discountedTaxableValue,
+      color: "purple",
+    },
+    {
+      label: "Central GST",
+      field: totalDetails?.discountedCgstTotal,
+      symbol: "+",
+      color: "pink",
+    },
+    {
+      label: "State GST",
+      field: totalDetails?.discountedSgstTotal,
+      symbol: "+",
+      color: "orange",
+    },
+    {
+      label: "Integrated GST",
+      field: totalDetails?.discountedIgstTotal,
+      symbol: "+",
+      color: "fuchsia",
+    },
+    {
+      label: "Discounted Amount",
+      field: (
+        totalDetails?.nonDiscountedTotal - totalDetails?.discountedTotal
+      ).toFixed(2),
+      symbol: "-",
+      color: "red",
+    },
+    {
+      label: "Rounded Off",
+      field: totalDetails?.discountedRounded?.value,
+      symbol: totalDetails?.discountedRounded?.symbol,
+    },
+  ];
 
   return (
     <div className="flex flex-1 h-full flex-col gap-4">
       <Form {...form}>
         <form>
           <div className="flex md:flex-row flex-col justify-between">
-            <PageHeader title={`New Bill`} />
+            <PageHeader title={`New ${sessionName}`} />
             <div className="flex items-center gap-2 h-full ">
-              <ViewBillTemplate billDetails={{ ...form.getValues(), Shop }} />
+              <ViewBillTemplate
+                billDetails={{
+                  ...form.getValues(),
+                  Shop,
+                  cumulativeReport,
+                  total: totalDetails?.discountedRounded?.total,
+                }}
+              />
 
               <ToolTip
                 trigger={
@@ -208,7 +272,7 @@ export default function NewBillScreen({ billDetails, billId, session }: any) {
                     {billDetails?.billNumber}
                   </p>
                 }
-                content={"Bill Number"}
+                content={`${sessionName} Number`}
               />
               <Tabs defaultValue="bill" className="w-fit">
                 <TabsList className="h-11">
@@ -217,7 +281,7 @@ export default function NewBillScreen({ billDetails, billId, session }: any) {
                     onClick={() => setCurretTab("bill")}
                     className="h-full"
                   >
-                    Bill
+                    {sessionName}
                   </TabsTrigger>
                   <TabsTrigger
                     value="details"
@@ -239,6 +303,7 @@ export default function NewBillScreen({ billDetails, billId, session }: any) {
               billDetails={billDetails}
               session={session}
               form={form}
+              cumulativeReport={cumulativeReport}
             />
           ) : (
             <BillDetailsSlot session={session} form={form} billId={billId} />

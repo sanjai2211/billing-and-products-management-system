@@ -39,6 +39,8 @@ export default function MyBillsScreen({ bills, session }: any) {
     <div className="space-y-4">
       <div className="flex justify-between">
         <PageHeader title={`My Bills`} />
+        <div className="flex gap-2">
+
         <Tabs
             defaultValue={
               newParams.get("dataStatus") || 'all'
@@ -103,7 +105,9 @@ export default function MyBillsScreen({ bills, session }: any) {
               </TabsTrigger>
             </TabsList>
           </Tabs>
-        {/* <ExportButton data={ExportOptionsMyBills} exportData={bills} /> */}
+        <ExportButton data={ExportOptionsMyBills} exportData={bills} />
+        </div>
+
       </div>
       
 

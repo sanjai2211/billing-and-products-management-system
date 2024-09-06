@@ -7,41 +7,39 @@ const billDetails = {
   description: "Get the details of your bill",
   page: "single",
   fields: [
-    { id: "customer", label: "Customer", default: false },
-    { id: "transport", label: "Transport", default: false },
-    { id: "id", label: "ID", default: true },
+    
+
     { id: "billNumber", label: "Bill Number", default: true },
-    { id: "type", label: "Type", default: true },
+    { id: "type", label: "Bill Type", default: true },
+    { id: "name", label: "Customer Name", default: true },
+
+    
+    { id: "Bank.bankname", label: "Bank Name", default: true },
+    { id: "Bank.branchName", label: "BranchName", default: true },
+
+    
+    
+    
     { id: "date", label: "Date", default: true },
-    { id: "dueDate", label: "Due Date", default: false },
-    { id: "paymentTerms", label: "Payment Terms", default: false },
-    { id: "gst", label: "GST", default: true },
-    { id: "cgst", label: "CGST", default: true },
-    { id: "sgst", label: "SGST", default: true },
-    { id: "gstOnReverseCharge", label: "GST on Reverse Charge", default: true },
+    
+    
+   
     { id: "discountedAmount", label: "Discounted Amount", default: false },
-    { id: "createdAt", label: "Created At", default: true },
-    { id: "updatedAt", label: "Updated At", default: true },
-    { id: "reverseCharge", label: "Reverse Charge", default: true },
-    { id: "bankId", label: "Bank ID", default: false },
-    { id: "customerId", label: "Customer ID", default: false },
-    { id: "shopId", label: "Shop ID", default: true },
+    { id: "createdAt", label: "Created At", default: false },
+    { id: "updatedAt", label: "Updated At", default: false },
+    
+   
     { id: "Bank", label: "Bank", default: false },
     { id: "items", label: "Items", default: true },
     { id: "Customer", label: "Customer", default: false },
-    { id: "address.addressLine1", label: "Address Line 1", default: false },
-    { id: "address.addressLine2", label: "Address Line 2", default: true },
-    { id: "address.city", label: "City", default: false },
-    { id: "address.state", label: "State", default: true },
-    { id: "address.zip", label: "Zip Code", default: false },
-    { id: "id", label: "Customer ID", default: true },
-    { id: "name", label: "Customer Name", default: false },
+   
+   
     { id: "email", label: "Email", default: true },
-    { id: "faxNumber", label: "Fax Number", default: false },
+   
     { id: "phoneNumbers", label: "Phone Numbers", default: true },
-    { id: "shopId", label: "Shop ID", default: false },
-    { id: "gstIn", label: "GSTIN", default: true },
-    { id: "bankId", label: "Bank ID", default: false },
+    
+    
+    
   ],
 };
 
@@ -53,11 +51,25 @@ const purchasedProductDetails = {
   page: "multiple",
   sheetNameField: "Bill Number",
   fields: [
-    { id: "billNumber", label: "Bill Number", default: true },
-    {
-      id: "phoneNumbers",
-      label: "Phone Number",
-    },
+    {id: "product.productName",label: "Product Name", default: true },
+    {id: "product.printName",label: "Print Name", default: false },
+    { id: "cost", label: "Saled price", default: true },
+    { id: "billNumber", label: "Bill Number", default: false },
+    { id: "quantity", label: "Quantity", default: true },
+
+    { id: "code", label: "Product Code", default: false },
+    {id: "phoneNumbers",label: "Phone Number", default: false },
+   
+    {id: "product.category",label: "Category", default: false },
+    {id: "product.unit",label: "Unit", default: false },
+    {id: "product.group",label: "Group", default: false },
+    {id: "product.brand",label: "Brand", default: false },
+    {id: "product.mrp",label: "MRP", default: false },
+    {id: "product.salesRate",label: "Sales Rate", default: false },
+    {id: "product.gstPurchase",label: "Purchase Rate", default: false },
+    {id: "product.hsnCode",label: "HSN Code", default: false },
+    {id: "product.status",label: "Status", default: false },
+
   ],
 };
 

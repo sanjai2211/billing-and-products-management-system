@@ -118,9 +118,9 @@ export function DataTable<TData, TValue>({
                       )}
                     </TableCell>
                   ))}
-                  {hoveredRow === row.id && (
+                  {/* {hoveredRow === row.id && (
                      <DataTableRowActions row={row} handleEdit={handleEdit} handleDelete={handleDelete} />
-                  )}
+                  )} */}
                 </TableRow>
               ))
             ) : (

@@ -16,7 +16,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "@/components/ui/form";
 import { useAddEditDeleteBill, useAddEditShop } from "@/lib/hooks";
 import { handlePrintBill } from "@/lib/utils-helper/export/print-bill";
-import { StateCodes } from "@/lib/constants";
+import { RecordType, StateCodes } from "@/lib/constants";
 import { MultiplSelectButton } from "@/components/ui/multiple-select-button";
 import { exportToPdf } from "@/lib/utils-helper/export/pdf";
 import TemplateOne from "@/lib/templates/tax-invoice/template-1";
@@ -31,7 +31,7 @@ export default function NewBillScreen({ billDetails, billId, session }: any) {
   const bankId = billDetails?.bankId || "";
   const customerId = billDetails?.customerId || "";
   const { Shop, ...rest } = billDetails;
-  const sessionName = [billDetails?.type];
+  const sessionName = (RecordType as any)[billDetails?.type];
   console.log({ sessionName });
   console.log({ sessionName });
 
@@ -205,7 +205,7 @@ export default function NewBillScreen({ billDetails, billId, session }: any) {
     isIntraTrade,
   });
 
-  console.log({totalDetails})
+  console.log({ totalDetails });
 
   const cumulativeReport = [
     {
@@ -258,7 +258,12 @@ export default function NewBillScreen({ billDetails, billId, session }: any) {
             <PageHeader title={`New ${sessionName}`} />
             <div className="flex items-center gap-2 h-full ">
               <ViewBillTemplate
-                billDetails={{ ...form.getValues(), Shop, cumulativeReport }}
+                billDetails={{
+                  ...form.getValues(),
+                  Shop,
+                  cumulativeReport,
+                  total: totalDetails?.discountedRounded?.total,
+                }}
               />
 
               <ToolTip

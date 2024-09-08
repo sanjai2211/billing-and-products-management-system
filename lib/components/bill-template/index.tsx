@@ -16,105 +16,13 @@ import { CreatePDFDocument, TemplateList } from "@/lib/templates";
 import { numberToWords } from "@/lib/utils-helper/calculation/numberToWord";
 import { exportToPdf } from "@/lib/utils-helper/export/pdf";
 import { PDFViewer } from "@react-pdf/renderer";
+import { useTheme } from "next-themes";
 import { useState } from "react";
 
 export function ViewBillTemplate({ billDetails }: any) {
   console.log({ billDetails });
   const [template, setTemplate] = useState(TemplateList["TAX_INVOICE"][0]);
-  console.log({ template });
-
-  const customerDetails = [
-    {
-      id: "Customer/customerName",
-      field: "Name",
-    },
-    {
-      id: "Customer/customerName",
-      field: "Address",
-    },
-    {
-      id: "Customer/phoneNumbers",
-      field: "Phone",
-    },
-    {
-      id: "Customer/gstIn",
-      field: "GSTIn",
-    },
-  ];
-
-  const otherDetails = [
-    {
-      id: "paymentTerms",
-      field: "Payment",
-    },
-    {
-      id: "billNumber",
-      field: "Bill Number",
-    },
-    {
-      id: "date",
-      field: "Date",
-    },
-  ];
-
-  const bankDetails = [
-    {
-      id: "paymentTerms",
-      field: "Payment",
-    },
-    {
-      id: "billNumber",
-      field: "Bill Number",
-    },
-    {
-      id: "date",
-      field: "Date",
-    },
-  ];
-
-  // const getNestedValue = (obj: any, path: string) => {
-  //   return path.split('/').reduce((acc, part) => acc && acc[part], obj);
-  // };
-
-  // const renderField = (item: any) => {
-  //   if (!value) return null;
-  //   return (
-  //     <div className="flex gap-1">
-  //       <p className="font-bold text-xs">{field} :</p>
-  //       <p className="text-xs">{getNestedValue(item,item?.id)}</p>
-  //     </div>
-  //   );
-  // };
-
-  // const CustomerDetailsSection = () => {
-  //   return (
-  //     <div className="space-y-2 p-2">
-  //       {customerDetails?.map((item: any) => (
-  //         <div>{renderField(item)}</div>
-  //       ))}
-  //     </div>
-  //   );
-  // };
-
-  // const OtherDetailsSection = () => {
-  //   return (
-  //     <div className="space-y-2 p-2">
-  //       {otherDetails?.map((item: any) => (
-  //         <div>{renderField({ field: item?.field, value: item?.id })}</div>
-  //       ))}
-  //     </div>
-  //   );
-  // };
-
-  // const BankDetailsSection = () => {
-  //   return (
-  //     <div className="space-y-0.5 px-2 py-1">
-  //       {bankDetails?.map((item: any) => (
-  //         <div>{renderField({ field: item?.field, value: item?.id })}</div>
-  //       ))}
-  //     </div>
-  //   );
-  // };
+   const {theme } = useTheme()
 
   return (
     <Sheet>
@@ -128,14 +36,16 @@ export function ViewBillTemplate({ billDetails }: any) {
           <SheetTitle>Bill</SheetTitle>
           <div>
             <div
-              onClick={async() =>
+              onClick={async () =>
                 await exportToPdf({
                   data: [billDetails],
-                  exportOptions: [{
-                    templateId: "billTemplate",
-                    pdfNameField: "billNumber",
-                    template: template?.template,
-                  }],
+                  exportOptions: [
+                    {
+                      templateId: "billTemplate",
+                      pdfNameField: "billNumber",
+                      template: template?.template,
+                    },
+                  ],
                 })
               }
             >
@@ -322,12 +232,16 @@ export function ViewBillTemplate({ billDetails }: any) {
           </div>
         </div> */}
 
-        <div className="h-[90%] w-full">
+        <PDFViewer
+          style={{ width: "100%", height: "100%", backgroundColor: "red" }}
+          showToolbar={false}
+        >
           <CreatePDFDocument
             data={[billDetails]}
             template={template?.template}
+            theme={theme}
           />
-        </div>
+        </PDFViewer>
 
         {/* <SheetFooter className="">
           <div className="p-2">

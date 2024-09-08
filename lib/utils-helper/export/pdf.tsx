@@ -1,11 +1,17 @@
 import React from "react";
-import { pdf } from "@react-pdf/renderer";
+import { pdf, StyleSheet } from "@react-pdf/renderer";
 import JSZip from "jszip";
 import { CreatePDFDocument } from "@/lib/templates";
 import { createDownloadUrl } from "./create-download-url";
 
 const handlePdfGeneration = async ({ data, fileName, zip, template }: any) => {
-  const document = <CreatePDFDocument data={data} template={template} />;
+  const globalStyle = StyleSheet.create({
+    hidden : {
+      display : 'none'
+    }
+
+  })
+  const document = <CreatePDFDocument data={data} template={template} theme={'light'} download={true} />;
   const blob = await pdf(document).toBlob();
 
   if (zip) {

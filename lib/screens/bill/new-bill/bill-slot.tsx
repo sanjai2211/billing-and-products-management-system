@@ -22,6 +22,7 @@ export default function BillSlot({
   billId,
   form,
   session,
+  cumulativeReport,
 }: any) {
   const billingItemForm = useForm<FormData>({
     resolver: zodResolver(BillingItemsSchema),
@@ -65,12 +66,20 @@ export default function BillSlot({
     method: "DELETE",
   });
 
-  const {items , Customer,Shop} = billDetails
-  const isIntraTrade = !Customer ? true : Shop?.address?.stateCode === Customer?.address?.stateCode
+  const { items, Customer, Shop } = billDetails;
+  const isIntraTrade = !Customer
+    ? true
+    : Shop?.address?.stateCode === Customer?.address?.stateCode;
 
-  const discountedTotal = getTaxCalculationByHsn({ data: billDetails?.items, isIntraTrade });
+  const discountedTotal = getTaxCalculationByHsn({
+    data: billDetails?.items,
+    isIntraTrade,
+  });
 
-  const totalDetails = billCalculation({data : billDetails?.items,isIntraTrade});
+  const totalDetails = billCalculation({
+    data: billDetails?.items,
+    isIntraTrade,
+  });
 
   const handleEdit = ({ data }: any) =>
     handleProductSelect({
@@ -86,8 +95,7 @@ export default function BillSlot({
       edit: true,
     });
 
-  const handleDelete = ({id}: any) => onSubmit({ billItemId: id });
-
+  const handleDelete = ({ id }: any) => onSubmit({ billItemId: id });
 
   return (
     <div className="flex md:flex-row flex-col  justify-between gap-4">
@@ -121,7 +129,11 @@ export default function BillSlot({
             />
           </TabsContent>
           <TabsContent value="total">
-            <TotalDetails totalDetails={totalDetails} form={form} />
+            <TotalDetails
+              totalDetails={totalDetails}
+              cumulativeReport={cumulativeReport}
+              form={form}
+            />
           </TabsContent>
         </Tabs>
       </div>

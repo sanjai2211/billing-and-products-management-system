@@ -1,536 +1,674 @@
+"use client";
+import { BillDetails, RecordType } from "@/lib/constants";
 import { numberToWords } from "@/lib/utils-helper/calculation/numberToWord";
+import { joinValues } from "@/lib/utils-helper/string/string";
 import { Font, StyleSheet, Text, View } from "@react-pdf/renderer";
-
-
-const customerDetails = [
-  {
-    id: "Customer/customerName",
-    field: "Name",
-  },
-  {
-    id: "Customer/customerName",
-    field: "Address",
-  },
-  {
-    id: "Customer/phoneNumbers",
-    field: "Phone",
-  },
-  {
-    id: "Customer/gstIn",
-    field: "GSTIn",
-  },
-];
+import { useTheme } from "next-themes";
 
 const bankDetails = [
   {
-    id: "billNumber",
-    field: "Payment",
+    id: "Bank/bankName",
+    field: "Bank Name",
   },
   {
-    id: "billNumber",
-    field: "Bill Number",
+    id: "Bank/accountNumber",
+    field: "Account Number",
   },
   {
-    id: "date",
-    field: "Date",
+    id: "Bank/ifscCode",
+    field: "IFSC Code",
   },
 ];
 
-const otherDetails = [
-  {
-    id: "paymentTerms",
-    field: "Payment",
-  },
-  {
-    id: "billNumber",
-    field: "Bill Number",
-  },
-  {
-    id: "date",
-    field: "Date",
-  },
-];
+// Refactor EdgeCase to accept props
+interface EdgeCaseProps {
+  value: any;
+  addOn?: string;
+  style: any;
+  theme?: any;
+  field?: any;
+}
 
-const getNestedValue = (obj: any, path: string) => {
-  return path.split("/").reduce((acc, part) => acc && acc[part], obj);
+interface KeyValue {
+  value: any;
+  field: string;
+  style?: any;
+  titleStyle?: any;
+  valueStyle?: any;
+  theme?: any;
+  edgeCase?: any;
+}
+
+const getNestedValue = (obj: any, path: string, splitValue = "/") => {
+  console.log({ obj, path });
+  return path
+    .split(splitValue || "/")
+    .reduce((acc, part) => acc && acc[part], obj);
 };
 
-export const TemplateOne = ({ data }: any) => {
-  console.log({billDetailssss: data})
-  return(
-    <View style={styles.border}>
-    <Text style={styles.shopName}>{data.Shop.name}</Text>
-     <View style={{...styles.flex, ...styles.justifyBetween, ...styles.wFull}}>
-      <View style={styles.wFull}>
-        <Text style={styles.textXs}>
-          {data.Shop.address.addressLine1},
-        </Text>
-        <Text style={styles.textXs}>
-          {data.Shop.address.addressLine2},
-        </Text>
-        <Text style={styles.textXs}>{data.Shop.address.city},</Text>
-        <Text style={styles.textXs}>{data.Shop.address.state},</Text>
-        <Text style={styles.textXs}>
-          India - {data.Shop.address.zip}
-        </Text>
-      </View>
-      <View>
-        <View style={{...styles.textContainer, ...styles.amountSection}}>
-          <Text style={styles.textXs}>Telephone:</Text>
-          <Text style={styles.textXs}>{data.Shop.phoneNumbers}</Text>
-        </View>
-        <View style={{...styles.textContainer, ...styles.amountSection}}>
-          <Text style={styles.textXs}>Email:</Text>
-          <Text style={styles.textXs}>{data.Shop.email}</Text>
-        </View>
-        <View style={styles.textContainer}>
-          <Text style={styles.textXs}>Website:</Text>
-          <Text style={styles.textXs}>
-            {data.Shop.website || "N/A"}
+export const TemplateOne = ({ data, theme = "light", download }: any) => {
+  console.log({ billDetailssss: data });
+  console.log({ theme, download });
+
+  const customerAdd = joinValues([
+    data?.Customer?.address?.addressLine1,
+    data?.Customer?.address?.addressLine2,
+    data?.Customer?.address?.city,
+  ]);
+
+  const customerAddress = customerAdd
+    ? customerAdd.concat(
+        data?.Customer?.address?.zip
+          ? `, India - ${data?.Customer?.address?.zip}`
+          : ", India"
+      )
+    : "";
+
+  const EdgeCaseIndicator = ({ value = "", indicatorStyle = {} }) => {
+    if (!value) return null;
+    if (value && !download)
+      return (
+        <View style={[styles(theme).edgeCaseIndicator, indicatorStyle]}>
+          <Text style={[styles(theme).keyValueField, styles(theme).italic]}>
+            ~~
+          </Text>
+          <Text style={[styles(theme).keyValueField, styles(theme).italic]}>
+            {value}
+          </Text>
+          <Text style={[styles(theme).keyValueField, styles(theme).italic]}>
+            ~~
           </Text>
         </View>
-      </View>
-    </View>
-    <View style={styles.billTagLine}>
-      <View style={{...styles.flex, ...styles.gap1}}>
-        <Text style={{...styles.fontBold, ...styles.textXs}}>GSTIN:</Text>
-        <Text style={styles.textXs}>
-          {data.gstIn || "GST123456789"}
-        </Text>
-      </View>
-      <Text style={styles.fontBold}>{data.type}</Text>
-      <Text style={styles.textXs}>Original for Recipient</Text>
-    </View>
-    <View style={styles.customerAndBillDetailsSection}>
-      <View>
-        {customerDetails.map((item, index) => {
-          const value = getNestedValue(data, item.id);
-          if (!value) return null;
-          return (
-            <View>
-              <View style={styles.flex}>
-                <Text style={{...styles.fontBold, ...styles.textXs}}>
-                  {item.field}:
-                </Text>
-                <Text style={styles.textXs}>{value}</Text>
-              </View>
-            </View>
-          );
-        })}
-      </View>
-      <View>
-        {otherDetails.map((item, index) => {
-          const value = getNestedValue(data, item.id);
-          if (!value) return null;
-          return (
-            <View>
-              <View style={styles.flex}>
-                <Text style={{...styles.fontBold, ...styles.textXs}}>
-                  {item.field}:
-                </Text>
-                <Text style={styles.textXs}>{value}</Text>
-              </View>
-            </View>
-          );
-        })}
-      </View>
-    </View>
-    <View style={styles.table}>
-      <View style={styles.tableRow}>
-        <View style={styles.tableColHeader}>
-          <Text style={styles.tableCell}>S.No</Text>
-        </View>
-        <View style={styles.tableColHeader}>
-          <Text style={styles.tableCell}>Description</Text>
-        </View>
-        <View style={styles.tableColHeader}>
-          <Text style={styles.tableCell}>HSN/SAC</Text>
-        </View>
-        <View style={styles.tableColHeader}>
-          <Text style={styles.tableCell}>Qty</Text>
-        </View>
-        <View style={styles.tableColHeader}>
-          <Text style={styles.tableCell}>Rate</Text>
-        </View>
-        <View style={styles.tableColHeader}>
-          <Text style={styles.tableCell}>Tax</Text>
-        </View>
-        <View style={styles.tableColHeader}>
-          <Text style={styles.tableCell}>Amount</Text>
-        </View>
-      </View>
+      );
+    else return <div />;
+  };
+  const EdgeCase: React.FC<EdgeCaseProps> = ({
+    field,
+    value,
+    addOn,
+    style = {},
+  }) => {
+    // Your component logic here
 
-      <View>
-        {data.items.map((item: any, index: number) => {
-          return (
-            <View style={styles.tableRow}>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>{index + 1}</Text>
-              </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>
-                  {item.product.printName}
-                </Text>
-              </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>{item.product.hsnCode}</Text>
-              </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>{item.quantity}</Text>
-              </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>{item.cost.toFixed(2)}</Text>
-              </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>
-                  {item.quantity.toFixed(2)}
-                </Text>
-              </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>
-                  {(item.quantity * item.cost).toFixed(2)}
-                </Text>
-              </View>
-            </View>
-          );
-        })}
-      </View>
+    if (!value) return <EdgeCaseIndicator value={field} />;
+    return (
+      <Text style={style}>
+        {value} {addOn}
+      </Text>
+    );
+  };
 
-      <View style={styles.tableRow}>
-        <View style={styles.tableCol}></View>
-        <View style={styles.tableCol}>
-          <Text style={styles.tableCell}>Total</Text>
+  const KeyValue: React.FC<KeyValue> = ({
+    value,
+    field,
+    edgeCase,
+    style = {},
+    titleStyle = {},
+    valueStyle = {},
+  }) => {
+    console.log({ field, value });
+    // Your component logic here
+
+    if (!value)
+      return (
+        <EdgeCaseIndicator value={edgeCase || field} indicatorStyle={style} />
+      );
+    return (
+      <View style={[styles(theme).keyValue, style]}>
+        <Text style={[styles(theme).keyValueField, titleStyle]}>
+          {field} :{" "}
+        </Text>
+        <Text style={[styles(theme).textXs, valueStyle]}>{value}</Text>
+      </View>
+    );
+  };
+
+  const tableHeadings = [
+    { id: "sNo", label: "S.No" },
+    { id: "description", label: "Description" },
+    { id: "hsnSac", label: "HSN/SAC" },
+    { id: "qty", label: "Qty" },
+    { id: "rate", label: "Rate" },
+    { id: "tax", label: "Tax" },
+    { id: "amount", label: "Amount" },
+  ];
+
+  const getTableValues = (item : any,index : any) => {
+    return {
+      sNo : index+1,
+      description : item?.product?.printName,
+      hsnSac : item?.product?.hsnCode,
+      qty : item?.quantity + " " + item?.product?.unit,
+      rate : item?.rate,
+      tax : item?.gstSales,
+      amount : item?.rate * item?.quantity
+
+
+
+
+    }
+
+  }
+
+  return (
+    <View style={styles(theme).page}>
+      <View>
+        <Text style={styles(theme).shopName}>{data.Shop.name}</Text>
+        <View style={{ ...styles(theme).shopDetails }}>
+          <View style={styles(theme).wFull}>
+            <EdgeCase
+              value={data?.Shop?.address?.addressLine1}
+              addOn=","
+              style={styles(theme).textXs}
+            />
+            <EdgeCase
+              value={data?.Shop?.address?.addressLine2}
+              addOn=","
+              style={styles(theme).textXs}
+            />
+            <EdgeCase
+              field={"City"}
+              value={data?.Shop?.address?.city}
+              addOn=","
+              style={styles(theme).textXs}
+            />
+            <EdgeCase
+              field={"State"}
+              value={data?.Shop?.address?.state}
+              addOn=","
+              style={styles(theme).textXs}
+            />
+            <EdgeCase
+              value={`India - ${data?.Shop?.address?.zip}`}
+              addOn="."
+              style={styles(theme).textXs}
+            />
+            <KeyValue
+              field={"State Code"}
+              value={data?.shopStateCode}
+              titleStyle={{ fontWeight: "bold" }}
+              theme={theme}
+            />
+          </View>
+          <View style={[styles(theme).wFull]}>
+            <KeyValue
+              field={"Telephone"}
+              value={data?.Shop?.phoneNumbers}
+              theme={theme}
+              style={styles(theme).textContainer}
+            />
+            <KeyValue
+              field={"Email"}
+              value={data?.Shop?.email}
+              style={styles(theme).textContainer}
+            />
+            <KeyValue
+              field={"Website"}
+              value={data?.Shop?.website}
+              style={styles(theme).textContainer}
+            />
+          </View>
         </View>
-        <View style={styles.tableCol}></View>
-        <View style={styles.tableCol}>
-          <Text style={styles.tableCell}>154</Text>
+        <View style={styles(theme).billTagLine}>
+          <KeyValue
+            field={"GSTIN"}
+            value={data?.gstIn}
+            style={styles(theme).textContainer}
+          />
+          <Text style={styles(theme).fontBold}>
+            {(RecordType as any)[data?.type]}
+          </Text>
+          <Text style={{ fontSize: "10px" }}>Original for Recipient</Text>
         </View>
-        <View style={styles.tableCol}>
-          <Text style={styles.tableCell}>5656</Text>
-        </View>
-        <View style={styles.tableCol}>
-          <Text style={styles.tableCell}>455</Text>
-        </View>
-        <View style={styles.tableCol}>
-          <Text style={styles.tableCell}>{(5648).toFixed(2)}</Text>
+        <View style={styles(theme).customerAndBillDetailsSection}>
+          <View style={styles(theme).customerSection}>
+            <KeyValue
+              field={"Name"}
+              edgeCase="Customer Name"
+              value={data?.Customer?.customerName}
+            />
+            <KeyValue
+              field={"Phone"}
+              edgeCase="Customer Phone Number"
+              value={data?.Customer?.phoneNumbers}
+            />
+            <KeyValue
+              field={"GSTIN"}
+              edgeCase="Customer GSTIN"
+              value={data?.Customer?.gstIn}
+            />
+            <KeyValue
+              field={"Address"}
+              edgeCase="Customer Address"
+              value={customerAddress}
+            />
+            <KeyValue
+              field={"State Code"}
+              value={data?.customerStateCode}
+              edgeCase={"Customer State Code"}
+            />
+          </View>
+          <View style={styles(theme).billDetailsSection}>
+            <KeyValue field={"Bill Number"} value={data?.billNumber} />
+            <KeyValue field={"Date"} value={(data?.date).slice(0, 10)} />
+            {data?.type === "TAX_INCVOICE" ? (
+              <KeyValue
+                field={"Due Date"}
+                value={(data?.dueDate).slice(0, 10)}
+              />
+            ) : null}
+            <KeyValue field={"Payment"} value={data?.paymentTerms} />
+          </View>
         </View>
       </View>
-    </View>
-    <View style={styles.customerAndBillDetailsSection}>
-      <View style={styles.bankDetailsSection}>
-        <Text style={{...styles.textXs, ...styles.sectionHeader}}>
-          Bank Details
-        </Text>
-        <View style={{paddingHorizontal : '2px',paddingVertical : '6px'}}>
-          {bankDetails.map((item, index) => {
-            const value = getNestedValue(data, item.id);
-            if (!value) return null;
+      <View style={styles(theme).table}>
+        <View style={styles(theme).tableRow}>
+          {tableHeadings.map((item, index) => (
+            <View key={index} style={styles(theme).tableColHeader}>
+              <Text style={styles(theme).tableCell}>{item?.label}</Text>
+            </View>
+          ))}
+        </View>
+
+        <View>
+          {data?.items?.map((item: any, index: number) => {
             return (
-              <View>
-                <View style={styles.flex}>
-                  <Text style={{...styles.fontBold, ...styles.textXs}}>
-                    {item.field}:
+              <View style={styles(theme).tableRow}>
+                <View style={{...styles(theme).tableCol,width : '10px' }}>
+                  <Text style={styles(theme).tableCell}>{index + 1}</Text>
+                </View>
+                <View style={styles(theme).tableCol}>
+                  <Text style={styles(theme).tableCell}>
+                    {item?.product?.printName}
                   </Text>
-                  <Text style={styles.textXs}>{value}</Text>
+                </View>
+                <View style={styles(theme).tableCol}>
+                  <Text style={styles(theme).tableCell}>
+                    {item?.product?.hsnCode}
+                  </Text>
+                </View>
+                <View style={styles(theme).tableCol}>
+                  <Text style={styles(theme).tableCell}>{item?.quantity || 0} {item?.product?.unit}</Text>
+                </View>
+                <View style={styles(theme).tableCol}>
+                  <Text style={styles(theme).tableCell}>
+                    {item?.cost?.toFixed(2)}
+                  </Text>
+                </View>
+                <View style={styles(theme).tableCol}>
+                  <Text style={styles(theme).tableCell}>
+                    {item?.product?.gstSales || 0} %
+                  </Text>
+                </View>
+                <View style={styles(theme).tableCol}>
+                  <Text style={styles(theme).tableCell}>
+                    {(item?.quantity * item?.cost).toFixed(2)}
+                  </Text>
                 </View>
               </View>
             );
           })}
         </View>
-
-        <View>
-          <Text style={{...styles.textXs, ...styles.sectionHeader}}>
-            Total Taxable Amount in Words
-          </Text>
-          <Text style={{...styles.textXs,...{padding : '2px'}}}>
-            {numberToWords(234543)} only
-          </Text>
-        </View>
       </View>
 
-      <View style={styles.amountDetailsSection}>
-        <View style={{...styles.textContainer, ...styles.amountSection}}>
-          <Text style={styles.amountField}>Total Taxable Amount:</Text>
-          <Text style={styles.amountValueSecondary}>49765.00</Text>
+      <View>
+        <View style={styles(theme).customerAndBillDetailsSection}>
+          <View style={styles(theme).bankDetailsSection}>
+            <Text
+              style={{
+                ...styles(theme).textXs,
+                ...styles(theme).sectionHeader,
+                borderTop: "0px",
+              }}
+            >
+              Bank Details
+            </Text>
+            <View
+              style={{
+                paddingHorizontal: "2px",
+                paddingVertical: "2px",
+                minHeight: "60px",
+              }}
+            >
+              {bankDetails.map((item, index) => {
+                const value = getNestedValue(data, item.id);
+                console.log({ itemsss: item, value });
+                return <KeyValue field={item?.field} value={value} />;
+              })}
+            </View>
+
+            <View>
+              <Text
+                style={{
+                  ...styles(theme).textXs,
+                  ...styles(theme).sectionHeader,
+                }}
+              >
+                Total Taxable Amount in Words
+              </Text>
+              <Text
+                style={{
+                  ...styles(theme).textXs,
+                  ...{ fontSize: "12px", padding: "4px" },
+                }}
+              >
+                {numberToWords(data?.total || 0)} only
+              </Text>
+            </View>
+          </View>
+
+          <View style={styles(theme).amountDetailsSection}>
+            {data?.cumulativeReport?.slice(1)?.map((item: any, index: any) => {
+              console.log({ itemsss: item });
+              return (
+                <KeyValue
+                  field={item?.label}
+                  value={`${item?.symbol} ${item?.field}`}
+                  style={styles(theme).amountSection}
+                  valueStyle={styles(theme).amountValueSecondary}
+                />
+              );
+            })}
+
+            <KeyValue
+              field={"NET AMOUNT"}
+              value={`${data?.total}`}
+              style={{ ...styles(theme).amountSection, borderBottom: "0px" }}
+              titleStyle={{ fontSize: "16px" }}
+              valueStyle={{
+                ...styles(theme).amountValueSecondary,
+                fontSize: "16px",
+              }}
+            />
+          </View>
         </View>
-        <View style={{...styles.textContainer, ...styles.amountSection}}>
-          <Text style={{...styles.amountField, ...{ opacity: 0.5 }}}>
-            Total IGST
+
+        <View style={styles(theme).remarks}>
+          <Text
+            style={[
+              styles(theme).remarksContainer,
+              { borderRight: "1px solid #000" },
+            ]}
+          >
+            E. & O. E. :{" "}
           </Text>
-          <Text style={{...styles.amountValueSecondary, ...{ opacity: 0.5 }}}>
-            49765.00
-          </Text>
+          <Text style={styles(theme).remarksContainer}>Remarks : </Text>
         </View>
-        <View style={{...styles.textContainer, ...styles.amountSection}}>
-          <Text style={{...styles.amountField, ...{ opacity: 0.5 }}}>
-            Total IGST
-          </Text>
-          <Text style={{...styles.amountValueSecondary, ...{ opacity: 0.5 }}}>
-            49765.00
-          </Text>
-        </View>
-        <View style={{...styles.textContainer, ...styles.amountSection}}>
-          <Text style={{...styles.amountField, ...{ opacity: 0.5 }}}>
-            Total IGST
-          </Text>
-          <Text style={{...styles.amountValueSecondary, ...{ opacity: 0.5 }}}>
-            49765.00
-          </Text>
-        </View>
-        <View style={{...styles.textContainer, ...styles.amountSection}}>
-          <Text style={styles.amountField}>Total GST Amount:</Text>
-          <Text style={styles.amountValueSecondary}>49765.00</Text>
-        </View>
-        <View style={{...styles.textContainer, ...styles.amountSection}}>
-          <Text style={styles.amountField}>Round Off:</Text>
-          <Text style={styles.amountValueSecondary}>- 40</Text>
-        </View>
-        <View style={{...styles.textContainer, ...styles.amountSection}}>
-          <Text style={styles.amountField}>Net Amount:</Text>
-          <Text style={styles.amountValueSecondary}>225687</Text>
+        <View style={styles(theme).remarks}>
+          <View style={styles(theme).leftSection}>
+            <Text
+              style={{
+                ...styles(theme).sectionHeader,
+                ...{ fontSize: "12px" },
+              }}
+            >
+              Terms & Conditions
+            </Text>
+            <Text style={{ fontSize: "10px", padding: "1px" }}>
+              1jfgdf fdjjgd gedjn
+            </Text>
+          </View>
+
+          <View style={styles(theme).rightSection}>
+            <View>
+              <Text style={styles(theme).centerText}>
+                Certified that the above information are true and correct
+              </Text>
+              <Text
+                style={{
+                  fontSize: "12px",
+                  fontWeight: "bold",
+                  textAlign: "center",
+                }}
+              >
+                For {data.Shop.name.toUpperCase()},
+              </Text>
+            </View>
+            <View style={styles(theme).signatureSection}></View>
+            <View>
+              <Text style={styles(theme).rightAlignedText}>
+                &#40; Authorised Signature &#41;
+              </Text>
+            </View>
+          </View>
         </View>
       </View>
     </View>
-
-    <View style={styles.remarks}>
-      <View style={styles.sectionContainer}>
-        <Text style={styles.textXs}>E. & O. E. :</Text>
-        <Text style={styles.textXs}>dfcsjakfhhksjfse</Text>{" "}
-      </View>
-      <View style={styles.sectionContainer}>
-        <Text style={styles.textXs}>Remarks :</Text>
-        <Text style={styles.textXs}>cds,jdfsfs fjsjf </Text>{" "}
-      </View>
-    </View>
-    <View style={styles.remarks}>
-      <View style={styles.leftSection}>
-        <Text style={{...styles.sectionHeader, ...{fontSize : '12px'}}}>Terms & Conditions</Text>
-        <Text style={{fontSize : '10px'}}>1jfgdf fdjjgd gedjn</Text>
-      </View>
-
-      <View style={styles.rightSection}>
-        <View>
-          <Text style={styles.centerText}>
-            Certified that the above information are true and correct
-          </Text>
-          <Text style={{fontSize : '12px', fontWeight : 'bold',textAlign : 'center'}}>
-            For {data.Shop.name.toUpperCase()},
-          </Text>
-        </View>
-        <View style={styles.signatureSection}></View>
-        <View>
-          <Text style={styles.rightAlignedText}>
-            &#40; Authorised Signature &#41;
-          </Text>
-        </View>
-      </View>
-    </View> 
-  </View>
-);
-}
+  );
+};
 
 Font.register({
   family: "Oswald",
   src: "https://fonts.gstatic.com/s/oswald/v13/Y_TKV6o8WovbUd3m_X9aAA.ttf",
 });
 
-const styles = StyleSheet.create({
-  shopName: {
-    textAlign: "center",
-    padding: "2px",
-    fontWeight: "bold",
+const colors = {
+  dark: {
+    white: "black",
+    black: "white",
   },
-  textContainer: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "flex-end",
+  light: {
+    white: "white",
+    black: "black",
   },
-  amountSection: {
-    border: "0.5px solid #000",
-  },
-  sectionContainer: {
-    display: "flex",
-    flexDirection: "row",
-    width: "50%",
-    padding: "2px",
-  },
-  remarks: {
-    display: "flex",
-    flexDirection: "row",
-    // justifyContent: "space-between",
-    borderTop: "1px solid #000",
-  },
- 
-  sectionHeader: {
-    borderTop: "0.5px solid #000",
-    borderBottom: "0.5px solid #000",
+};
+
+const getThemeColor = (theme: any, color: any) => {
+  console.log({ theme, color });
+  return (colors as any)?.[theme]?.[color] || color;
+};
+
+const styles = (theme: any) =>
+  StyleSheet.create({
+    keyValue: {
+      display: "flex",
+      flexDirection: "row",
+      alignItems: "center",
+      gap: "4px",
+    },
+    keyValueField: {
+      fontWeight: "bold",
+      fontStyle: "bold",
+      color: getThemeColor(theme, "black"),
+      fontSize: "12px",
+    },
+    edgeCaseIndicator: {
+      display: "flex",
+      flexDirection: "row",
+      alignItems: "center",
+      // gap: "2px",
+      opacity: 0.5,
+    },
+    edgeCaseIndicatorLine: {
+      opacity: 0.5,
+    },
+    page: {
+      border: "1.5px solid #000",
+      flex: 1,
+      width: "100%",
+      height: "100%",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "space-between",
+    },
+    textContainer: {
+      display: "flex",
+      flexDirection: "row",
+      justifyContent: "flex-end",
+    },
+    shopName: {
+      textAlign: "center",
+      width: "100%",
+      fontWeight: "bold",
+      color: getThemeColor(theme, "black"),
+    },
+    shopDetails: {
+      display: "flex",
+      flexDirection: "row",
+      justifyContent: "space-between",
+      padding: "4px",
+    },
+    billTagLine: {
+      display: "flex",
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      borderTop: "1px solid #000",
+      paddingHorizontal: "4px",
+    },
+    customerAndBillDetailsSection: {
+      display: "flex",
+      flexDirection: "row",
+      borderTop: "1px solid #000",
+      borderBottom: "1px solid #000",
+      width: "100%",
+      // gap: "4px",
+    },
+    customerSection: {
+      flex: 1,
+      padding: "4px",
+    },
+    billDetailsSection: {
+      flex: 1,
+      padding: "4px",
+      borderLeft: "1px solid #000",
+    },
+    amountSection: {
+      borderBottom: "1px solid #000",
+      justifyContent: "flex-end",
+    },
+    remarks: {
+      display: "flex",
+      flexDirection: "row",
+    },
+    remarksContainer: {
+      width: "50%",
+      padding: "4px",
+      fontSize: "12px",
+    },
+    sectionHeader: {
+      borderTop: "1px solid #000",
+      borderBottom: "1px solid #000",
+      textAlign: "center",
+      padding: "1px",
+    },
+    bankDetailsSection: {
+      width: "55%",
+    },
+    amountDetailsSection: {
+      width: "45%",
+      borderLeft: "1px solid #000",
+    },
+    // amountField: {
+    //   fontSize: "14px",
+    //   fontWeight: "bold",
+    //   padding: "2px",
+    //   textAlign: "right",
+    // },
+    amountValueSecondary: {
+      fontWeight: "bold",
+      borderLeft: "1px solid #000",
+      width: "100px",
+      padding: "2px",
+      textAlign: "right",
+    },
+    signatureSection: {
+      height: 48,
+      borderTop: "0.5px solid #000",
+      borderBottom: "0.5px solid #000",
+    },
+
+    // container: {
+    //   display: "flex",
+    //   flexDirection: "row",
+    //   justifyContent: "space-between",
+    //   width: "100%",
+    //   borderTopWidth: 1,
+    //   borderColor: "#000",
+    // },
+    leftSection: {
+      width: "50%",
+    },
+    rightSection: {
+      width: "50%",
+      borderLeft: "1px solid #000",
+      borderTop: "1px solid #000",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "space-between",
+    },
+    centerText: {
+      fontSize: 10,
+      textAlign: "center",
+      marginVertical: 2,
+    },
+    italic: {
+      fontStyle: "italic",
+    },
+    rightAlignedText: {
+      fontSize: 10,
+      textAlign: "right",
+      padding: "4px",
+    },
+    border: {
+      border: "1px solid #000",
+    },
+    p2: {
+      padding: "2px",
+    },
+    textCenter: {
+      textAlign: "center",
+    },
+    flex: {
+      display: "flex",
+      flexDirection: "row",
+    },
+    wFull: {
+      width: "100%",
+    },
+    textXs: {
+      fontSize: "12px",
+      color: getThemeColor(theme, "black"),
+    },
+    fontBold: {
+      fontWeight: "bold",
+    },
+    borderY: {
+      borderTop: "1px solid #000",
+      borderBottom: "1px solid #000",
+    },
+    opacity50: {
+      opacity: 0.5,
+    },
+    borderBottom: {
+      borderBottom: "1px solid #000",
+    },
     
-    textAlign: "center",
-    padding: "1px",
-  },
-  customerAndBillDetailsSection: {
-    display: "flex",
-    flexDirection: "row",
-    borderTop: "1px solid #000",
-  },
-  bankDetailsSection : {
-    flex : '2',
-  },
-  amountDetailsSection : {
-    flex : '1.25'
-  },
-  amountField: {
-    fontSize: "14px",
-    fontWeight: "bold",
-    padding: "2px",
-    textAlign: "right",
-  },
-  amountValueSecondary: {
-    fontSize: "14px",
-    fontWeight: "bold",
-    borderLeft: "1px solid #000",
-    width: "80px",
-    padding: "2px",
-    textAlign: "right",
-  },
-  signatureSection: {
-    height: 48,
-
-    borderTop: "0.5px solid #000",
-    borderBottom: "0.5px solid #000",
-  },
-
-  billTagLine: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    borderTop: "1px solid #000",
-  },
-  container: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    width: "100%",
-    borderTopWidth: 1,
-    borderColor: "#000",
-  },
-  leftSection: {
-    width: "50%",
-  },
-  rightSection: {
-    width: "50%",
-    borderLeft: "1px solid #000",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-  },
-  centerText: {
-    fontSize: 10,
-    textAlign: "center",
-    marginVertical: 2,
-  },
-  rightAlignedText: {
-    fontSize: 10,
-    textAlign: "right",
-    padding: "4px",
-  },
-  border: {
-    border: "1px solid #000",
-  },
-  p2: {
-    padding: "2px",
-  },
-  textCenter: {
-    textAlign: "center",
-  },
-  flex: {
-    display: "flex",
-    flexDirection: "row",
-  },
-  justifyBetween: {
-    justifyContent: "space-between",
-  },
-  justifyEnd: {
-    justifyContent: "flex-end",
-  },
-  wFull: {
-    width: "100%",
-  },
-  textXs: {
-    fontSize: "14px",
-  },
-  fontBold: {
-    fontWeight: "bold",
-  },
-  borderY: {
-    borderTop: "1px solid #000",
-    borderBottom: "1px solid #000",
-  },
-  divide: {
-    borderLeft: "1px solid #000",
-  },
-  spaceY1: {
-    marginBottom: "4px",
-  },
-  opacity50: {
-    opacity: 0.5,
-  },
-  gap1: {
-    gap: "4px",
-  },
-  w40: {
-    width: "40%",
-  },
-  borderBottom: {
-    borderBottom: "1px solid #000",
-  },
-  px2: {
-    paddingHorizontal: "2px",
-  },
-  py2: {
-    paddingVertical: "2px",
-  },
-  h12: {
-    height: "48px",
-  },
-  contentEditable: {
-    borderBottom: "1px dashed #000",
-    flexGrow: 1,
-  },
-
-  table: {
-    display: "flex",
-    width: "auto",
-    borderStyle: "solid",
-    borderWidth: 1,
-    borderColor: "#bfbfbf",
-  },
-  tableRow: {
-    flexDirection: "row",
-  },
-  tableColHeader: {
-    width: "14%",
-    borderStyle: "solid",
-    borderWidth: 1,
-    borderColor: "#bfbfbf",
-    backgroundColor: "#f0f0f0",
-    padding: 2,
-    textAlign: "center",
-  },
-  tableCol: {
-    width: "14%",
-    borderStyle: "solid",
-    borderWidth: 1,
-    borderColor: "#bfbfbf",
-    padding: 2,
-    textAlign: "center",
-  },
-  tableCell: {
-    fontSize: 10,
-    padding: 2,
-    textAlign: "center",
-  },
-});
+    table: {
+      display: "flex",
+      flex: 1,
+      border: '1px solid black',
+    },
+    tableRow: {
+      flexDirection: "row",
+    },
+    tableColHeader: {
+      flexGrow: 1,
+      border: '1px solid black',
+      padding: 2,
+      textAlign: "center",
+    },
+    tableCol: {
+      flexGrow: 1,
+      border: '1px solid black',
+      padding: 2,
+      textAlign: "center",
+    },
+    tableCell: {
+      fontSize: 10,
+      padding: 2,
+      textAlign: "center",
+    },
+  });
 
 export default TemplateOne;

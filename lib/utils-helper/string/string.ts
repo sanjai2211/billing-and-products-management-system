@@ -8,3 +8,6 @@ export function formatString(fieldName: string): string {
   words = words.map((word) => capitalizeFirstLetter(word.toLowerCase()));
   return words.join(" ");
 }
+export function joinValues(values : any, delimiter = ",") {
+  return values.filter(Boolean).join(delimiter);
+}

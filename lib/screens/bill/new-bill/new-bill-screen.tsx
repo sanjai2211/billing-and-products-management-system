@@ -196,9 +196,12 @@ export default function NewBillScreen({ billDetails, billId, session }: any) {
   ];
   console.log({ multipleSelectList });
 
+  const shopStateCode  = getStateCode(billDetails?.Shop)
+  const customerStateCode  = getStateCode(billDetails?.Customer)
+
   const isIntraTrade = !Customer
     ? true
-    : Shop?.address?.stateCode === Customer?.address?.stateCode;
+    : shopStateCode === customerStateCode;
 
   const totalDetails = billCalculation({
     data: billDetails?.items,
@@ -210,12 +213,14 @@ export default function NewBillScreen({ billDetails, billId, session }: any) {
   const cumulativeReport = [
     {
       label: "Total Items",
+      symbol: "",
       field: totalDetails?.totalItems,
     },
     {
       label: "Taxable Value",
       field: totalDetails?.discountedTaxableValue,
       color: "purple",
+      symbol: "+",
     },
     {
       label: "Central GST",
@@ -263,6 +268,8 @@ export default function NewBillScreen({ billDetails, billId, session }: any) {
                   Shop,
                   cumulativeReport,
                   total: totalDetails?.discountedRounded?.total,
+                  shopStateCode,
+                  customerStateCode
                 }}
               />
 

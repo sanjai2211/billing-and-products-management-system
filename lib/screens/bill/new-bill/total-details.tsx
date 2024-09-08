@@ -37,290 +37,274 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-export default function TotalDetails({ totalDetails, form }: any) {
+export default function TotalDetails({totalDetails , form }: any) {
   const [showDetails, setShowDetails] = useState(false);
 
-  const {
-    discountedTotal,
-    nonDiscountedTotal,
-    discountedTaxableValue,
-    nonDiscountedTaxableValue,
-    discountedCgstTotal,
-    nonDiscountedCgstTotal,
-    discountedSgstTotal,
-    nonDiscountedSgstTotal,
-    discountedIgstTotal,
-    nonDiscountedIgstTotal,
-    discountedAmount,
-    discountedPercentage,
-    discountedRounded,
-    nonDiscountedRounded,
-  } = totalDetails;
+  
+  // const detailedTableReport = [
+  //   {
+  //     row: [
+  //       {
+  //         cell: "Total",
+  //       },
+  //       {
+  //         field: totalDetails?.nonDiscountedTaxableValue,
+  //         color: "cyan",
+  //       },
+  //       {
+  //         field: totalDetails?.discountedTaxableValue,
+  //         color: "purple",
+  //         symbol: "+",
+  //       },
+  //       {
+  //         field: (
+  //           totalDetails?.nonDiscountedTaxableValue -
+  //           totalDetails?.discountedTaxableValue
+  //         ).toFixed(2),
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     row: [
+  //       {
+  //         cell: "CGST",
+  //       },
+  //       {
+  //         field: totalDetails?.nonDiscountedCgstTotal,
+  //       },
+  //       {
+  //         field: totalDetails?.discountedCgstTotal,
+  //         color: "pink",
+  //         symbol: "+",
+  //       },
+  //       {
+  //         field: (
+  //           totalDetails?.nonDiscountedCgstTotal -
+  //           totalDetails?.discountedCgstTotal
+  //         ).toFixed(2),
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     row: [
+  //       {
+  //         cell: "SGST",
+  //       },
+  //       {
+  //         field: totalDetails?.nonDiscountedSgstTotal,
+  //       },
+  //       {
+  //         field: totalDetails?.discountedSgstTotal,
+  //         color: "orange",
+  //         symbol: "+",
+  //       },
+  //       {
+  //         field: (
+  //           totalDetails?.nonDiscountedSgstTotal -
+  //           totalDetails?.discountedSgstTotal
+  //         ).toFixed(2),
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     row: [
+  //       {
+  //         cell: "IGST",
+  //       },
+  //       {
+  //         field: totalDetails?.nonDiscountedIgstTotal,
+  //       },
+  //       {
+  //         field: totalDetails?.discountedIgstTotal,
+  //         color: "fuchsia",
+  //         symbol: "+",
+  //       },
+  //       {
+  //         field: (
+  //           totalDetails?.nonDiscountedIgstTotal -
+  //           totalDetails?.discountedIgstTotal
+  //         ).toFixed(2),
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     row: [
+  //       {
+  //         cell: "Total",
+  //       },
+  //       {
+  //         cell: totalDetails?.nonDiscountedTotal,
+  //       },
+  //       {
+  //         cell: totalDetails?.discountedTotal,
+  //         color: "yellow",
+  //       },
+  //       {
+  //         field: (
+  //           totalDetails?.nonDiscountedTotal - totalDetails?.discountedTotal
+  //         ).toFixed(2),
+  //         color: "red",
+  //         symbol: "-",
+  //       },
+  //     ],
+  //   },
+  //   // {
+  //   //   row: [
+  //   //     {
+  //   //       cell: "Round",
+  //   //     },
+  //   //     {
+  //   //       field: totalDetails?.nonDiscountedRounded.value,
+  //   //       symbol: totalDetails?.nonDiscountedRounded.symbol,
+  //   //     },
+  //   //     {
+  //   //       field: totalDetails?.discountedRounded.value,
+  //   //       symbol: totalDetails?.discountedRounded.symbol,
+  //   //     },
+  //   //     {
+  //   //       field: totalDetails?.nonDiscountedRounded.value - totalDetails?.discountedRounded.value
+  //   //     },
+  //   //   ],
+  //   // },
+  //   // {
+  //   //   row: [
+  //   //     {
+  //   //       cell: "Total",
+  //   //     },
+  //   //     {
+  //   //       field: totalDetails?.nonDiscountedRounded?.total,
+  //   //     },
+  //   //     {
+  //   //       field: totalDetails?.discountedRounded?.total,
+  //   //     },
+  //   //     {
+  //   //       field: (
+  //   //         totalDetails?.nonDiscountedRounded?.total - totalDetails?.discountedRounded?.total
+  //   //       ).toFixed(2),
+  //   //       color: "red",
+  //   //       symbol: "-",
+  //   //     },
+  //   //   ],
+  //   // },
+  // ];
 
-  const detailedTableReport = [
-    {
-      row: [
-        {
-          cell: "Total",
-        },
-        {
-          field: totalDetails?.nonDiscountedTaxableValue,
-          color: "cyan",
-        },
-        {
-          field: totalDetails?.discountedTaxableValue,
-          color: "purple",
-          symbol: "+",
-        },
-        {
-          field: (
-            totalDetails?.nonDiscountedTaxableValue -
-            totalDetails?.discountedTaxableValue
-          ).toFixed(2),
-        },
-      ],
-    },
-    {
-      row: [
-        {
-          cell: "CGST",
-        },
-        {
-          field: totalDetails?.nonDiscountedCgstTotal,
-        },
-        {
-          field: totalDetails?.discountedCgstTotal,
-          color: "pink",
-          symbol: "+",
-        },
-        {
-          field: (
-            totalDetails?.nonDiscountedCgstTotal -
-            totalDetails?.discountedCgstTotal
-          ).toFixed(2),
-        },
-      ],
-    },
-    {
-      row: [
-        {
-          cell: "SGST",
-        },
-        {
-          field: totalDetails?.nonDiscountedSgstTotal,
-        },
-        {
-          field: totalDetails?.discountedSgstTotal,
-          color: "orange",
-          symbol: "+",
-        },
-        {
-          field: (
-            totalDetails?.nonDiscountedSgstTotal -
-            totalDetails?.discountedSgstTotal
-          ).toFixed(2),
-        },
-      ],
-    },
-    {
-      row: [
-        {
-          cell: "IGST",
-        },
-        {
-          field: totalDetails?.nonDiscountedIgstTotal,
-        },
-        {
-          field: totalDetails?.discountedIgstTotal,
-          color: "fuchsia",
-          symbol: "+",
-        },
-        {
-          field: (
-            totalDetails?.nonDiscountedIgstTotal -
-            totalDetails?.discountedIgstTotal
-          ).toFixed(2),
-        },
-      ],
-    },
-    {
-      row: [
-        {
-          cell: "Total",
-        },
-        {
-          cell: totalDetails?.nonDiscountedTotal,
-        },
-        {
-          cell: totalDetails?.discountedTotal,
-          color: "yellow",
-        },
-        {
-          field: (
-            totalDetails?.nonDiscountedTotal - totalDetails?.discountedTotal
-          ).toFixed(2),
-          color: "red",
-          symbol: "-",
-        },
-      ],
-    },
-    // {
-    //   row: [
-    //     {
-    //       cell: "Round",
-    //     },
-    //     {
-    //       field: totalDetails?.nonDiscountedRounded.value,
-    //       symbol: totalDetails?.nonDiscountedRounded.symbol,
-    //     },
-    //     {
-    //       field: totalDetails?.discountedRounded.value,
-    //       symbol: totalDetails?.discountedRounded.symbol,
-    //     },
-    //     {
-    //       field: totalDetails?.nonDiscountedRounded.value - totalDetails?.discountedRounded.value
-    //     },
-    //   ],
-    // },
-    // {
-    //   row: [
-    //     {
-    //       cell: "Total",
-    //     },
-    //     {
-    //       field: totalDetails?.nonDiscountedRounded?.total,
-    //     },
-    //     {
-    //       field: totalDetails?.discountedRounded?.total,
-    //     },
-    //     {
-    //       field: (
-    //         totalDetails?.nonDiscountedRounded?.total - totalDetails?.discountedRounded?.total
-    //       ).toFixed(2),
-    //       color: "red",
-    //       symbol: "-",
-    //     },
-    //   ],
-    // },
-  ];
+  // const tableHeaders = [
+  //   "Content",
+  //   "Pre Discount",
+  //   "Post Discount",
+  //   "Discounted Amount",
+  // ];
 
-  const tableHeaders = [
-    "Content",
-    "Pre Discount",
-    "Post Discount",
-    "Discounted Amount",
-  ];
-
-  const detailedReport = [
-    {
-      sectionName: "Product Value",
-      // totalField: "Total",
-      // total: totalDetails?.nonDiscountedTotal - totalDetails?.discountedAmount,
-      // color: "purple",
-      items: [
-        {
-          label: "Taxable Value",
-          field: totalDetails?.nonDiscountedTaxableValue,
-        },
-        // {
-        //   label: "Discounted Amount",
-        //   field: totalDetails?.discountedAmount,
-        //   symbol: "-",
-        //   color: "red",
-        // },
-        // {
-        //   label: "Discounted Percentage",
-        //   field: totalDetails?.discountedPercentage,
-        //   symbol: "%",
-        // },
-      ],
-    },
-    {
-      sectionName: "Taxes",
-      totalField: "Total",
-      total: totalDetails?.discountedTotalTax,
-      color: "yellow",
-      items: [
-        {
-          label: "Central GST",
-          field: totalDetails?.discountedCgstTotal,
-          symbol: "+",
-          color: "pink",
-        },
-        {
-          label: "State GST",
-          field: totalDetails?.discountedSgstTotal,
-          symbol: "+",
-          color: "orange",
-        },
-        {
-          label: "Integrated GST",
-          field: totalDetails?.discountedIgstTotal,
-          symbol: "+",
-          color: "fuchsia",
-        },
-        // {
-        //   label: "Reduction in Taxes",
-        //   field: totalDetails?.discountedTotalTax,
-        //   symbol: "-",
-        //   color: "red",
-        // },
-      ],
-    },
-    {
-      sectionName: "Discount",
-      totalField: "Total",
-      total: (
-        parseFloat(totalDetails?.discountedAmount) +
-        parseFloat(totalDetails?.discountReductionInTax)
-      ).toFixed(2),
-      color: "red",
-      items: [
-        {
-          label: "Discounted Amount",
-          field: totalDetails?.discountedAmount,
-          symbol: "-",
-        },
-        {
-          label: "Reduction in Taxes",
-          field: totalDetails?.discountReductionInTax,
-          symbol: "-",
-        },
-      ],
-    },
-    {
-      sectionName: "Summary",
-      totalField: "Total",
-      total:
-        totalDetails?.discountedTotal +
-        totalDetails?.discountedCgstTotal +
-        totalDetails?.discountedSgstTotal +
-        totalDetails?.discountedIgstTotal,
-      items: [
-        {
-          label: "Total Value",
-          field: totalDetails?.discountedTotal,
-          color: "purple",
-        },
-        {
-          label: "Total Tax",
-          field: totalDetails?.discountedTotalTax,
-          symbol: "+",
-          color: "yellow",
-        },
-      ],
-    },
-    {
-      items: [
-        {
-          label: "Rounded Off",
-          field: totalDetails?.discountedRounded?.value,
-          symbol: totalDetails?.discountedRounded?.symbol,
-          color: "black",
-        },
-      ],
-    },
-  ];
+  // const detailedReport = [
+  //   {
+  //     sectionName: "Product Value",
+  //     // totalField: "Total",
+  //     // total: totalDetails?.nonDiscountedTotal - totalDetails?.discountedAmount,
+  //     // color: "purple",
+  //     items: [
+  //       {
+  //         label: "Taxable Value",
+  //         field: totalDetails?.nonDiscountedTaxableValue,
+  //       },
+  //       // {
+  //       //   label: "Discounted Amount",
+  //       //   field: totalDetails?.discountedAmount,
+  //       //   symbol: "-",
+  //       //   color: "red",
+  //       // },
+  //       // {
+  //       //   label: "Discounted Percentage",
+  //       //   field: totalDetails?.discountedPercentage,
+  //       //   symbol: "%",
+  //       // },
+  //     ],
+  //   },
+  //   {
+  //     sectionName: "Taxes",
+  //     totalField: "Total",
+  //     total: totalDetails?.discountedTotalTax,
+  //     color: "yellow",
+  //     items: [
+  //       {
+  //         label: "Central GST",
+  //         field: totalDetails?.discountedCgstTotal,
+  //         symbol: "+",
+  //         color: "pink",
+  //       },
+  //       {
+  //         label: "State GST",
+  //         field: totalDetails?.discountedSgstTotal,
+  //         symbol: "+",
+  //         color: "orange",
+  //       },
+  //       {
+  //         label: "Integrated GST",
+  //         field: totalDetails?.discountedIgstTotal,
+  //         symbol: "+",
+  //         color: "fuchsia",
+  //       },
+  //       // {
+  //       //   label: "Reduction in Taxes",
+  //       //   field: totalDetails?.discountedTotalTax,
+  //       //   symbol: "-",
+  //       //   color: "red",
+  //       // },
+  //     ],
+  //   },
+  //   {
+  //     sectionName: "Discount",
+  //     totalField: "Total",
+  //     total: (
+  //       parseFloat(totalDetails?.discountedAmount) +
+  //       parseFloat(totalDetails?.discountReductionInTax)
+  //     ).toFixed(2),
+  //     color: "red",
+  //     items: [
+  //       {
+  //         label: "Discounted Amount",
+  //         field: totalDetails?.discountedAmount,
+  //         symbol: "-",
+  //       },
+  //       {
+  //         label: "Reduction in Taxes",
+  //         field: totalDetails?.discountReductionInTax,
+  //         symbol: "-",
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     sectionName: "Summary",
+  //     totalField: "Total",
+  //     total:
+  //       totalDetails?.discountedTotal +
+  //       totalDetails?.discountedCgstTotal +
+  //       totalDetails?.discountedSgstTotal +
+  //       totalDetails?.discountedIgstTotal,
+  //     items: [
+  //       {
+  //         label: "Total Value",
+  //         field: totalDetails?.discountedTotal,
+  //         color: "purple",
+  //       },
+  //       {
+  //         label: "Total Tax",
+  //         field: totalDetails?.discountedTotalTax,
+  //         symbol: "+",
+  //         color: "yellow",
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     items: [
+  //       {
+  //         label: "Rounded Off",
+  //         field: totalDetails?.discountedRounded?.value,
+  //         symbol: totalDetails?.discountedRounded?.symbol,
+  //         color: "black",
+  //       },
+  //     ],
+  //   },
+  // ];
   const cumulativeReport = [
     {
       label: "Total Items",
@@ -381,7 +365,7 @@ export default function TotalDetails({ totalDetails, form }: any) {
       {showDetails ? (
         <div className="space-y-8 max-h-[field(100vh-230px)] h-full hide-scrollbar overflow-y-auto">
           <div className="rounded-md border h-full overflow-auto">
-            <Table>
+            {/* <Table>
               <TableHeader>
                 <TableRow className="divide-x">
                   {tableHeaders.map((header, index) => (
@@ -412,7 +396,7 @@ export default function TotalDetails({ totalDetails, form }: any) {
                   </TableRow>
                 ))}
               </TableBody>
-            </Table>
+            </Table> */}
           </div>
           {/* {detailedReport?.map((data) => (
             <div>
@@ -447,7 +431,7 @@ export default function TotalDetails({ totalDetails, form }: any) {
         </div>
       ) : (
         <div className="space-y-8">
-          {cumulativeReport?.map((item) => (
+          {cumulativeReport?.map((item : any) => (
             <div className="flex items-center justify-between gap-2">
               <p className="text-sm">{item?.label}</p>
               <div className="flex items-center gap-2">

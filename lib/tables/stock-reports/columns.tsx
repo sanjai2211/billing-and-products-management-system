@@ -132,268 +132,252 @@ export const columns: ColumnDef<any>[] = [
   },
 ];
 
-export const productStockReportsColumns = (colors: any) => {
-  return [
-    {
-      accessorKey: "sNo",
-      header: ({ column }: any) => (
-        <DataTableColumnHeader column={column} title="S.No" />
-      ),
-      cell: ({ row }: any) => {
-        return row?.depth === 0 ? (
-          <div className="">
-            {row.index + 1}{" "}
-            {row.getCanExpand() && (
-              <span
-                style={{ cursor: "pointer" }}
-                onClick={row.getToggleExpandedHandler()}
-              >
-                {row.getIsExpanded() ? "👇" : "👉"}
-              </span>
-            )}
-          </div>
-        ) : null;
-      },
+export const productStockReportsColumns = [
+  {
+    accessorKey: "sNo",
+    header: ({ column }: any) => (
+      <DataTableColumnHeader column={column} title="S.No" />
+    ),
+    cell: ({ row }: any) => {
+      return row?.depth === 0 ? (
+        <div className="">
+          {row.index + 1}{" "}
+          {row.getCanExpand() && (
+            <span
+              style={{ cursor: "pointer" }}
+              onClick={row.getToggleExpandedHandler()}
+            >
+              {row.getIsExpanded() ? "👇" : "👉"}
+            </span>
+          )}
+        </div>
+      ) : null;
     },
-    {
-      accessorKey: "supplier",
-      header: ({ column }: any) => (
-        <DataTableColumnHeader column={column} title="Details" />
-      ),
-      cell: ({ row }: any) => {
-        return row?.depth === 0 ? (
+  },
+  {
+    accessorKey: "supplier",
+    header: ({ column }: any) => (
+      <DataTableColumnHeader column={column} title="Details" />
+    ),
+    cell: ({ row }: any) => {
+      return row?.depth === 0 ? (
+        <ProductDetails
+          data={row.original?.product?.Product}
+          color={row.original?.productColor}
+        />
+      ) : (
+        <div className="pl-4">
+          {parseInt((row as any).parentId) + 1 + "." + (row?.index + 1)}
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "cost",
+    header: ({ column }: any) => (
+      <DataTableColumnHeader column={column} title="Cost" />
+    ),
+    cell: ({ row }: any) => {
+      const color = row.original?.productColors;
+      return row?.subRows?.length && row?.depth == 0 ? (
+        <TextDisplay
+          heading={row?.original?.items?.length}
+          subHeading={"Total Stock Items"}
+          color={row.original?.productColor}
+        />
+      ) : (
+        <div
+          style={{
+            color,
+          }}
+        >
+          &#8377; {row.getValue("cost")}
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "quantity",
+    header: ({ column }: any) => (
+      <DataTableColumnHeader column={column} title="Quantity" />
+    ),
+    cell: ({ row }: any) => {
+      const color = row.original?.productColors;
+
+      return row?.subRows?.length && row?.depth === 0 ? (
+        <TextDisplay
+          heading={row.getValue("quantity")}
+          subHeading={"Total Quantity"}
+          color={row.original?.productColor}
+        />
+      ) : (
+        <div style={{ color }}>
+          {row.getValue("quantity")} {row?.original?.product?.Product?.unit}
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "totalValue",
+    header: ({ column }: any) => (
+      <DataTableColumnHeader column={column} title="Total Value" />
+    ),
+    cell: ({ row }: any) => {
+      const color = row.original?.productColors;
+
+      return row?.subRows?.length && row?.depth === 0 ? (
+        <TextDisplay
+          heading={`₹  ${row.getValue("totalValue")}`}
+          subHeading={"Total Value"}
+          color={row.original?.productColor}
+        />
+      ) : (
+        <div style={{ color }}>
+          &#8377; {row.getValue("cost") * row.getValue("quantity")}
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "stock",
+    header: ({ column }: any) => (
+      <DataTableColumnHeader column={column} title="Details" />
+    ),
+    cell: ({ row }: any) => {
+      return row?.subRows?.length && row?.depth === 0 ? null : (
+        <TextDisplay
+          heading={row?.original?.Stock?.stockCode}
+          subHeading={new Date(
+            row?.original?.Stock?.createdAt
+          ).toLocaleDateString()}
+          color={row.original?.stockColor}
+        />
+      );
+    },
+  },
+];
+
+export const customerStockReportsColumns = [
+  {
+    accessorKey: "sNo",
+    header: ({ column }: any) => (
+      <DataTableColumnHeader column={column} title="S.No" />
+    ),
+    cell: ({ row }: any) => {
+      return row?.depth === 0 ? (
+        <div className="">
+          {row.index + 1}{" "}
+          {row.getCanExpand() && (
+            <span
+              style={{ cursor: "pointer" }}
+              onClick={row.getToggleExpandedHandler()}
+            >
+              {row.getIsExpanded() ? "👇" : "👉"}
+            </span>
+          )}
+        </div>
+      ) : (
+        <div className="pl-4" >
+          {parseInt((row as any).parentId) + 1 + "." + (row?.index + 1)}
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "supplier",
+    header: ({ column }: any) => (
+      <DataTableColumnHeader column={column} title="Details" />
+    ),
+    cell: ({ row }: any) => {
+      return row?.depth === 0 ? (
+        <TextDisplay
+          heading={row?.original?.Stock?.stockCode}
+          subHeading={new Date(
+            row?.original?.Stock?.createdAt
+          ).toLocaleDateString()}
+          color={row?.original?.stockColor}
+        />
+      ) : (
+        <div className="pl-4">
           <ProductDetails
             data={row.original?.product?.Product}
-            color={row.original?.color}
+            color={row?.original?.productColor}
           />
-        ) : (
-          <div className="pl-4">
-            {parseInt((row as any).parentId) + 1 + "." + (row?.index + 1)}
-          </div>
-        );
-      },
+        </div>
+      );
     },
-    {
-      accessorKey: "cost",
-      header: ({ column }: any) => (
-        <DataTableColumnHeader column={column} title="Cost" />
-      ),
-      cell: ({ row }: any) => {
-        return row?.subRows?.length && row?.depth == 0 ? (
-          <TextDisplay
-            heading={row?.original?.items?.length}
-            subHeading={"Total Stock Items"}
-            color={row.original?.color}
-          />
-        ) : (
-          <div
-            style={{
-              color:
-                row?.getParentRow()?.original?.color || row?.original?.color,
-            }}
-          >
-            &#8377; {row.getValue("cost")}
-          </div>
-        );
-      },
+  },
+  {
+    accessorKey: "cost",
+    header: ({ column }: any) => (
+      <DataTableColumnHeader column={column} title="Cost" />
+    ),
+    cell: ({ row }: any) => {
+      console.log({ aaab: row?.original?.productColor });
+      return row?.depth === 0 ? (
+        <TextDisplay
+          heading={row?.original?.items?.length}
+          subHeading={"Total Stock Items"}
+          color={row?.original?.stockColor}
+        />
+      ) : (
+        <div
+          className="pl-4"
+          style={{
+            color: row?.original?.productColors,
+          }}
+        >
+          &#8377; {row.getValue("cost")}
+        </div>
+      );
     },
-    {
-      accessorKey: "quantity",
-      header: ({ column }: any) => (
-        <DataTableColumnHeader column={column} title="Quantity" />
-      ),
-      cell: ({ row }: any) => {
-        return row?.subRows?.length && row?.depth === 0 ? (
-          <TextDisplay
-            heading={row.getValue("quantity")}
-            subHeading={"Total Quantity"}
-            color={row.original?.color}
-          />
-        ) : (
-          <div
-            style={{
-              color:
-                row?.getParentRow()?.original?.color || row?.original?.color,
-            }}
-          >
-            {row.getValue("quantity")} {row?.original?.product?.Product?.unit}
-          </div>
-        );
-      },
+  },
+  {
+    accessorKey: "quantity",
+    header: ({ column }: any) => (
+      <DataTableColumnHeader column={column} title="Quantity" />
+    ),
+    cell: ({ row }: any) => {
+      return row?.depth === 0 ? (
+        <TextDisplay
+          heading={row.getValue("quantity")}
+          subHeading={"Total Quantity"}
+          color={row?.original?.stockColor}
+        />
+      ) : (
+        <div
+          className="pl-4"
+          style={{
+            color: row?.getParentRow()?.original?.color,
+          }}
+        >
+          {row.getValue("quantity")} {row?.original?.product?.Product?.unit}
+        </div>
+      );
     },
-    {
-      accessorKey: "totalValue",
-      header: ({ column }: any) => (
-        <DataTableColumnHeader column={column} title="Total Value" />
-      ),
-      cell: ({ row }: any) => {
-        return row?.subRows?.length && row?.depth === 0 ? (
-          <TextDisplay
-            heading={`₹  ${row.getValue("totalValue")}`}
-            subHeading={"Total Value"}
-            color={row.original?.color}
-          />
-        ) : (
-          <div
-            style={{
-              color:
-                row?.getParentRow()?.original?.color || row?.original?.color,
-            }}
-          >
-            &#8377; {row.getValue("cost") * row.getValue("quantity")}
-          </div>
-        );
-      },
+  },
+  {
+    accessorKey: "totalValue",
+    header: ({ column }: any) => (
+      <DataTableColumnHeader column={column} title="Total Value" />
+    ),
+    cell: ({ row }: any) => {
+      return row?.depth === 0 ? (
+        <TextDisplay
+          heading={`₹  ${row.getValue("totalValue")}`}
+          subHeading={"Total Value"}
+          color={row?.original?.stockColor}
+        />
+      ) : (
+        <div
+          className="pl-4"
+          style={{
+            color: row?.getParentRow()?.original?.color,
+          }}
+        >
+          &#8377; {row.getValue("cost") * row.getValue("quantity")}
+        </div>
+      );
     },
-    {
-      accessorKey: "stock",
-      header: ({ column }: any) => (
-        <DataTableColumnHeader column={column} title="Details" />
-      ),
-      cell: ({ row }: any) => {
-        return row?.subRows?.length && row?.depth === 0 ? null : (
-          <TextDisplay
-            heading={row?.original?.Stock?.stockCode}
-            subHeading={new Date(
-              row?.original?.Stock?.createdAt
-            ).toLocaleDateString()}
-          />
-        );
-      },
-    },
-  ];
-};
-export const customerStockReportsColumns = (colors: any) => {
-
-  const getColors = (row: any, type: any) => {
-    console.log({row,type,aaab : row?.orginal?.stockColor})
-    if (type === "stock") return colors[row?.original?.stockColor];
-    else return colors[row?.original?.productColor];
-  };
-
-  return [
-    {
-      accessorKey: "sNo",
-      header: ({ column }: any) => (
-        <DataTableColumnHeader column={column} title="S.No" />
-      ),
-      cell: ({ row }: any) => {
-        return row?.depth === 0 ? (
-          <div className="">
-            {row.index + 1}{" "}
-            {row.getCanExpand() && (
-              <span
-                style={{ cursor: "pointer" }}
-                onClick={row.getToggleExpandedHandler()}
-              >
-                {row.getIsExpanded() ? "👇" : "👉"}
-              </span>
-            )}
-          </div>
-        ) : (
-          <div className="pl-4">
-            {parseInt((row as any).parentId) + 1 + "." + (row?.index + 1)}
-          </div>
-        );
-      },
-    },
-    {
-      accessorKey: "supplier",
-      header: ({ column }: any) => (
-        <DataTableColumnHeader column={column} title="Details" />
-      ),
-      cell: ({ row }: any) => {
-        return row?.depth === 0 ? (
-          <TextDisplay
-            heading={row?.original?.Stock?.stockCode}
-            subHeading={new Date(
-              row?.original?.Stock?.createdAt
-            ).toLocaleDateString()}
-            color={getColors(row,'stock')}
-          />
-        ) : (
-          <div className="pl-4">
-            <ProductDetails
-              data={row.original?.product?.Product}
-              color={getColors(row,'product')}
-              />
-          </div>
-        );
-      },
-    },
-    {
-      accessorKey: "cost",
-      header: ({ column }: any) => (
-        <DataTableColumnHeader column={column} title="Cost" />
-      ),
-      cell: ({ row }: any) => {
-        console.log({aaab :               getColors(row,'product')})
-        return row?.depth === 0 ? (
-          <TextDisplay
-            heading={row?.original?.items?.length}
-            subHeading={"Total Stock Items"}
-            color={getColors(row,'stock')}
-          />
-        ) : (
-          <div
-            className="pl-4"
-            style={{
-              color:getColors(row,'product')
-              ,
-            }}
-          >
-            &#8377; {row.getValue("cost")}
-          </div>
-        );
-      },
-    },
-    {
-      accessorKey: "quantity",
-      header: ({ column }: any) => (
-        <DataTableColumnHeader column={column} title="Quantity" />
-      ),
-      cell: ({ row }: any) => {
-        return row?.depth === 0 ? (
-          <TextDisplay
-            heading={row.getValue("quantity")}
-            subHeading={"Total Quantity"}
-            color={getColors(row,'stock')}
-          />
-        ) : (
-          <div
-            className="pl-4"
-            style={{
-              color: row?.getParentRow()?.original?.color,
-            }}
-          >
-            {row.getValue("quantity")} {row?.original?.product?.Product?.unit}
-          </div>
-        );
-      },
-    },
-    {
-      accessorKey: "totalValue",
-      header: ({ column }: any) => (
-        <DataTableColumnHeader column={column} title="Total Value" />
-      ),
-      cell: ({ row }: any) => {
-        return row?.depth === 0 ? (
-          <TextDisplay
-            heading={`₹  ${row.getValue("totalValue")}`}
-            subHeading={"Total Value"}
-            color={getColors(row,'stock')}
-          />
-        ) : (
-          <div
-            className="pl-4"
-            style={{
-              color: row?.getParentRow()?.original?.color,
-            }}
-          >
-            &#8377; {row.getValue("cost") * row.getValue("quantity")}
-          </div>
-        );
-      },
-    },
-  ];
-};
+  },
+];

@@ -26,20 +26,58 @@ import { useMemo, useState } from "react";
 import { CustomizedTab } from "@/components/ui/tabs";
 
 export default function CustomerStockReports({ reports, details }: any) {
-  console.time();
   const [currentTab, setCurrentTab] = useState("stocks");
 
-  const getParsedTableData = (data: any, type: any) => {
+  const idObject: any = {};
+  const index = -1;
+
+  const getParsedTableData = (data: any, colors: any, type: any) => {
     const field = type === "stock" ? "Stock" : "product";
+
+    const attachColors = (list: any) => {
+      const stockId = list?.Stock?.id;
+      const productId = list?.product?.Product?.id;
+
+      const getNextColor = () => {
+        return colors[index + 1];
+      };
+
+      const stockColor = idObject[stockId] || getNextColor();
+      const productColor = idObject[productId] || getNextColor();
+
+      if (!idObject[stockId]) {
+        idObject[stockId] = stockColor;
+      }
+      if (!idObject[productId]) {
+        idObject[productId] = productColor;
+      }
+
+      return {
+        stockColor,
+        productColor,
+      };
+    };
+
     return data?.map((list: any, index: number) => {
       if (!list?.items?.length) {
-        return { ...list, totalValue: list.cost * list?.quantity };
+        const newColors = attachColors(list);
+
+        return {
+          ...list,
+          totalValue: list.cost * list?.quantity,
+          ...newColors,
+        };
       }
       const items = list?.items;
       const totalCostArray = getCostTotalData(items);
       const totalValue = calculateTotal(totalCostArray);
       const quantity = calculateTotalByField(items, "quantity");
       const data = list?.items[0]?.[field];
+
+      items?.map((item: any) => {
+        const newColors = attachColors(list);
+        return { ...item, ...newColors };
+      });
 
       return {
         quantity,
@@ -125,7 +163,6 @@ export default function CustomerStockReports({ reports, details }: any) {
   }
 
   // Grouping the data based on supplier
-  console.log({ reportsss: reports });
   const groupedStockData = groupDataByField(reports || [], "Stock/id", "id");
   const groupedProductData = groupDataByField(
     reports || [],
@@ -135,14 +172,43 @@ export default function CustomerStockReports({ reports, details }: any) {
 
   console.log({ groupedStockData, groupedProductData, reports });
 
+  const colors = useMemo(
+    () => generateColors(groupedStockData?.length + groupedProductData?.length),
+    [groupedStockData?.length + groupedProductData?.length]
+  );
+
   //   Parsing the grouped data for the table
-  const parsedTableData = getParsedTableData(groupedStockData, "stock") || [];
+  const parsedTableData =
+    getParsedTableData(groupedStockData, colors, "stock") || [];
   const parsedProductTableData =
-    getParsedTableData(groupedProductData, "product") || [];
+    getParsedTableData(groupedProductData, colors, "product") || [];
 
   console.log({ parsedTableData, parsedProductTableData });
 
   const stockLabels = getValuesWithObject(parsedTableData, "Stock/stockCode");
+
+//   const productColors = useMemo(
+//     () => generateColors(parsedProductTableData?.length),
+//     [parsedProductTableData?.length]
+//   );
+
+//   const getMergedStockColors = generateMapData(
+//     parsedTableData,
+//     stockColors.slice(0, parsedTableData?.length),
+//     "Stock/id"
+//   );
+//   const getMergedProductColors = generateMapData(
+//     parsedProductTableData,
+//     stockColors,
+//     "product/Product/id"
+//   );
+
+//   const colors = { ...getMergedStockColors, ...getMergedProductColors };
+
+//   console.log({ getMergedProductColors, getMergedStockColors });
+//   const stockTableData = attachColors(parsedTableData, stockColors);
+//   const productTableData = attachColors(parsedProductTableData, productColors);
+
   const productLabels = getValuesWithObject(
     parsedProductTableData,
     "product/Product/productName"
@@ -156,56 +222,10 @@ export default function CustomerStockReports({ reports, details }: any) {
   const stockCode = getNestedValues(parsedProductTableData, "Stock/stockCode");
   console.log({ aaaa: stockCode });
 
-  const stockColors = useMemo(
-    () =>
-      generateColors(parsedTableData?.length + parsedProductTableData?.length),
-    [parsedTableData?.length]
-  );
-  const productColors = useMemo(
-    () => generateColors(parsedProductTableData?.length),
-    [parsedProductTableData?.length]
-  );
-
-  const getMergedStockColors = generateMapData(
-    parsedTableData,
-    stockColors,
-    "Stock/id"
-  );
-  const getMergedProductColors = generateMapData(
-    parsedProductTableData,
-    productColors,
-    "product/Product/id"
-  );
-
-  const colors = { ...getMergedStockColors, ...getMergedProductColors };
-
-  const attachColorById = (data: any) => {
-    const addColors = (list: any) => {
-      if (list?.Stock?.id) {
-        list["stockColor"] = colors[list?.Stock?.id];
-      }
-      if (list?.product?.Product?.id) {
-        list["productColor"] = colors[list?.product?.Product?.id];
-      }
-    };
-    return data?.map((list: any) => {
-      addColors(list);
-      if (list?.items) {
-        list?.items?.map((item: any) => addColors(item));
-      }
-      return list;
-    });
-  };
-
-  console.log({ getMergedProductColors, getMergedStockColors });
-  const stockTableData = attachColorById(parsedTableData);
-  const productTableData = attachColorById(parsedProductTableData);
-  console.log({ stockTableData, productTableData });
-
   // Total value Graph
 
   const totalValueData = getValuesWithObject(parsedTableData, "totalValue");
-  const totalValueDataset = generateGraphData([totalValueData], stockColors);
+  const totalValueDataset = generateGraphData([totalValueData], colors);
 
   // Total value based on Product
   const totalValueProductData = getValuesWithObject(
@@ -214,7 +234,7 @@ export default function CustomerStockReports({ reports, details }: any) {
   );
   const totalValueProductDataset = generateGraphData(
     [totalValueProductData],
-    productColors
+    colors
   );
   console.log({ totalValueData, totalValueDataset, parsedTableData });
 
@@ -233,7 +253,7 @@ export default function CustomerStockReports({ reports, details }: any) {
   );
   const productCostGraph = generateGraphData(
     stackedProductCostData,
-    productColors,
+    colors,
     "bar",
     { stockCode }
   );
@@ -246,7 +266,7 @@ export default function CustomerStockReports({ reports, details }: any) {
   );
   const productQuantityGraph = generateGraphData(
     [productQuantityGraphData],
-    productColors,
+    colors,
     "line"
   );
 
@@ -414,21 +434,19 @@ export default function CustomerStockReports({ reports, details }: any) {
   ];
 
   console.log({ chartData });
-  //   console.timeEnd();
-  console.timeLog();
 
   return (
     <div className="w-full space-y-4">
       <div className="flex gap-4 w-full">
         <div className="w-full space-y-4">
-          <DataTable
-            data={currentTab === "stocks" ? stockTableData : productTableData}
-            columns={
-              currentTab === "stocks"
-                ? customerStockReportsColumns
-                : productStockReportsColumns
-            }
-          />
+          {/* <DataTable
+            data={currentTab === "stocks" ? parsedTableData : parsedProductTableData} 
+            // columns={
+            //   currentTab === "stocks"
+            //     ? customerStockReportsColumns(colors)
+            //     : productStockReportsColumns(colors)
+            // }
+        //   /> */}
           <div className="flex gap-4">
             <div
               className={`w-full border rounded-lg bg-background p-4 space-y-4`}

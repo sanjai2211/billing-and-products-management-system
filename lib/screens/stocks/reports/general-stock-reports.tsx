@@ -27,19 +27,9 @@ import { CustomizedTab } from "@/components/ui/tabs";
 import ChartBlock from "@/lib/charts/chart-block";
 import { EdgeCase } from "@/lib/components/edge-case";
 
-export default function CustomerStockReports({ reports, details,params }: any) {
+export default function GeneralStockReports({ reports, details,params }: any) {
 
-  if (!params?.get("customerId")) {
-    return (
-      <div className="flex w-full justify-center items-center flex-1  h-[calc(100vh-110px)]">
-        <EdgeCase
-          heading="Select Customer"
-          subHeading="Select any Customer to view the analytics."
-        />
-      </div>
-    );
-  }
-   
+ 
   const [currentTab, setCurrentTab] = useState("products");
 
   const getParsedTableData = (data: any, type: any) => {
@@ -136,6 +126,7 @@ export default function CustomerStockReports({ reports, details,params }: any) {
       // Traverse the path to get the value of the field
       let value = item;
       for (const segment of pathSegments) {
+        console.log({ segment, pathSegments, value });
         if (value?.[segment] !== undefined) {
           value = value[segment];
         } else {
@@ -143,6 +134,7 @@ export default function CustomerStockReports({ reports, details,params }: any) {
           break;
         }
       }
+      console.log({ valuess: value });
 
       // If the field is found, map it to the corresponding color
       if (value) {
@@ -154,7 +146,8 @@ export default function CustomerStockReports({ reports, details,params }: any) {
   }
 
   // Grouping the data based on supplier
-    const groupedStockData = groupDataByField(reports || [], "Stock/id", "id");
+  console.log({ reportsss: reports });
+  const groupedStockData = groupDataByField(reports || [], "Stock/id", "id");
   const groupedProductData = groupDataByField(
     reports || [],
     "product/Product/id",
@@ -216,6 +209,7 @@ export default function CustomerStockReports({ reports, details,params }: any) {
 
         if (obj.hasOwnProperty(productId)) {
           const index = Object.keys(obj)?.indexOf(productId);
+          console.log({ productId, obj, aaa: Object.keys(obj), index });
           obj[productId]["data"][index] = product?.[field];
         } else {
           obj[productId] = {
@@ -372,6 +366,7 @@ export default function CustomerStockReports({ reports, details,params }: any) {
         tooltip: {
           callbacks: {
             label: function (context: { label: string; raw: string }) {
+              console.log({ context });
               // Modify tooltip label content
               return "Sales in " + context.label + ": $" + context.raw;
             },
@@ -591,6 +586,8 @@ export default function CustomerStockReports({ reports, details,params }: any) {
       label: "Products",
     },
   ];
+
+  console.timeLog();
 
   return (
     <div className="w-full space-y-4">

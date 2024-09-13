@@ -1,5 +1,14 @@
 "use client";
 
+// {
+//   defaultValues: {
+//     // code: getDefaultValues("productId", "code"),
+//     // gstIn: getDefaultValues("customerId", "gstIn"),
+//     // customerName: getDefaultValues("customerId", "customerName"),
+//     // productName: getDefaultValues("productId", "productName"),
+//   },
+// }
+
 import {
   columns,
   customerStockReportsColumns,

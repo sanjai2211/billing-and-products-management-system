@@ -4,7 +4,10 @@ import { columns } from "@/lib/tables/stock-reports/columns";
 import { DataTable } from "@/lib/tables/my-stocks/data-table";
 import Chart from "@/lib/charts";
 import { groupDataByField } from "@/lib/utils-helper/screens/getGroupedData";
-import RunningNumber from "@/lib/components/running-number";
+import {
+  RunningNumber,
+  RunningNumberWithText,
+} from "@/lib/components/running-number";
 import { sortAscending } from "@/lib/utils-helper/data/sort";
 import {
   attachColors,
@@ -16,8 +19,22 @@ import { getValuesWithObject } from "@/lib/utils-helper/data/get-values-with-obj
 import TextDisplay from "@/lib/components/text-display";
 import { calculateTotal } from "@/lib/utils-helper/data/get-total";
 import { useMemo } from "react";
+import ChartBlock from "@/lib/charts/chart-block";
+import { EdgeCase } from "@/lib/components/edge-case";
 
-export default function ProductStockReports({ reports, details }: any) {
+export default function ProductStockReports({ reports, details, params }: any) {
+
+  if (!params?.get("productId")) {
+    return (
+      <div className="flex w-full justify-center items-center flex-1  h-[calc(100vh-110px)]">
+        <EdgeCase
+          heading="Select Product"
+          subHeading="Select any product to view the analytics."
+        />
+      </div>
+    );
+  }
+
   const getParsedTableData = (data: any) => {
     return data?.map((list: any, index: number) => {
       if (!list?.items?.length) {
@@ -58,7 +75,6 @@ export default function ProductStockReports({ reports, details }: any) {
   };
 
   // Grouping the data based on supplier
-  console.log({ reports });
   const groupedData = groupDataByField(
     reports || [],
     "Stock/Customer/id",
@@ -88,7 +104,6 @@ export default function ProductStockReports({ reports, details }: any) {
   const quantityGraphData = getTotalData(tableData, "quantity");
   const quantityGraph = generateGraphData([quantityGraphData], colors, "line");
 
-  console.log({ quantityGraph });
 
   // Labels for each graph
   const labels = getValuesWithObject(
@@ -142,7 +157,6 @@ export default function ProductStockReports({ reports, details }: any) {
         tooltip: {
           callbacks: {
             label: function (context: { label: string; raw: string }) {
-              console.log({ context });
               // Modify tooltip label content
               return "Sales in " + context.label + ": $" + context.raw;
             },
@@ -185,7 +199,7 @@ export default function ProductStockReports({ reports, details }: any) {
         responsive: true,
         plugins: {
           legend: {
-            display: true,
+            display: false,
             position: "right", // Position the legend on the right side
             labels: {
               boxWidth: 10, // Customize the width of the legend box
@@ -201,138 +215,54 @@ export default function ProductStockReports({ reports, details }: any) {
     },
   ];
 
-  return (
-    <div className="flex gap-4 w-full">
-      <div className="w-full space-y-4">
-        <DataTable data={tableData} columns={columns} />
-        <div className="flex gap-4">
-          <div
-            className={`w-full border rounded-lg bg-background p-4 space-y-4`}
-          >
-            <TextDisplay
-              heading="Cost"
-              subHeading="Distribution of Product Cost purchased from each suppliers"
-            />
-            <Chart data={chartData[0]} />
-            <div />
-          </div>
-          <div
-            className={`w-full border rounded-lg bg-background p-4 space-y-4`}
-          >
-            <div className="flex gap-2 justify-between">
-              <TextDisplay
-                heading="Quantity"
-                subHeading="Distribution of Total Quantity purchased from each suppliers"
-              />
-              {/* <div className="space-y-2 rounded-sm">
-                  <RunningNumber
-                    endNumber={calculateTotal(quantityGraphData) * 989}
-                    duration={1}
-                    fontSize="text-xs"
-                    startColor="text-green-500"
-                  />
-                  <p className="text-xs opacity-50 text-right">
-                    {details?.unit}
-                  </p>
-                </div> */}
-            </div>
+  
 
-            <Chart data={chartData[1]} />
-            <div />
-            <div />
-            <div />
-          </div>
+  return (
+    <div className="w-full space-y-4">
+      <div className="flex gap-4 w-full">
+        <DataTable data={tableData} columns={columns} />
+        <div className="flex flex-col gap-2 justify-between items-center w-[210px] border rounded-md divide divide-y">
+          <RunningNumberWithText
+            endNumber={details?.openStock}
+            duration={2}
+            fontSize="text-xl"
+            rightSymbol={details?.unit}
+            textContent="Current Stock"
+          />
+          <RunningNumberWithText
+            endNumber={details?.salesRate}
+            fontSize="text-base"
+            textContent="Current Sales Rates"
+            leftSymbol={`₹`}
+          />
+          <RunningNumberWithText
+            endNumber={details?.salesRate * details?.stockValue} // Count up to 100
+            fontSize="text-base"
+            textContent="Total Stock Value"
+            leftSymbol={`₹`}
+            duration={0.5}
+          />
         </div>
       </div>
-      <div className="space-y-4 w-full">
-        <div className="w-full border rounded-md divide divide-y">
-          <div className="flex flex-col justify-center p-2">
-            <p className="text-center text-xs opacity-50">Current Stock</p>
-            <RunningNumber
-              endNumber={details?.openStock}
-              duration={1}
-              fontSize="text-xl"
-            />
-            <p className="text-center text-xs">{details?.unit}</p>
-          </div>
-          <div className="flex justify-between divide divide-x flex-1">
-            <div className="flex flex-col justify-center flex-1 p-2 ">
-              <div className="flex gap-1 items-center justify-center">
-                <p>&#8377;</p>
-                <RunningNumber
-                  endNumber={details?.salesRate} // Count up to 100
-                  duration={2} // Complete in 10 seconds
-                  fontSize="text-xl"
-                />
-              </div>
+      <div className="flex gap-4">
+        <div className="flex flex-1 gap-4 justify-between">
+          <ChartBlock
+            heading="Total Cost"
+            subHeading="Distribution of cost value purchased from each supplier"
+            chartData={chartData[0]}
+          />
 
-              <p className="text-center text-sm opacity-50">
-                Current Sales Rate
-              </p>
-            </div>
-            <div className="flex flex-col justify-center  flex-1 p-4">
-              <div className="flex gap-1 items-center justify-center">
-                <p>&#8377;</p>
-                <RunningNumber
-                  endNumber={details?.salesRate * details?.stockValue} // Count up to 100
-                  duration={2} // Complete in 10 seconds
-                  fontSize="text-xl"
-                />
-              </div>
+          <ChartBlock
+            heading="Total Cost"
+            subHeading="Distribution of cost value purchased from each supplier"
+            chartData={chartData[2]}
+          />
 
-              <p className="text-center text-sm opacity-50">
-                Total Stock Value
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className={`w-full h-[424px] border rounded-lg bg-background p-4`}>
-          <div className="flex gap-2 justify-between">
-            <TextDisplay
-              heading="Total Value"
-              subHeading="Distribution of Tost value purchased from each supplier"
-            />
-            <div className="space-y-2 rounded-sm">
-              <div className="flex gap-1">
-                <p className="text-xs">&#8377;</p>
-
-                <RunningNumber
-                  endNumber={calculateTotal(totalCostData) * 989}
-                  duration={1}
-                  fontSize="text-xs"
-                  startColor="text-green-500"
-                />
-              </div>
-
-              <p className="text-xs opacity-50 text-right">Total Cost</p>
-            </div>
-          </div>
-
-          <Chart data={chartData[2]} />
-        </div>
-        <div className={`w-full h-[424px] border rounded-lg bg-background p-4`}>
-          <div className="flex gap-2 justify-between">
-            <TextDisplay
-              heading="Total Value"
-              subHeading="Distribution of Tost value purchased from each supplier"
-            />
-            <div className="space-y-2 rounded-sm">
-              <div className="flex gap-1">
-                <p className="text-xs">&#8377;</p>
-
-                <RunningNumber
-                  endNumber={calculateTotal(totalCostData) * 989}
-                  duration={1}
-                  fontSize="text-xs"
-                  startColor="text-green-500"
-                />
-              </div>
-
-              <p className="text-xs opacity-50 text-right">Total Cost</p>
-            </div>
-          </div>
-
-          <Chart data={chartData[2]} />
+          <ChartBlock
+            heading="Total Cost"
+            subHeading="Distribution of cost value purchased from each supplier"
+            chartData={chartData[1]}
+          />
         </div>
       </div>
     </div>

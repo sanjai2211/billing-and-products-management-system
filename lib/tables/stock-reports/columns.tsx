@@ -11,23 +11,7 @@ import { DataTableColumnHeader } from "./data-table-column-header";
 import { PeopleDetails, ProductDetails } from "../components/table-components";
 import TextDisplay from "@/lib/components/text-display";
 
-export const columns: ColumnDef<any>[] = [
-  // Column for expanding rows
-  {
-    id: "expander",
-    header: () => null,
-    cell: ({ row }: any) => {
-      console.log({ row, aaa: row?.getParentRow() });
-      return row.getCanExpand() ? (
-        <button
-          onClick={row.getToggleExpandedHandler()}
-          className="text-blue-500"
-        >
-          {/* {row.getIsExpanded() ? "Collapse" : "Expand"} */}
-        </button>
-      ) : null;
-    },
-  },
+export const columns: ColumnDef<any>[] = [  
   {
     accessorKey: "sNo",
     header: ({ column }: any) => (

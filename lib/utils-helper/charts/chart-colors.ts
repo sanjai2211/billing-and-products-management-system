@@ -1,3 +1,5 @@
+import { getValueFromObjectByPath } from "../data/get-values-with-object";
+
 const getRandomColor = (alpha = 1) => {
   const getRandomInt = () => Math.floor(Math.random() * 256);
   const r = getRandomInt();
@@ -25,8 +27,10 @@ export const generateColors = (
 };
 
 export const modifyOpacity = (colors: string[], opacity: number): string[] => {
-  return colors.map((color) => {
-    const rgba = color.match(
+  console.log({colorrrr : colors})
+  return colors?.map((color) => {
+    console.log({color})
+    const rgba = color?.match(
       /rgba?\((\d+),\s*(\d+),\s*(\d+),?\s*(\d?.?\d*)?\)/
     );
 
@@ -45,5 +49,15 @@ export const attachColors = (data: any, colors: any) => {
       ...item,
       color: colors[index],
     };
+  });
+};
+
+export const attachColorsByPath = (data: any, colors: any, path: any) => {
+  const pathParts = path?.split("/");
+
+  return data?.map((item: any, index: any) => {
+    console.log({pathhhh : path,path,item})
+    const identity = getValueFromObjectByPath(item, pathParts);
+    return colors[identity];
   });
 };

@@ -9,7 +9,7 @@ interface RunningNumberProps {
   endColor?: string; // Tailwind end color class
 }
 
-const RunningNumber: React.FC<RunningNumberProps> = ({
+export const RunningNumber: React.FC<RunningNumberProps> = ({
   endNumber,
   duration = 2,
   startNumber = 0,
@@ -49,10 +49,22 @@ const RunningNumber: React.FC<RunningNumberProps> = ({
         }`}
         style={{ transitionProperty: "color", color: endColor }}
       >
-        {currentNumber}
+        {currentNumber || 0}
       </div>
     </div>
   );
 };
 
-export default RunningNumber;
+export const RunningNumberWithText = (props: any) => {
+  const { textContent, leftSymbol, rightSymbol, ...rest } = props;
+  return (
+    <div className="flex flex-col justify-center w-full h-full flex-1">
+      <div className="flex gap-1 items-center justify-center">
+        {leftSymbol && <p className="text-sm">{leftSymbol}</p>}
+        <RunningNumber {...rest} />
+        {rightSymbol && <p className="text-sm">{rightSymbol}</p>}
+      </div>
+      <p className="text-center text-xs opacity-50">{textContent}</p>
+    </div>
+  );
+};

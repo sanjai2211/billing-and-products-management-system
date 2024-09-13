@@ -1,14 +1,20 @@
-export const getValuesWithObject = (data : any, path : any) => {
-  const pathParts = path.split('/');
+export const getValuesWithObject = (data: any, path: any) => {
+  const pathParts = path?.split("/");
 
-  return data.map((item : any) => {
-    let value = item;
-    for (const part of pathParts) {
-      value = value[part];
-      if (value === undefined) {
-        break;
-      }
+  return data
+    .map((item: any) => {
+      return getValueFromObjectByPath(item, pathParts);
+    })
+    .filter((value: any) => value !== undefined);
+};
+
+export const getValueFromObjectByPath = (data: any, path: any) => {
+  let value = data;
+  for (const part of path) {
+    value = value[part];
+    if (value === undefined) {
+      break;
     }
-    return value;
-  }).filter((value : any) => value !== undefined);
+  }
+  return value;
 };

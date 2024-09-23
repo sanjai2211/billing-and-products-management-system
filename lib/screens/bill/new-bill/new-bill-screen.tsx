@@ -92,7 +92,14 @@ export default function NewBillScreen({ billDetails, billId, session }: any) {
 
   const handleDownloadBill = async () =>
     await exportToPdf({
-      data: [billDetails],
+      data: [{
+        ...form.getValues(),
+        Shop,
+        cumulativeReport,
+        total: totalDetails?.discountedRounded?.total,
+        shopStateCode,
+        customerStateCode
+      }],
       exportOptions: [
         {
           templateId: "billTemplate",

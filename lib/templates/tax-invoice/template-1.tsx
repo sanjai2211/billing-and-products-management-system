@@ -124,31 +124,26 @@ export const TemplateOne = ({ data, theme = "light", download }: any) => {
   };
 
   const tableHeadings = [
-    { id: "sNo", label: "S.No" },
+    { id: "sNo", label: "SNo", width: "27px" },
     { id: "description", label: "Description" },
-    { id: "hsnSac", label: "HSN/SAC" },
-    { id: "qty", label: "Qty" },
-    { id: "rate", label: "Rate" },
-    { id: "tax", label: "Tax" },
-    { id: "amount", label: "Amount" },
+    { id: "hsnSac", label: "HSN/SAC", width: "60px" },
+    { id: "qty", label: "Qty", width: "80px" },
+    { id: "rate", label: "Rate", width: "65px" },
+    { id: "tax", label: "Tax", width: "35px" },
+    { id: "amount", label: "Amount", width: "75px" },
   ];
 
-  const getTableValues = (item : any,index : any) => {
+  const getTableValues = (item: any, index: any) => {
     return {
-      sNo : index+1,
-      description : item?.product?.printName,
-      hsnSac : item?.product?.hsnCode,
-      qty : item?.quantity + " " + item?.product?.unit,
-      rate : item?.rate,
-      tax : item?.gstSales,
-      amount : item?.rate * item?.quantity
-
-
-
-
-    }
-
-  }
+      sNo: index + 1,
+      description: item?.product?.printName,
+      hsnSac: item?.product?.hsnCode,
+      qty: item?.quantity + " " + item?.product?.unit,
+      rate: item?.rate,
+      tax: item?.gstSales,
+      amount: item?.rate * item?.quantity,
+    };
+  };
 
   return (
     <View style={styles(theme).page}>
@@ -264,8 +259,14 @@ export const TemplateOne = ({ data, theme = "light", download }: any) => {
       <View style={styles(theme).table}>
         <View style={styles(theme).tableRow}>
           {tableHeadings.map((item, index) => (
-            <View key={index} style={styles(theme).tableColHeader}>
-              <Text style={styles(theme).tableCell}>{item?.label}</Text>
+            <View
+              key={index}
+              style={{
+                ...styles(theme).tableCol,
+                ...(item?.width ? { width: item?.width } : { flex: 1 }),
+              }}
+            >
+              <Text style={styles(theme).tableCellLeft}>{item?.label}</Text>
             </View>
           ))}
         </View>
@@ -274,34 +275,42 @@ export const TemplateOne = ({ data, theme = "light", download }: any) => {
           {data?.items?.map((item: any, index: number) => {
             return (
               <View style={styles(theme).tableRow}>
-                <View style={{...styles(theme).tableCol,width : '10px' }}>
-                  <Text style={styles(theme).tableCell}>{index + 1}</Text>
+                <View style={{ ...styles(theme).tableCol, width: "27px",borderLeft:'none' }}>
+                  <Text style={styles(theme).tableCellLeft}>{index + 1}</Text>
                 </View>
-                <View style={styles(theme).tableCol}>
-                  <Text style={styles(theme).tableCell}>
+                <View style={{ ...styles(theme).tableCol, flex: 1 }}>
+                  {" "}
+                  <Text style={styles(theme).tableCellLeft}>
                     {item?.product?.printName}
                   </Text>
                 </View>
-                <View style={styles(theme).tableCol}>
-                  <Text style={styles(theme).tableCell}>
-                    {item?.product?.hsnCode}
+                <View style={{ ...styles(theme).tableCol, width: "60px" }}>
+                  <Text style={styles(theme).tableCellLeft}>
+                  {item?.product?.hsnCode}
                   </Text>
                 </View>
-                <View style={styles(theme).tableCol}>
-                  <Text style={styles(theme).tableCell}>{item?.quantity || 0} {item?.product?.unit}</Text>
-                </View>
-                <View style={styles(theme).tableCol}>
-                  <Text style={styles(theme).tableCell}>
-                    {item?.cost?.toFixed(2)}
+                <View style={{ ...styles(theme).tableCol, width: "80px" }}>
+                  <Text style={styles(theme).tableCellLeft}>
+                    {item?.cost || 0} {item?.product?.unit}
                   </Text>
                 </View>
-                <View style={styles(theme).tableCol}>
-                  <Text style={styles(theme).tableCell}>
+                <View style={{ ...styles(theme).tableCol, width: "65px" }}>
+                  <Text style={styles(theme).tableCellRight}>
+                    {(item?.cost)?.toFixed(2)}
+                  </Text>
+                </View>
+                <View style={{ ...styles(theme).tableCol, width: "35px" }}>
+                  <Text style={styles(theme).tableCellRight}>
                     {item?.product?.gstSales || 0} %
                   </Text>
                 </View>
-                <View style={styles(theme).tableCol}>
-                  <Text style={styles(theme).tableCell}>
+                <View
+                  style={{
+                    ...styles(theme).tableCol,
+                    width: "75px",
+                  }}
+                >
+                  <Text style={styles(theme).tableCellRight}>
                     {(item?.quantity * item?.cost).toFixed(2)}
                   </Text>
                 </View>
@@ -469,7 +478,7 @@ const styles = (theme: any) =>
     keyValueField: {
       fontWeight: "bold",
       fontStyle: "bold",
-      color: getThemeColor(theme, "black"),
+      color: "black",
       fontSize: "12px",
     },
     edgeCaseIndicator: {
@@ -500,7 +509,7 @@ const styles = (theme: any) =>
       textAlign: "center",
       width: "100%",
       fontWeight: "bold",
-      color: getThemeColor(theme, "black"),
+      color: "black",
     },
     shopDetails: {
       display: "flex",
@@ -628,7 +637,7 @@ const styles = (theme: any) =>
     },
     textXs: {
       fontSize: "12px",
-      color: getThemeColor(theme, "black"),
+      color: "black",
     },
     fontBold: {
       fontWeight: "bold",
@@ -643,31 +652,30 @@ const styles = (theme: any) =>
     borderBottom: {
       borderBottom: "1px solid #000",
     },
-    
+
     table: {
       display: "flex",
       flex: 1,
-      border: '1px solid black',
     },
     tableRow: {
       flexDirection: "row",
     },
-    tableColHeader: {
-      flexGrow: 1,
-      border: '1px solid black',
-      padding: 2,
-      textAlign: "center",
-    },
     tableCol: {
-      flexGrow: 1,
-      border: '1px solid black',
-      padding: 2,
-      textAlign: "center",
+      borderBottom: "1px solid black",
+      borderLeft: "1px solid black",
+      textAlign: "left",
     },
-    tableCell: {
-      fontSize: 10,
-      padding: 2,
-      textAlign: "center",
+    tableCellLeft: {
+      fontSize: 11,
+      paddingVertical: 2,
+      paddingHorizontal: 3,
+      textAlign: "left",
+    },
+    tableCellRight: {
+      fontSize: 11,
+      paddingVertical: 2,
+      paddingHorizontal: 3,
+      textAlign: "right",
     },
   });
 

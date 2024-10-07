@@ -347,9 +347,8 @@ export default function TotalDetails({totalDetails , form }: any) {
       symbol: totalDetails?.discountedRounded?.symbol,
     },
   ];
-
   return (
-    <div className="border w-full h-full rounded-md p-4 space-y-8">
+    <div className="border w-full h-[calc(100vh-138px)] rounded-md p-4 space-y-8">
       <div className="flex justify-between items-start">
         <p>Bill details</p>
 

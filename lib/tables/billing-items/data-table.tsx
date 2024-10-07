@@ -88,7 +88,7 @@ export function DynamicAddTable<TData, TValue>({
   });
 
   return (
-    <div className="flex flex-col h-[calc(100vh-84px)] w-[70%] ">
+    <div className="flex flex-col h-[calc(100vh-84px)]  gap-2 ">
       <DataTableToolbar
         table={table}
         setSelectedTab={setSelectedTab}

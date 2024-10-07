@@ -39,7 +39,7 @@ export function DataTableToolbar<TData>({
   };
 
   return (
-    <div className="flex items-center gap-2 justify-between ">
+    <div className="flex flex-row-reverse items-center gap-2 justify-between ">
       <Tabs defaultValue="items" className="w-fit ">
         <TabsList className="h-11 w-fit">
           <TabsTrigger

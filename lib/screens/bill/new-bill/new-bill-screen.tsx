@@ -92,14 +92,16 @@ export default function NewBillScreen({ billDetails, billId, session }: any) {
 
   const handleDownloadBill = async () =>
     await exportToPdf({
-      data: [{
-        ...form.getValues(),
-        Shop,
-        cumulativeReport,
-        total: totalDetails?.discountedRounded?.total,
-        shopStateCode,
-        customerStateCode
-      }],
+      data: [
+        {
+          ...form.getValues(),
+          Shop,
+          cumulativeReport,
+          total: totalDetails?.discountedRounded?.total,
+          shopStateCode,
+          customerStateCode,
+        },
+      ],
       exportOptions: [
         {
           templateId: "billTemplate",
@@ -132,15 +134,15 @@ export default function NewBillScreen({ billDetails, billId, session }: any) {
           disabled: !billDetails?.items?.length,
           description: `Save the ${sessionName}`,
         },
-        {
-          id: "save-as-draft",
-          label: "Save As Draft",
-          icon: "FileBox",
-          onClick: () =>
-            handleSaveBill({ dataStatus: "DRAFT", effectStock: true }),
-          disabled: !billDetails?.items?.length,
-          description: `Save the ${sessionName} as Draft`,
-        },
+        // {
+        //   id: "save-as-draft",
+        //   label: "Save As Draft",
+        //   icon: "FileBox",
+        //   onClick: () =>
+        //     handleSaveBill({ dataStatus: "DRAFT", effectStock: true }),
+        //   disabled: !billDetails?.items?.length,
+        //   description: `Save the ${sessionName} as Draft`,
+        // },
       ],
     },
     {
@@ -166,15 +168,15 @@ export default function NewBillScreen({ billDetails, billId, session }: any) {
           disabled: !billDetails?.items?.length,
           description: `Save the ${sessionName}`,
         },
-        {
-          id: "no-effect-save-as-draft",
-          label: "Save As Draft (No Effect)",
-          icon: "FileBox",
-          onClick: () =>
-            handleSaveBill({ dataStatus: "DRAFT", effectStock: false }),
-          disabled: !billDetails?.items?.length,
-          description: `Save the ${sessionName} as Draft`,
-        },
+        // {
+        //   id: "no-effect-save-as-draft",
+        //   label: "Save As Draft (No Effect)",
+        //   icon: "FileBox",
+        //   onClick: () =>
+        //     handleSaveBill({ dataStatus: "DRAFT", effectStock: false }),
+        //   disabled: !billDetails?.items?.length,
+        //   description: `Save the ${sessionName} as Draft`,
+        // },
       ],
     },
     {
@@ -203,12 +205,10 @@ export default function NewBillScreen({ billDetails, billId, session }: any) {
   ];
   console.log({ multipleSelectList });
 
-  const shopStateCode  = getStateCode(billDetails?.Shop)
-  const customerStateCode  = getStateCode(billDetails?.Customer)
+  const shopStateCode = getStateCode(billDetails?.Shop);
+  const customerStateCode = getStateCode(billDetails?.Customer);
 
-  const isIntraTrade = !Customer
-    ? true
-    : shopStateCode === customerStateCode;
+  const isIntraTrade = !Customer ? true : shopStateCode === customerStateCode;
 
   const totalDetails = billCalculation({
     data: billDetails?.items,
@@ -263,9 +263,9 @@ export default function NewBillScreen({ billDetails, billId, session }: any) {
   ];
 
   return (
-    <div className="flex flex-1 h-full flex-col gap-4">
+    <div className="flex flex-col gap-4">
       <Form {...form}>
-        <form>
+        <form className="space-y-2">
           <div className="flex md:flex-row flex-col justify-between">
             <PageHeader title={`New ${sessionName}`} />
             <div className="flex items-center gap-2 h-full ">
@@ -276,7 +276,7 @@ export default function NewBillScreen({ billDetails, billId, session }: any) {
                   cumulativeReport,
                   total: totalDetails?.discountedRounded?.total,
                   shopStateCode,
-                  customerStateCode
+                  customerStateCode,
                 }}
               />
 

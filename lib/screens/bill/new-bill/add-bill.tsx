@@ -131,7 +131,7 @@ export default function AddBill({
   return (
     <Form {...form}>
       <form>
-        <div className="border w-full h-full rounded-md pb-4 pt-2 space-y-2">
+        <div className="border w-full h-[calc(100vh-138px)] rounded-md pb-4 pt-4 space-y-2">
           <div className="flex justify-between gap-2 items-center px-4">
             <p>{id ? productName : "Add Product"}</p>
             {id && <ShowDetails title="Other Details" data={rest} />}

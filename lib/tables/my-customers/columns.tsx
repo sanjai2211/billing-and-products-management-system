@@ -8,6 +8,7 @@ import { DataTableRowActions } from "./data-table-row-actions";
 import { Badge } from "@/components/ui/badge";
 import { CustomerTypes } from "@/lib/constants";
 import { formatDate } from "@/lib/utils-helper/date/formatDate";
+import TextDisplay from "@/lib/components/text-display";
 
 const getColor = (field: any, value: any) => {
   switch (field) {
@@ -112,22 +113,23 @@ export const columns: ColumnDef<any>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Created At" />
     ),
-    cell: ({ row }) => (
-      <div className="w-40">{formatDate(row.getValue("createdAt")) || "-"}</div>
-    ),
+    cell: ({ row }) => {
+      const { date, time } = formatDate(row.getValue("createdAt"));
+      return <TextDisplay heading={date} subHeading={time} />;
+    },
   },
   {
     accessorKey: "updatedAt",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Last Updated" />
     ),
-    cell: ({ row }) => (
-      <div className="w-40">
-        {row.getValue("updatedAt") !== row.getValue("createdAt")
+    cell: ({ row }) => {
+      const { date, time } =
+        row.getValue("updatedAt") !== row.getValue("createdAt")
           ? formatDate(row.getValue("updatedAt"))
-          : "-"}
-      </div>
-    ),
+          : { date: "-", time: "" };
+      return <TextDisplay heading={date} subHeading={time} />;
+    },
   },
   {
     accessorKey: "id",

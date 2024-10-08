@@ -202,7 +202,8 @@ export default function NewBillScreen({ billDetails, billId, session }: any) {
   ];
   console.log({ multipleSelectList });
 
-  const billData = getBillData(form.getValues());
+  const billData = getBillData({...form.getValues(),Shop});
+  console.log({billData})
 
   return (
     <div className="flex flex-col gap-4">

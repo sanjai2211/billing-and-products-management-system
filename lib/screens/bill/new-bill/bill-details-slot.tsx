@@ -13,13 +13,7 @@ export default function BillDetailsSlot({ session, form, billId }: any) {
     method: "PATCH",
   });
 
-  const handle = async (field: any, value: any) => {
-    if (value) {
-      console.log({ fieldValue: value });
-      await onSubmit({ [field]: value });
-    }
-  };
-  console.log({fieldvalueeef :form.getValues()})
+  
 
   const onChange = async(data: any, event: any) => {
     let value;
@@ -49,9 +43,10 @@ export default function BillDetailsSlot({ session, form, billId }: any) {
         form={form}
         billId={billId}
         onChange={onChange}
+
       />
-      <CustomerDetailsSection form={form} session={session} billId={billId} />
-      <BankDetailsSection form={form} session={session} billId={billId} />
+      <CustomerDetailsSection form={form} session={session} billId={billId} onSubmit={onSubmit}/>
+      <BankDetailsSection form={form} session={session} billId={billId} onSubmit={onSubmit} />
     </div>
   );
 }

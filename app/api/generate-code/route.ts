@@ -12,7 +12,7 @@ export async function generateNewNumber({
 }: any) {
   const lastRecord = await (prisma as any)[modelName].findFirst({
     where : {
-      stockCode: {
+      [incrementField]: {
         not: {
           in : [""]
         },

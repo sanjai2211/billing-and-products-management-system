@@ -22,6 +22,7 @@ const styles = StyleSheet.create({
 });
 
 const BillTemplate = ({ data }: any) => {
+  console.log({data})
   return (
     <View style={styles.page}>
       <View style={styles.heading}>

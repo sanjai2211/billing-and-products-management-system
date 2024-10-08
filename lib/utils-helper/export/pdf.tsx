@@ -1,11 +1,17 @@
 import React from "react";
-import { pdf } from "@react-pdf/renderer";
+import { pdf, StyleSheet } from "@react-pdf/renderer";
 import JSZip from "jszip";
 import { CreatePDFDocument } from "@/lib/templates";
 import { createDownloadUrl } from "./create-download-url";
 
 const handlePdfGeneration = async ({ data, fileName, zip, template }: any) => {
-  const document = <CreatePDFDocument data={data} template={template} />;
+  const globalStyle = StyleSheet.create({
+    hidden : {
+      display : 'none'
+    }
+
+  })
+  const document = <CreatePDFDocument data={data} template={template} theme={'light'} download={true} />;
   const blob = await pdf(document).toBlob();
 
   if (zip) {
@@ -17,7 +23,7 @@ const handlePdfGeneration = async ({ data, fileName, zip, template }: any) => {
 
 export const exportToPdf = async ({ data, exportOptions, zip }: any) => {
 
-  const zipInstance = !zip ? new JSZip() : zip;
+  const zipInstance = !zip && data?.length > 1 ? new JSZip() : zip;
 
   for (const option of Object.values(exportOptions as any)) {
     if ((option as any).isMultiplePage) {

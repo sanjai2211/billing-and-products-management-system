@@ -19,6 +19,7 @@ export default function AddCustomerScreen({ customerDetails, session }: any) {
     resolver: zodResolver(CustomerSchema),
     defaultValues: {
       ...customerDetails,
+      ...customerDetails?.address
     },
   });
 

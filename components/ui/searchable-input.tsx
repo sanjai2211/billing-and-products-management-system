@@ -123,6 +123,7 @@ const SearchableInput = (props: any) => {
           onClick={toggleInputMode}
           variant="outline"
           disabled={disabled}
+          type="button"
         >
           <p>
             {selectedOption?.label || selectedOption || placeholder || "Select"}

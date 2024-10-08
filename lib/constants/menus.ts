@@ -82,48 +82,48 @@ export const MenuData = [
       },
     ],
   },
-  {
-    id: "reports",
-    sectionName: "Reports",
-    icon: "BarChart3",
-    items: [
-      {
-        name: "Bill Details",
-        icon: "ListTodo",
-        path: "/reports/products",
-      },
-      {
-        name: "Products Details",
-        icon: "FileBarChart",
-        path: "/reports/products",
-      },
-      {
-        name: "Purchase Details",
-        icon: "Cable",
-        path: "/reports/products",
-      },
-    ],
-  },
+  // {
+  //   id: "reports",
+  //   sectionName: "Reports",
+  //   icon: "BarChart3",
+  //   items: [
+  //     {
+  //       name: "Bill Details",
+  //       icon: "ListTodo",
+  //       path: "/reports/products",
+  //     },
+  //     {
+  //       name: "Products Details",
+  //       icon: "FileBarChart",
+  //       path: "/reports/products",
+  //     },
+  //     {
+  //       name: "Purchase Details",
+  //       icon: "Cable",
+  //       path: "/reports/products",
+  //     },
+  //   ],
+  // },
   {
     id: "settings",
     sectionName: "Settings",
     icon: "Settings",
     items: [
-      {
-        name: "Bill Settings",
-        icon: "ListTodo",
-        path: "/reports/products",
-      },
-      {
-        name: "Products Settings",
-        icon: "FileBarChart",
-        path: "/reports/products",
-      },
-      {
-        name: "Purchase Details",
-        icon: "Cable",
-        path: "/reports/products",
-      },
+      // {
+      //   name: "Bill Settings",
+      //   icon: "ListTodo",
+      //   path: "/reports/products",
+      // },
+      // {
+      //   name: "Products Settings",
+      //   icon: "FileBarChart",
+      //   path: "/reports/products",
+      // },
+      // {
+      //   name: "Purchase Details",
+      //   icon: "Cable",
+      //   path: "/reports/products",
+      // },
       {
         name: "Shop Settings",
         icon: "Store",

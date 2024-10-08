@@ -7,10 +7,12 @@ import { DataTableColumnHeader } from "./data-table-column-header";
 import { DataTableRowActions } from "./data-table-row-actions";
 import { ShowDetails } from "@/lib/components";
 import { Badge } from "@/components/ui/badge";
-import { BillTypes, PaymentTypes } from "@/lib/constants";
+import { BillTypes, DataStatuses, PaymentTypes } from "@/lib/constants";
 import { formatDate } from "@/lib/utils-helper/date/formatDate";
 import { billCalculation } from "@/lib/utils-helper/calculation/calculateTotal";
 import TotalDetails from "@/lib/screens/bill/new-bill/total-details";
+import { Icon } from "@/lib/icons";
+import TextDisplay from "@/lib/components/text-display";
 
 const getColor = (field: any, value: any) => {
   switch (field) {
@@ -90,7 +92,14 @@ export const columns: ColumnDef<any>[] = [
       <DataTableColumnHeader column={column} title="Total Value" />
     ),
     cell: ({ row }) => {
-      const totalDetails = billCalculation(row?.original?.items);
+      console.log("row", row, row?.getValue("Customer"));
+      const isIntraTrade =
+        row?.original?.Customer?.address?.state ===
+        row?.original?.Shop?.address?.state;
+      const totalDetails: any = billCalculation({
+        data: row?.original?.items,
+        isIntraTrade,
+      });
       const color = getColor(
         "totalValue",
         parseInt(totalDetails?.discountedRounded?.total)
@@ -129,7 +138,8 @@ export const columns: ColumnDef<any>[] = [
         return <p className="text-sm">No customer data</p>;
       }
 
-      const { address, id, shopId, bankId,createdAt,updatedAt, ...rest } = customer;
+      const { address, id, shopId, bankId, createdAt, updatedAt, ...rest } =
+        customer;
       const data = {
         ...rest,
         address: address
@@ -140,7 +150,7 @@ export const columns: ColumnDef<any>[] = [
       return (
         <div className="flex justify-between gap-4 w-[240px]">
           <div className="flex flex-col gap-1">
-            <p className="text-sm">{rest?.name}</p>
+            <p className="text-sm">{rest?.customerName}</p>
             <p className="text-xs opacity-50">{rest?.phoneNumbers}</p>
           </div>
           <ShowDetails title={"Customer Details"} data={data} />
@@ -148,7 +158,6 @@ export const columns: ColumnDef<any>[] = [
       );
     },
   },
-
   {
     accessorKey: "date",
     header: ({ column }) => (
@@ -157,24 +166,66 @@ export const columns: ColumnDef<any>[] = [
     cell: ({ row }) => {
       if (row.getValue("type") === "QUOTATION") {
         return (
-          <div className="flex flex-col">
+          <div className="flex flex-col w-40">
             <p className="text-xs">
               <span className="text-xs opacity-50">Dated : </span>
-              {formatDate(row.getValue("date"), false) || "-"}
+              {formatDate(row.getValue("date"))?.date || "-"}
             </p>
             <p className="text-xs">
               <span className="text-xs opacity-50">Dued : </span>
-              {formatDate(row.getValue("date"), false) || "-"}
+              {formatDate(row.getValue("dueDate"))?.date || "-"}
             </p>
           </div>
         );
       } else {
         return (
           <div className="w-40">
-            {formatDate(row.getValue("date"), false) || "-"}
+            {formatDate(row.getValue("date"))?.date || "-"}
           </div>
         );
       }
+    },
+  },
+  {
+    accessorKey: "dataStatus",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Status" />
+    ),
+    cell: ({ row }) => (
+      <div className="w-28">
+        {getBadge("dataStatus", row.getValue("dataStatus"), DataStatuses) ||
+          "-"}
+      </div>
+    ),
+  },
+  {
+    accessorKey: "effectStock",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Stock Impact" />
+    ),
+    cell: ({ row }) => {
+      console.log({ rrr: row.getValue("effectStock"), row });
+      return (
+        <Icon
+          name={
+            row?.getValue("dataStatus") === "IN_PROGRESS"
+              ? "Ellipsis"
+              : row.getValue("effectStock")
+              ? "PackageCheck"
+              : "PackageX"
+          }
+          className={`
+            ${
+              row?.getValue("dataStatus") === "IN_PROGRESS"
+                ? "text-yellow-500"
+                : row.getValue("effectStock")
+                ? "text-green-500"
+                : "text-red-500"
+            }
+              mx-8
+              `}
+        />
+      );
     },
   },
   {
@@ -195,30 +246,31 @@ export const columns: ColumnDef<any>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Created At" />
     ),
-    cell: ({ row }) => (
-      <div className="w-40">{formatDate(row.getValue("createdAt")) || "-"}</div>
-    ),
+    cell: ({ row }) => {
+      const { date, time } = formatDate(row.getValue("createdAt"));
+      return <TextDisplay heading={date} subHeading={time} />;
+    },
   },
-  {
-    accessorKey: "updatedAt",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Last Updated" />
-    ),
-    cell: ({ row }) => (
-      <div className="w-40">
-        {row.getValue("updatedAt") !== row.getValue("createdAt")
-          ? formatDate(row.getValue("updatedAt"))
-          : "-"}
-      </div>
-    ),
-  },
+  // {
+  //   accessorKey: "updatedAt",
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader column={column} title="Last Updated" />
+  //   ),
+  //   cell: ({ row }) => {
+  //     const { date, time } =
+  //       row.getValue("updatedAt") !== row.getValue("createdAt")
+  //         ? formatDate(row.getValue("updatedAt"))
+  //         : { date: "-", time: "-" };
+  //     return <TextDisplay heading={date} subHeading={time} />;
+  //   },
+  // },
   {
     accessorKey: "id",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Id" className="hidden" />
     ),
     cell: ({ row }) => (
-      <div className="w-[80px] hidden">{row.getValue("id")}</div>
+      <div className="w-[1px] hidden">{row.getValue("id")}</div>
     ),
   },
 

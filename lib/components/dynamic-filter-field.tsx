@@ -73,6 +73,7 @@ export function DynamicFilterField({ form, data }: any) {
           newParams.set(data?.id, value?.target?.value);
           break;
         case "datePicker":
+          console.log({newParams})
           newParams.delete(data?.id);
           if (value?.from) {
             newParams.append(data?.id, formatDateToLocalString(value?.from));
@@ -178,8 +179,9 @@ export function DynamicFilterField({ form, data }: any) {
       case "datePicker":
         return (
           <DatePicker
-            field={{ ...field, onChange }}
+            field={{ ...field }}
             {...rest}
+            onHandleChange={onChange}
             disabled={shouldDisableField()}
             disableDates={disableDates}
             defaultValue={selectedValue}
@@ -223,30 +225,22 @@ export function DynamicFilterField({ form, data }: any) {
   return (
     <div className="relative">
       <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>
-          <Button
-            variant="outline"
-            size="icon"
-            type="button"
-            onClick={() => setOpen(true)}
-          >
-            <Icon name={data?.icon} className="h-5 w-5" />
-          </Button>
-
-          {/* <ToolTip
-          trigger={
-             <Button
-          variant="outline"
-          size="icon"
-          type="button"
-          onClick={() => setOpen(true)}
-        >
-          <Icon name={data?.icon} className="h-5 w-5" />
-        </Button>
-                       }
-          content={data?.sectionName}
-          align="end"
-        /> */}
+        <PopoverTrigger>
+          <ToolTip
+            trigger={
+              <Button
+                variant="outline"
+                size="icon"
+                type="button"
+                onClick={() => setOpen(true)}
+              >
+                <Icon name={data?.icon} className="h-5 w-5" />
+              </Button>
+            }
+            content={data?.sectionName}
+            align="end"
+            side='bottom'    
+          />
         </PopoverTrigger>
         <PopoverContent className="p-0" align="end">
           {shouldRenderField() ? (

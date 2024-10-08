@@ -30,19 +30,20 @@ import { DataTableToolbar } from "./data-table-toolbar";
 import { Icon } from "@/lib/icons";
 import { EditDeleteContainer } from "@/lib/components";
 import { DataTableRowActions } from "./data-table-row-actions";
+import { BillActions } from "@/lib/components/bill-actions-hover-container";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  handleDelete?: any
-  handleEdit? :any
+  handleDelete?: any;
+  handleEdit?: any;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   handleDelete,
-  handleEdit
+  handleEdit,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
@@ -78,7 +79,7 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className="flex flex-col gap-4 w-full h-[calc(100vh-84px)] ">
+    <div className="flex flex-col gap-4 w-full h-[calc(100vh-84px)]">
       <DataTableToolbar table={table} />
       <div className="rounded-md border h-full overflow-auto">
         <Table>
@@ -108,10 +109,9 @@ export function DataTable<TData, TValue>({
                   data-state={row.getIsSelected() && "selected"}
                   onMouseEnter={() => setHoveredRow(row.id)}
                   onMouseLeave={() => setHoveredRow(null)}
-                  className="relative"
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell key={cell.id} className="">
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -119,7 +119,7 @@ export function DataTable<TData, TValue>({
                     </TableCell>
                   ))}
                   {hoveredRow === row.id && (
-                     <DataTableRowActions row={row} handleEdit={handleEdit} handleDelete={handleDelete} />
+                    <BillActions data={row?.original} />
                   )}
                 </TableRow>
               ))

@@ -1,10 +1,10 @@
 export const DataStatusesWithoutDraft = [
-  { value: "COMPLETED", label: "Added" },
-  { value: "NOT_COMPLETED", label: "In Progress" },
+  { value: "COMPLETED", label: "Completed" },
+  { value: "IN_PROGRESS", label: "In Progress" },
 ];
 
 export const DataStatuses = [
-  { value: "COMPLETED", label: "Added" },
-  { value: "NOT_COMPLETED", label: "In Progress" },
+  { value: "COMPLETED", label: "Completed" },
+  { value: "IN_PROGRESS", label: "In Progress" },
   { value: "DRAFT", label: "Draft" },
 ];

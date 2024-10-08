@@ -1,13 +1,14 @@
-import { BillTypes, PaymentTypes } from "../bill";
+import { BillTypes, PaymentTypes, StocksImpact } from "../bill";
+import { DataStatusesWithoutDraft } from "../data-status";
 
 export const FilterBillData = [
   {
-    id: "type",
-    sectionName: "Bill Type",
-    icon: "FolderSymlink",
-    component: "multipleSelect",
-    placeholder: "Bill Types",
-    list: BillTypes,
+    id: "effectStock",
+    sectionName: "Stock Impact",
+    icon: "Package",
+    component: "select",
+    placeholder: "See Stock Impact",
+    list: StocksImpact,
   },
   {
     id: "date",
@@ -47,7 +48,7 @@ export const SearchBillData = [
     icon: "ScrollText",
   },
   {
-    value: "customer Name",
+    value: "customerName",
     label: "Customer Name",
     icon: "User",
   },

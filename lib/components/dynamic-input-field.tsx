@@ -54,22 +54,40 @@ export const compareValues = (
 };
 
 export function DynamicInputField({ form, data, onChange = () => {} }: any) {
+
   const renderFormControl = (field: any) => {
+    const onHandleChange = (e: any) => {
+      console.log({fieldseeeeeeee : e})
+      if (field?.onChange) {
+        field.onChange(e);
+      }
+      if (onChange) {
+        onChange(data, e);
+      }
+    };
+
     const { component, id, ...rest } = data;
     switch (data?.component) {
       case "inputField":
-        return <Input {...field} {...rest} disabled={shouldDisableField()} />;
+        return (
+          <Input
+            {...field}
+            {...rest}
+            onChange={onHandleChange}
+            disabled={shouldDisableField()}
+          />
+        );
       case "select":
         const selectedValue = form?.getValues(id)
           ? rest?.list?.find((item: any) => item?.value === form?.getValues(id))
           : "";
         return (
           <Select
-            onValueChange={field.onChange}
+            onValueChange={onHandleChange}
             defaultValue={selectedValue?.value || rest?.defaultValue}
             disabled={shouldDisableField()}
           >
-            <SelectTrigger className="w-full">
+            <SelectTrigger className="w-full" onBlur={field?.onBlur}>
               <SelectValue
                 placeholder={selectedValue?.label || rest?.placeholder}
               />
@@ -85,7 +103,7 @@ export function DynamicInputField({ form, data, onChange = () => {} }: any) {
         const [values, setValues] = useState(field.value || []);
         return (
           <MultiSelector
-            onValuesChange={field.onChange}
+            onValuesChange={onHandleChange}
             values={field.value || []}
           >
             <MultiSelectorTrigger>
@@ -108,6 +126,7 @@ export function DynamicInputField({ form, data, onChange = () => {} }: any) {
             {...rest}
             form={form}
             id={id}
+            onChange={onHandleChange}
             disabled={shouldDisableField()}
           />
         );
@@ -128,6 +147,7 @@ export function DynamicInputField({ form, data, onChange = () => {} }: any) {
           <DatePicker
             field={field}
             {...rest}
+            onHandleChange={onHandleChange}
             disabled={shouldDisableField()}
             disableDates={disableDates}
           />
@@ -135,7 +155,7 @@ export function DynamicInputField({ form, data, onChange = () => {} }: any) {
       case component:
         return component;
 
-        default:
+      default:
         return null;
     }
   };

@@ -131,7 +131,7 @@ model Stock {
   customerId String?     @db.ObjectId
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
-  dataStatus Status      @default(NOT_COMPLETED)
+  dataStatus Status      @default(IN_PROGRESS)
   Shop       Shop?       @relation(fields: [shopId], references: [id])
   Bank       Bank?       @relation(fields: [bankId], references: [id])
   Customer   Customer?   @relation(fields: [customerId], references: [id])
@@ -202,6 +202,8 @@ model Bill {
   customerId         String?           @db.ObjectId
   shopId             String            @db.ObjectId
   Shop               Shop?             @relation(fields: [shopId], references: [id])
+  dataStatus         Status            @default(IN_PROGRESS)
+  effectStock        Boolean?
 }
 
 type CustomerDetails {
@@ -251,5 +253,5 @@ enum CustomerType {
 enum Status {
   COMPLETED
   DRAFT
-  NOT_COMPLETED
+  IN_PROGRESS
 }

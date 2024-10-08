@@ -11,13 +11,13 @@ import EditDeleteContainer from "./edit-delete-container";
 import { Section } from "./section";
 import { ShowDetails } from "./show-details";
 import { FieldWithBoxValues, FieldWithValues } from "./field-with-values";
-import { BillTemplate } from "./bill-template";
+import { ViewBillTemplate } from "./bill-template";
 import { ExportButton } from "./export";
 import Loader from "./loader";
 import { CodePreviewer } from "./code-previewer";
 import { EditDeleteIconContainer } from "./edit-delete-icon-container";
 export {
-  BillTemplate,
+  ViewBillTemplate,
   CodePreviewer,
   DynamicInputField,
   EditDeleteContainer,

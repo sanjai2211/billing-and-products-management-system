@@ -19,7 +19,13 @@ export const parseQueryParams = (params: URLSearchParams) => {
     } else if (value.includes(",")) {
       result[key] = { in: value.split(",") };
     } else {
-      result[key] = value;
+      if (value === "false") {
+        result[key] = false;
+      } else if (value === "true") {
+        result[key] = true;
+      } else {
+        result[key] = value;
+      }
     }
   });
 

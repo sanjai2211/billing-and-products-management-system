@@ -22,6 +22,7 @@ export default function BillSlot({
   billId,
   form,
   session,
+  cumulativeReport,
 }: any) {
   const billingItemForm = useForm<FormData>({
     resolver: zodResolver(BillingItemsSchema),
@@ -65,7 +66,20 @@ export default function BillSlot({
     method: "DELETE",
   });
 
-  const discountedTotal = getTaxCalculationByHsn({ data: billDetails?.items });
+  const { items, Customer, Shop } = billDetails;
+  const isIntraTrade = !Customer
+    ? true
+    : Shop?.address?.stateCode === Customer?.address?.stateCode;
+
+  const discountedTotal = getTaxCalculationByHsn({
+    data: billDetails?.items,
+    isIntraTrade,
+  });
+
+  const totalDetails = billCalculation({
+    data: billDetails?.items,
+    isIntraTrade,
+  });
 
   const handleEdit = ({ data }: any) =>
     handleProductSelect({
@@ -81,20 +95,22 @@ export default function BillSlot({
       edit: true,
     });
 
-  const handleDelete = (id: any) => onSubmit({ billItemId: id });
-
-  const totalDetails = billCalculation(billDetails?.items);
+  const handleDelete = ({ id }: any) => onSubmit({ billItemId: id });
 
   return (
-    <div className="flex md:flex-row flex-col  justify-between gap-4">
-      <BillTableSlot
-        items={billDetails?.items}
-        handleEdit={handleEdit}
-        handleDelete={handleDelete}
-        total={discountedTotal}
-      />
+    <div className="flex md:flex-row flex-col  justify-between gap-4 ">
+      <div className="w-full max-w-[75%]">
+        <BillTableSlot
+          items={items}
+          handleEdit={handleEdit}
+          handleDelete={handleDelete}
+          total={discountedTotal}
+          isIntraTrade={isIntraTrade}
+        />
+      </div>
+
       <div className="w-full md:w-80">
-        <Tabs defaultValue="add" className="w-full">
+        <Tabs defaultValue="add" className="w-full h-full">
           <TabsList className="h-11 w-full">
             <TabsTrigger value="add" className="h-full w-full">
               Add
@@ -103,7 +119,7 @@ export default function BillSlot({
               Total
             </TabsTrigger>
           </TabsList>
-          <TabsContent value="add">
+          <TabsContent value="add" >
             <AddBill
               billId={billId}
               session={session}
@@ -112,12 +128,15 @@ export default function BillSlot({
               form={billingItemForm}
               isLoading={isLoading}
               isFetching={isFetching}
-
               handleProductSelect={handleProductSelect}
             />
           </TabsContent>
           <TabsContent value="total">
-            <TotalDetails totalDetails={totalDetails} form={form} />
+            <TotalDetails
+              totalDetails={totalDetails}
+              cumulativeReport={cumulativeReport}
+              form={form}
+            />
           </TabsContent>
         </Tabs>
       </div>

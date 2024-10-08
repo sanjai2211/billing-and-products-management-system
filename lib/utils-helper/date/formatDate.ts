@@ -1,31 +1,36 @@
 export function formatDate(
   dateString: string | null | undefined,
   showTime = true
-): string {
+): { date: string; time: string } {
   if (!dateString) {
-    return "-";
+    return { date: "-", time: "-" };
   }
 
   const date = new Date(dateString);
 
   if (isNaN(date.getTime())) {
-    return "-";
+    return { date: "-", time: "-" };
   }
 
-  let options: Intl.DateTimeFormatOptions = {
+  const dateOptions: Intl.DateTimeFormatOptions = {
     year: "numeric",
     month: "short",
     day: "numeric",
   };
 
-  if (showTime) {
-    options = {
-      ...options,
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true,
-    };
-  }
+  const timeOptions: Intl.DateTimeFormatOptions = {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  };
 
-  return date.toLocaleDateString("en-US", options);
+  const formattedDate = date.toLocaleDateString("en-US", dateOptions);
+  const formattedTime = showTime
+    ? date.toLocaleTimeString("en-US", timeOptions)
+    : "-";
+
+  return {
+    date: formattedDate,
+    time: formattedTime,
+  };
 }

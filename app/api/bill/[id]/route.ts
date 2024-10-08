@@ -24,6 +24,7 @@ export async function GET(
         },
         Bank: true,
         Customer: true,
+        Shop : true
       },
     });
 
@@ -48,7 +49,7 @@ export async function PATCH(
   try {
     const { id } = params;
     const data = await req.json();
-
+    
     if (!id) {
       return NextResponse.json({ error: "Bill id not found" }, { status: 400 });
     }
@@ -58,9 +59,43 @@ export async function PATCH(
       data,
     });
 
-    
+    if (data?.dataStatus === 'COMPLETED' && data?.effectStock) {
+
+      const billingItems = await (prisma as any).billingItems.findMany({
+        where: { billId: id },
+        include: {
+          product: true, 
+        },
+      });
+
+      const updateStockPromises = billingItems.map(async (item : any) => {
+        const productSnap = item.product;
+
+        if (!productSnap?.productSnapId) return;
+
+        const product = await (prisma as any).product.findUnique({
+          where: { id: productSnap.productSnapId },
+        });
+
+        if (!product) return;
+
+        const newOpenStock = (product.openStock || 0) - item.quantity;
+
+        return (prisma as any).product.update({
+          where: { id: product.id },
+          data: { openStock: newOpenStock < 0 ? 0 : newOpenStock },
+        });
+      });
+
+      await Promise.all(updateStockPromises);
+      return NextResponse.json(
+        { message: "Bill updated and stock adjusted successfully" },
+        { status: 200 }
+      );
+    }
+
     return NextResponse.json(
-      { message: "Product updated successfully" },
+      { message: "Bill updated successfully" },
       { status: 200 }
     );
   } catch (error) {
@@ -71,6 +106,7 @@ export async function PATCH(
     );
   }
 }
+
 
 export async function DELETE(
   req: NextRequest,

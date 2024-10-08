@@ -21,6 +21,7 @@ import { MultiplSelectButton } from "@/components/ui/multiple-select-button";
 import { exportToPdf } from "@/lib/utils-helper/export/pdf";
 import TemplateOne from "@/lib/templates/tax-invoice/template-1";
 import { billCalculation } from "@/lib/utils-helper/calculation/calculateTotal";
+import { getBillData } from "@/lib/utils-helper/screens/getBillData";
 
 export default function NewBillScreen({ billDetails, billId, session }: any) {
   const [currentTab, setCurretTab] = useState("bill");
@@ -95,11 +96,7 @@ export default function NewBillScreen({ billDetails, billId, session }: any) {
       data: [
         {
           ...form.getValues(),
-          Shop,
-          cumulativeReport,
-          total: totalDetails?.discountedRounded?.total,
-          shopStateCode,
-          customerStateCode,
+          ...billData,
         },
       ],
       exportOptions: [
@@ -205,62 +202,7 @@ export default function NewBillScreen({ billDetails, billId, session }: any) {
   ];
   console.log({ multipleSelectList });
 
-  const shopStateCode = getStateCode(billDetails?.Shop);
-  const customerStateCode = getStateCode(billDetails?.Customer);
-
-  const isIntraTrade = !Customer ? true : shopStateCode === customerStateCode;
-
-  const totalDetails = billCalculation({
-    data: billDetails?.items,
-    isIntraTrade,
-  });
-
-  console.log({ totalDetails });
-
-  const cumulativeReport = [
-    {
-      label: "Total Items",
-      symbol: "",
-      field: totalDetails?.totalItems,
-    },
-    {
-      label: "Taxable Value",
-      field: totalDetails?.discountedTaxableValue,
-      color: "purple",
-      symbol: "+",
-    },
-    {
-      label: "Central GST",
-      field: totalDetails?.discountedCgstTotal,
-      symbol: "+",
-      color: "pink",
-    },
-    {
-      label: "State GST",
-      field: totalDetails?.discountedSgstTotal,
-      symbol: "+",
-      color: "orange",
-    },
-    {
-      label: "Integrated GST",
-      field: totalDetails?.discountedIgstTotal,
-      symbol: "+",
-      color: "fuchsia",
-    },
-    {
-      label: "Discounted Amount",
-      field: (
-        totalDetails?.nonDiscountedTotal - totalDetails?.discountedTotal
-      ).toFixed(2),
-      symbol: "-",
-      color: "red",
-    },
-    {
-      label: "Rounded Off",
-      field: totalDetails?.discountedRounded?.value,
-      symbol: totalDetails?.discountedRounded?.symbol,
-    },
-  ];
+  const billData = getBillData(form.getValues());
 
   return (
     <div className="flex flex-col gap-4">
@@ -269,17 +211,7 @@ export default function NewBillScreen({ billDetails, billId, session }: any) {
           <div className="flex md:flex-row flex-col justify-between">
             <PageHeader title={`New ${sessionName}`} />
             <div className="flex items-center gap-2 h-full ">
-              <ViewBillTemplate
-                billDetails={{
-                  ...form.getValues(),
-                  Shop,
-                  cumulativeReport,
-                  total: totalDetails?.discountedRounded?.total,
-                  shopStateCode,
-                  customerStateCode,
-                }}
-              />
-
+              <ViewBillTemplate billDetails={billData} />
               <ToolTip
                 trigger={
                   <p className="text-xl border px-2 py-1.5 rounded-md cursor-pointer">
@@ -317,7 +249,7 @@ export default function NewBillScreen({ billDetails, billId, session }: any) {
               billDetails={billDetails}
               session={session}
               form={form}
-              cumulativeReport={cumulativeReport}
+              cumulativeReport={billData?.cumulativeReport}
             />
           ) : (
             <BillDetailsSlot session={session} form={form} billId={billId} />

@@ -148,7 +148,7 @@ export const TemplateOne = ({ data, theme = "light", download }: any) => {
   return (
     <View style={styles(theme).page}>
       <View>
-        <Text style={styles(theme).shopName}>{data.Shop.name}</Text>
+        <Text style={styles(theme).shopName}>{data?.Shop?.name}</Text>
         <View style={{ ...styles(theme).shopDetails }}>
           <View style={styles(theme).wFull}>
             <EdgeCase
@@ -430,7 +430,7 @@ export const TemplateOne = ({ data, theme = "light", download }: any) => {
                   textAlign: "center",
                 }}
               >
-                For {data.Shop.name.toUpperCase()},
+                For {data?.Shop?.name.toUpperCase()},
               </Text>
             </View>
             <View style={styles(theme).signatureSection}></View>

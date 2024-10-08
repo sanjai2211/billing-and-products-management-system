@@ -12,6 +12,7 @@ import { formatDate } from "@/lib/utils-helper/date/formatDate";
 import { billCalculation } from "@/lib/utils-helper/calculation/calculateTotal";
 import TotalDetails from "@/lib/screens/bill/new-bill/total-details";
 import { Icon } from "@/lib/icons";
+import TextDisplay from "@/lib/components/text-display";
 
 const getColor = (field: any, value: any) => {
   switch (field) {
@@ -168,18 +169,18 @@ export const columns: ColumnDef<any>[] = [
           <div className="flex flex-col w-40">
             <p className="text-xs">
               <span className="text-xs opacity-50">Dated : </span>
-              {formatDate(row.getValue("date"), false) || "-"}
+              {formatDate(row.getValue("date"))?.date || "-"}
             </p>
             <p className="text-xs">
               <span className="text-xs opacity-50">Dued : </span>
-              {formatDate(row.getValue("date"), false) || "-"}
+              {formatDate(row.getValue("dueDate"))?.date || "-"}
             </p>
           </div>
         );
       } else {
         return (
           <div className="w-40">
-            {formatDate(row.getValue("date"), false) || "-"}
+            {formatDate(row.getValue("date"))?.date || "-"}
           </div>
         );
       }
@@ -205,7 +206,7 @@ export const columns: ColumnDef<any>[] = [
     cell: ({ row }) => {
       console.log({ rrr: row.getValue("effectStock"), row });
       return (
-<Icon
+        <Icon
           name={
             row?.getValue("dataStatus") === "IN_PROGRESS"
               ? "Ellipsis"
@@ -214,16 +215,16 @@ export const columns: ColumnDef<any>[] = [
               : "PackageX"
           }
           className={`
-            ${row?.getValue("dataStatus") === "IN_PROGRESS"
-              ? "text-yellow-500"
-              : row.getValue("effectStock")
-              ? "text-green-500"
-              : "text-red-500"}
+            ${
+              row?.getValue("dataStatus") === "IN_PROGRESS"
+                ? "text-yellow-500"
+                : row.getValue("effectStock")
+                ? "text-green-500"
+                : "text-red-500"
+            }
               mx-8
-              `
-          }
+              `}
         />
-        
       );
     },
   },
@@ -245,30 +246,31 @@ export const columns: ColumnDef<any>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Created At" />
     ),
-    cell: ({ row }) => (
-      <div className="w-40">{formatDate(row.getValue("createdAt")) || "-"}</div>
-    ),
+    cell: ({ row }) => {
+      const { date, time } = formatDate(row.getValue("createdAt"));
+      return <TextDisplay heading={date} subHeading={time} />;
+    },
   },
-  {
-    accessorKey: "updatedAt",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Last Updated" />
-    ),
-    cell: ({ row }) => (
-      <div className="w-40">
-        {row.getValue("updatedAt") !== row.getValue("createdAt")
-          ? formatDate(row.getValue("updatedAt"))
-          : "-"}
-      </div>
-    ),
-  },
+  // {
+  //   accessorKey: "updatedAt",
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader column={column} title="Last Updated" />
+  //   ),
+  //   cell: ({ row }) => {
+  //     const { date, time } =
+  //       row.getValue("updatedAt") !== row.getValue("createdAt")
+  //         ? formatDate(row.getValue("updatedAt"))
+  //         : { date: "-", time: "-" };
+  //     return <TextDisplay heading={date} subHeading={time} />;
+  //   },
+  // },
   {
     accessorKey: "id",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Id" className="hidden" />
     ),
     cell: ({ row }) => (
-      <div className="w-[80px] hidden">{row.getValue("id")}</div>
+      <div className="w-[1px] hidden">{row.getValue("id")}</div>
     ),
   },
 

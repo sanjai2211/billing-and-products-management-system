@@ -8,22 +8,25 @@ import { getCustomersByShopId } from "@/apicall";
 import { useAddEditDeleteBill } from "@/lib/hooks";
 import { getList } from "@/lib/utils-helper/data/get-list";
 
-
-export default function CustomerDetailsSection({ session, form,billId,useHook }: any) {
+export default function CustomerDetailsSection({
+  session,
+  form,
+  onSubmit,
+  customer = "CUSTOMER",
+}: any) {
   const { data, isLoading, isFetching, error } = useQuery({
     queryKey: ["customers", session?.shopId],
-    queryFn: () => getCustomersByShopId(session?.shopId),
+    queryFn: () =>
+      getCustomersByShopId(
+        session?.shopId,
+        `customerType=${customer}&customerType=BOTH`
+      ),
     enabled: !!session?.shopId,
   });
 
-  const { mutate: onSubmit } = useHook({
-    billId,
-    method: "PATCH",
-  });
-
-  const handleCustomerSelect = async(selectedProduct: any) => {
+  const handleCustomerSelect = async (selectedProduct: any) => {
     const { value } = selectedProduct;
-    await onSubmit({customerId : value})
+    await onSubmit({ customerId: value, method: "PATCH" });
     const {
       id,
       address,
@@ -58,42 +61,42 @@ export default function CustomerDetailsSection({ session, form,billId,useHook }:
     () => [
       {
         id: "customer-details",
-        sectionName: "Customer Details",
+        sectionName: "Supplier Details",
         icon: "User",
         fields: [
           {
             id: "customerName",
-            label: "Customer Name",
-            placeholder: "Customer Name",
-            list: getList(data,"customerName", "phoneNumbers"),
+            label: "Supplier Name",
+            placeholder: "Supplier Name",
+            list: getList(data, "customerName", "phoneNumbers"),
             ...commonField,
           },
           {
             id: "phoneNumbers",
             label: "Phone Number",
             placeholder: "Phone Number",
-            list: getList(data,"phoneNumbers","customerName"),
+            list: getList(data, "phoneNumbers", "customerName"),
             ...commonField,
           },
           {
             id: "email",
             label: "Email",
             placeholder: "Email",
-            list: getList(data,"email","customerName"),
+            list: getList(data, "email", "customerName"),
             ...commonField,
           },
           {
             id: "gstIn",
             label: "GSTIN",
             placeholder: "GSTIN",
-            list: getList(data,"gstIn","customerName"),
+            list: getList(data, "gstIn", "customerName"),
             ...commonField,
           },
         ],
       },
       {
         ...DisabledAddressSection,
-        sectionName: "Customer Address",
+        sectionName: "Supplier Address",
       },
     ],
     [isFetching, isLoading, data]

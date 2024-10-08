@@ -78,19 +78,19 @@ export const columns: ColumnDef<any>[] = [
       return <TextDisplay heading={date} subHeading={time} />;
     },
   },
-  {
-    accessorKey: "updatedAt",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Last Updated" />
-    ),
-    cell: ({ row }) => {
-      const { date, time } =
-        row.getValue("updatedAt") !== row.getValue("createdAt")
-          ? formatDate(row.getValue("updatedAt"))
-          : { date: "-", time: "" };
-      return <TextDisplay heading={date} subHeading={time} />;
-    },
-  },
+  // {
+  //   accessorKey: "updatedAt",
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader column={column} title="Last Updated" />
+  //   ),
+  //   cell: ({ row }) => {
+  //     const { date, time } =
+  //       row.getValue("updatedAt") !== row.getValue("createdAt")
+  //         ? formatDate(row.getValue("updatedAt"))
+  //         : { date: "-", time: "" };
+  //     return <TextDisplay heading={date} subHeading={time} />;
+  //   },
+  // },
   {
     accessorKey: "id",
     header: ({ column }) => (

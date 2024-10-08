@@ -15,7 +15,7 @@ const EditDeleteContainer = ({
 }: any) => {
   return (
     <div
-      className={`absolute right-0 flex items-center justify-evenly gap-4 w-fit px-4 bg-background h-full ${className}`}
+      className={`sticky p-4 right-0 flex items-center justify-evenly gap-4 w-fit bg-background h-full ${className}`}
     >
       {!hideEdit && (
         <div

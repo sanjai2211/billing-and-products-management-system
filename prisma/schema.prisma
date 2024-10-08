@@ -248,6 +248,7 @@ enum CustomerType {
   CUSTOMER
   SUPPLIER
   AGENT
+  BOTH
 }
 
 enum Status {

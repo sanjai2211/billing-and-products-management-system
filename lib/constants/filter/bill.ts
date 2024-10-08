@@ -5,7 +5,7 @@ export const FilterBillData = [
     id: "type",
     sectionName: "Bill Type",
     icon: "FolderSymlink",
-    component: "multipleSelect",
+    component: "select",
     placeholder :"Bill Types",
     list: BillTypes,
   },

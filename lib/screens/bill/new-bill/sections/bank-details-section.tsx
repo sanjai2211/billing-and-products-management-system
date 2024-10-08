@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getBankDetailsById } from "@/apicall";
 import { useAddEditDeleteBill } from "@/lib/hooks";
 
-export default function BankDetailsSection({ session, form,billId,useHook }: any) {
+export default function BankDetailsSection({ session, form,billId,onSubmit }: any) {
   const { data, isLoading, isFetching, error } = useQuery({
     queryKey: ["bank", session?.shopId],
     queryFn: () => getBankDetailsById(session?.shopId),
@@ -18,14 +18,9 @@ export default function BankDetailsSection({ session, form,billId,useHook }: any
     label: item?.bankName,
   }));
 
-  const { mutate: onSubmit } = useHook({
-    billId,
-    method: "PATCH",
-  });
-
   const handleCustomerSelect = async(selectedProduct: any) => {
     const { value } = selectedProduct;
-    await onSubmit({bankId : value})
+    await onSubmit({bankId : value,method : "PATCH"})
     const { id, bankName,shopId,customerId, ...rest } = data?.find(
       (item: any) => item?.id === value
     );

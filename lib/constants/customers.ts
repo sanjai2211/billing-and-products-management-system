@@ -4,7 +4,7 @@ import { ContactDetails } from "./contact";
 export const CustomerTypes = [
   { value: "CUSTOMER", label: "Customer" },
   { value: "SUPPLIER", label: "Supplier" },
-  // { value: "AGENT", label: "Agent" },
+  { value: "BOTH", label: "Both" },
 ];
 
 export const AddCustomer = [

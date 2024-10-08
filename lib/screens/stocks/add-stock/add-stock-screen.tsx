@@ -50,8 +50,9 @@ export default function AddStockScreen({ stockDetails, session }: any) {
   const detailsForm = useForm<DetailsFormData>({
     resolver: zodResolver(StockDetailsSchema),
     defaultValues: {
-      ...stockDetails.Bank,
-      ...stockDetails.Customer,
+      ...stockDetails?.Bank,
+      ...stockDetails?.Customer,
+      ...stockDetails?.Customer?.address
     },
   });
 
@@ -118,7 +119,7 @@ export default function AddStockScreen({ stockDetails, session }: any) {
 
     Object.entries({
       code: { value, label: code },
-      printName: { value, label: printName },
+      productName: { value, label: printName },
       cost,
       unit,
       mrp,
@@ -237,6 +238,8 @@ export default function AddStockScreen({ stockDetails, session }: any) {
 
   console.log({ totalAmount,total });
 
+ 
+
   return (
     <div className="w-full space-y-4">
       <div className="flex justify-between">
@@ -250,7 +253,7 @@ export default function AddStockScreen({ stockDetails, session }: any) {
           <div className="border rounded-sm py-2 px-4 flex items-center gap-2">
             <p>&#8377;</p>
             <p className="text-green-500 font-semibold text-lg">
-              {totalAmount?.total}
+              {totalAmount?.total || 0.00}
             </p>
           </div>
           <CodePreviewer
@@ -380,7 +383,8 @@ export default function AddStockScreen({ stockDetails, session }: any) {
               session={session}
               form={detailsForm}
               basicDetails={StockBasicDetails}
-              useHook={useAddEditDeleteClearStock}
+              onSubmit={onStockSubmit}
+              customer='SUPPLIER'
             />
           </form>
         </Form>

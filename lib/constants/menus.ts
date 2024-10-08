@@ -45,7 +45,7 @@ export const MenuData = [
   },
   {
     id: "customer",
-    sectionName: "Customer",
+    sectionName: "Parties",
     icon: "Boxes",
     items: [
       {
@@ -75,11 +75,11 @@ export const MenuData = [
         icon: "Layers",
         path: "/my-stocks",
       },
-      {
-        name: "Stocks Reports",
-        icon: "Blocks",
-        path: "/stock-reports",
-      },
+      // {
+      //   name: "Stocks Reports",
+      //   icon: "Blocks",
+      //   path: "/stock-reports",
+      // },
     ],
   },
   // {

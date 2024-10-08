@@ -78,7 +78,7 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className="flex flex-col gap-4 w-full h-[calc(100vh-84px)] ">
+    <div className="flex flex-col gap-4 w-full h-[calc(100vh-90px)] ">
       <DataTableToolbar table={table} />
       <div className="rounded-md border h-full overflow-auto">
         <Table>

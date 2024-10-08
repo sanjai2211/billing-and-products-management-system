@@ -13,9 +13,9 @@ import TextDisplay from "@/lib/components/text-display";
 const getColor = (field: any, value: any) => {
   switch (field) {
     case "customerType":
-      if (value === "SUPPLIER") return "voilet";
-      else if (value === "AGENT") return "orange";
-      else if (value === "CUSTOMER") return "rose";
+      if (value === "SUPPLIER") return "purple";
+      else if (value === "BOTH") return "orange";
+      else if (value === "CUSTOMER") return "blue";
       else return "red";
   }
 };
@@ -65,7 +65,7 @@ export const columns: ColumnDef<any>[] = [
   {
     accessorKey: "customerName",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Customer Name" />
+      <DataTableColumnHeader column={column} title="Name" />
     ),
     cell: ({ row }) => (
       <div className="w-40">{row.getValue("customerName") || "-"}</div>

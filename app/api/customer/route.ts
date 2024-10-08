@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
 
   const { id, customerName, phoneNumbers, email, gstIn, ...rest } =
     parseQueryParams(searchParams);
-
+console.log({rest})
   if (!id) {
     return NextResponse.json({ error: "Shop id not found" }, { status: 400 });
   }
@@ -43,9 +43,16 @@ export async function GET(req: NextRequest) {
         mode: "insensitive",
       },
     }),
+    ...(rest.customerType && {
+      customerType: {
+        in: Array.isArray(rest.customerType)
+          ? rest.customerType
+          : [rest.customerType],
+      },
+    }),
   };
 
-  console.log({ where });
+  console.log({ where :where.customerType});
 
   try {
     const customer = await (prisma as any).customer.findMany({

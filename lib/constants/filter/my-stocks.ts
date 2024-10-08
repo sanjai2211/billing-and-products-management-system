@@ -5,7 +5,7 @@ export const FilterStockData = [
     id: "dataStatus",
     sectionName: "Status",
     icon: "Grid2x2Check",
-    component: "multipleSelect",
+    component: "select",
     placeholder: "Status",
     list: DataStatusesWithoutDraft,
   },
@@ -21,22 +21,22 @@ export const FilterStockData = [
 export const SearchStockData = [
   {
     value: "customerName",
-    label: "Supplier Name",
+    label: "Name",
     icon: "User",
   },
   {
     value: "phoneNumbers",
-    label: "Supplier Phone Number",
+    label: "Phone Number",
     icon: "PhoneCall",
   },
   {
     value: "email",
-    label: "Supplier Email",
+    label: "Email",
     icon: "Mail",
   },
   {
     value: "gstIn",
-    label: "Supplier Gst-In Number",
+    label: "Gst-In Number",
     icon: "HandCoins",
   },
 ];

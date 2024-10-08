@@ -30,7 +30,7 @@ export default function MyStocksScreen({ stocks, session }: any) {
   const handleDelte = ({id}: any) => onSubmit({ id,method : "DELETE" });
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-4">
       <div className="flex justify-between">
         <PageHeader title={`My Stocks`} />
         <div className="flex items-center gap-4">
@@ -72,8 +72,6 @@ export default function MyStocksScreen({ stocks, session }: any) {
       <DataTable
         data={stocks}
         columns={columns}
-        handleEdit={handleEdit}
-        handleDelete={handleDelte}
       />
     </div>
   );

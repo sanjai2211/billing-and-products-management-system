@@ -11,6 +11,7 @@ import { BillTypes, PaymentTypes } from "@/lib/constants";
 import { formatDate } from "@/lib/utils-helper/date/formatDate";
 import { billCalculation } from "@/lib/utils-helper/calculation/calculateTotal";
 import TotalDetails from "@/lib/screens/bill/new-bill/total-details";
+import { TableFooterCell } from "../../components/table-footer-cell";
 
 const getColor = (field: any, value: any) => {
   switch (field) {
@@ -93,7 +94,7 @@ export const StockColumns: ColumnDef<any>[] = [
       <DataTableColumnHeader column={column} title="Product Name" />
     ),
     cell: ({ row }) => (
-      <div className="w-[80px]">
+      <div className="w-[380px]">
         {row?.original?.product?.productName || "-"}
       </div>
     ),
@@ -122,7 +123,7 @@ export const StockColumns: ColumnDef<any>[] = [
       <DataTableColumnHeader column={column} title="Total Cost" />
     ),
     cell: ({ row }: any) => (
-      <div className="w-[80px] text-green-300">
+      <div className="w-[80px] text-violet-500">
         &#8377; {parseFloat(row.getValue("quantity") || 0) * parseFloat(row.getValue("cost") || 0) || "0.00"}
       </div>
     ),
@@ -145,6 +146,7 @@ export const StockColumns: ColumnDef<any>[] = [
       <div className="w-[1px] hidden">{row.getValue("id")}</div>
     ),
   },
+  
 
   // {
   //   accessorKey: "createdAt",

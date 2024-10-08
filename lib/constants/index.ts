@@ -52,6 +52,6 @@ export {
     RecordType,
     MenuData,
     ShopDetails,
-    StockReportsTab
+    StockReportsTab,
     StocksImpact,
 }

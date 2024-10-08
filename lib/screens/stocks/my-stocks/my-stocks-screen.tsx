@@ -34,7 +34,7 @@ export default function MyStocksScreen({ stocks, session }: any) {
       <div className="flex justify-between">
         <PageHeader title={`My Stocks`} />
         <div className="flex items-center gap-4">
-          <Tabs
+          {/* <Tabs
             defaultValue={
               newParams.get("dataStatus") === "DRAFT" ? "draft" : "stocks"
             }
@@ -62,7 +62,7 @@ export default function MyStocksScreen({ stocks, session }: any) {
                 Drafts
               </TabsTrigger>
             </TabsList>
-          </Tabs>
+          </Tabs> */}
           <Button onClick={()=>router.push('/add-stock')}>
             <Icon name="Package" className="h-4 w-4 mr-2" />
             New Stock

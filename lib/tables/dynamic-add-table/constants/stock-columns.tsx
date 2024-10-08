@@ -130,10 +130,10 @@ export const StockColumns: ColumnDef<any>[] = [
   {
     accessorKey: "action",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Bill Type" />
+      <DataTableColumnHeader column={column} title="HSN Code" />
     ),
     cell: ({ row }) => (
-      <div>{getBadge("type", row.getValue("type"), BillTypes) || "-"}</div>
+      <div>{row.original?.product?.hsnCode || "-"}</div>
     ),
   },
   {
@@ -142,7 +142,7 @@ export const StockColumns: ColumnDef<any>[] = [
       <DataTableColumnHeader column={column} title="Id" className="hidden" />
     ),
     cell: ({ row }) => (
-      <div className="w-[80px] hidden">{row.getValue("id")}</div>
+      <div className="w-[1px] hidden">{row.getValue("id")}</div>
     ),
   },
 

@@ -5,18 +5,18 @@ import { SectionWithDynamicFields } from "@/lib/components";
 import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getCustomersByShopId } from "@/apicall";
-import { getList } from "@/lib/utils-helper/screens/getList";
 import { useAddEditDeleteBill } from "@/lib/hooks";
+import { getList } from "@/lib/utils-helper/data/get-list";
 
 
-export default function CustomerDetailsSection({ session, form,billId }: any) {
+export default function CustomerDetailsSection({ session, form,billId,useHook }: any) {
   const { data, isLoading, isFetching, error } = useQuery({
     queryKey: ["customers", session?.shopId],
     queryFn: () => getCustomersByShopId(session?.shopId),
     enabled: !!session?.shopId,
   });
 
-  const { mutate: onSubmit } = useAddEditDeleteBill({
+  const { mutate: onSubmit } = useHook({
     billId,
     method: "PATCH",
   });

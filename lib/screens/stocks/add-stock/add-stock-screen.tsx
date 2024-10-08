@@ -29,12 +29,16 @@ import { DeleteAlert } from "@/lib/components/alerts/delete-alert";
 import { getList } from "@/lib/utils-helper/data/get-list";
 import DetailsSlot from "../../components/DetailsSlot";
 import { StockBasicDetails } from "@/lib/constants";
+import { totalColumns } from "@/lib/tables/billing-items/columns";
+import { getTaxCalculationByHsn } from "@/lib/utils-helper/calculation/getTaxCalculation";
+import { calculateTotals } from "@/lib/utils-helper/calculation/calculateTotal";
 
 type AddFormData = z.infer<typeof AddStockSchema>;
 type DetailsFormData = z.infer<typeof StockDetailsSchema>;
 
 export default function AddStockScreen({ stockDetails, session }: any) {
   const [currentTab, setCurretTab] = useState("stocks");
+  const [currentInnerTab, setCurretInnerTab] = useState("items");
 
   const addForm = useForm<AddFormData>({
     resolver: zodResolver(AddStockSchema),
@@ -150,6 +154,22 @@ export default function AddStockScreen({ stockDetails, session }: any) {
     component: "searchableField",
   };
 
+  const { Customer, Shop } = stockDetails;
+
+  const isIntraTrade = !Customer
+    ? true
+    : Shop?.address?.stateCode === Customer?.address?.stateCode;
+
+  const total = getTaxCalculationByHsn({
+    data: stockDetails?.stockItems,
+    isIntraTrade,
+  });
+
+  const totalAmount = calculateTotals({
+    data: total,
+    fields: ["total", "taxableValue", "cgstTotal", "sgstTotal", "igstTotal"],
+  });
+
   const dynamicFields = [
     {
       id: "sNo",
@@ -195,6 +215,11 @@ export default function AddStockScreen({ stockDetails, session }: any) {
         <Button
           type="button"
           onClick={() => onSubmit({ ...addForm.getValues() })}
+          disabled={
+            !addForm.watch("cost") ||
+            !addForm.watch("code") ||
+            !addForm.watch("quantity")
+          }
         >
           <Icon name="Plus" className="h-4 w-4 mr-2" />
           Add
@@ -210,6 +235,8 @@ export default function AddStockScreen({ stockDetails, session }: any) {
     },
   ];
 
+  console.log({ totalAmount,total });
+
   return (
     <div className="w-full space-y-4">
       <div className="flex justify-between">
@@ -223,10 +250,7 @@ export default function AddStockScreen({ stockDetails, session }: any) {
           <div className="border rounded-sm py-2 px-4 flex items-center gap-2">
             <p>&#8377;</p>
             <p className="text-green-500 font-semibold text-lg">
-              {(
-                calculateTotalNewStockValue(stockDetails?.stockItems) +
-                parseFloat(totalCost)
-              ).toFixed(2)}
+              {totalAmount?.total}
             </p>
           </div>
           <CodePreviewer
@@ -272,7 +296,7 @@ export default function AddStockScreen({ stockDetails, session }: any) {
                 Clear All
               </Button>
 
-              <Button
+              {/* <Button
                 type="button"
                 variant="secondary"
                 onClick={() =>
@@ -281,7 +305,7 @@ export default function AddStockScreen({ stockDetails, session }: any) {
               >
                 <Icon name="Save" className="h-4 w-4 mr-2" />
                 Draft
-              </Button>
+              </Button> */}
             </div>
           )}
 
@@ -334,19 +358,30 @@ export default function AddStockScreen({ stockDetails, session }: any) {
             className="w-full space-y-4"
           >
             <DynamicAddTable
-              data={stockDetails?.stockItems || []}
-              columns={StockColumns}
-              dynamicFields={dynamicFields}
+              data={currentInnerTab === "items" ? stockDetails?.stockItems : total}
+              columns={
+                currentInnerTab === "items"
+                  ? StockColumns
+                  : totalColumns(isIntraTrade, totalAmount)
+              }
+              dynamicFields={currentInnerTab === "items" ? dynamicFields : []}
               form={addForm}
               handleDelete={handleDelete}
               handleEdit={handleEdit}
+              setSelectedTab={setCurretInnerTab}
+              editAndDeletable={currentInnerTab === "items"}
             />
           </form>
         </Form>
       ) : (
         <Form {...detailsForm}>
           <form>
-            <DetailsSlot session={session} form={detailsForm} basicDetails={StockBasicDetails} />
+            <DetailsSlot
+              session={session}
+              form={detailsForm}
+              basicDetails={StockBasicDetails}
+              useHook={useAddEditDeleteClearStock}
+            />
           </form>
         </Form>
       )}

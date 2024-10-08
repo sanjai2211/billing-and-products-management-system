@@ -6,7 +6,11 @@ export const TotalValue = ({ total }: any) => {
   return <div className={`text-${color}-500`}>&#8377; {total.toFixed(2)}</div>;
 };
 
-export const PeopleDetails = ({ data, people = "Customer" }: any) => {
+export const PeopleDetails = ({
+  data,
+  people = "Customer",
+  color = "",
+}: any) => {
   if (!data) {
     return <p className="text-sm w-28">No {people} data</p>;
   }
@@ -18,14 +22,40 @@ export const PeopleDetails = ({ data, people = "Customer" }: any) => {
       ? `${address?.addressLine1},<br/>${address?.addressLine2},<br/>${address?.city},<br/>${address?.state},<br/>India - ${address?.zip}`
       : "-",
   };
+  console.log({ aaaa: `text-sm text-[${color}]`, color });
+  return (
+    <div className="flex justify-between items-center gap-4 w-[240px]">
+      <div className="flex flex-col gap-1">
+        <p className="text-sm" style={{ color }}>
+          {rest?.customerName}
+        </p>{" "}
+        <p className="text-xs opacity-50" style={{ color }}>{rest?.phoneNumbers}</p>
+      </div>
+      <ShowDetails title={`${people} Details`} data={displayData} />
+    </div>
+  );
+};
+
+export const ProductDetails = ({
+  data,
+  title = "Product Details",
+  color = "",
+}: any) => {
+  if (!data) {
+    return <p className="text-sm w-28">No data</p>;
+  }
+
+  const {id,createdAt,updatedAt,shopId,...rest} = data
 
   return (
     <div className="flex justify-between items-center gap-4 w-[240px]">
       <div className="flex flex-col gap-1">
-        <p className="text-sm">{rest?.customerName}</p>
-        <p className="text-xs opacity-50">{rest?.phoneNumbers}</p>
+        <p className="text-sm" style={{ color }}>
+          {rest?.productName}
+        </p>{" "}
+        <p className="text-xs opacity-50" style={{ color }}>{rest?.code}</p>
       </div>
-      <ShowDetails title={`${people} Details`} data={displayData} />
+      <ShowDetails title={title} data={rest} />
     </div>
   );
 };

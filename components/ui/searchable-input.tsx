@@ -23,6 +23,7 @@ const SearchableInput = (props: any) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const selectedOption = form?.getValues(id);
+  console.log({defaultValuessel  : selectedOption,id,aaaaa : form.getValues()})
 
   let options = list;
 

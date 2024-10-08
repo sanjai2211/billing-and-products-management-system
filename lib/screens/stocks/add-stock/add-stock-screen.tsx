@@ -26,7 +26,7 @@ import { getProductsByShopId } from "@/apicall";
 import { calculateTotalNewStockValue } from "@/lib/utils-helper/calculation/caculateTotalNewStockValue";
 import StockDetailsSlot from "./stock-details-slot";
 import { DeleteAlert } from "@/lib/components/alerts/delete-alert";
-import { getList } from "@/lib/utils-helper/screens/getList";
+import { getList } from "@/lib/utils-helper/data/get-list";
 import DetailsSlot from "../../components/DetailsSlot";
 import { StockBasicDetails } from "@/lib/constants";
 

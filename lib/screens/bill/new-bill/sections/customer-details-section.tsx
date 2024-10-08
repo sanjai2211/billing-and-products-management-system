@@ -8,6 +8,7 @@ import { getCustomersByShopId } from "@/apicall";
 import { getList } from "@/lib/utils-helper/screens/getList";
 import { useAddEditDeleteBill } from "@/lib/hooks";
 
+
 export default function CustomerDetailsSection({ session, form,billId }: any) {
   const { data, isLoading, isFetching, error } = useQuery({
     queryKey: ["customers", session?.shopId],

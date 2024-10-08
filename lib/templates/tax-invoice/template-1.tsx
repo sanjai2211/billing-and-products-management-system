@@ -168,12 +168,6 @@ export const TemplateOne = ({ data, theme = "light", download }: any) => {
               style={styles(theme).textXs}
             />
             <EdgeCase
-              field={"State"}
-              value={data?.Shop?.address?.state}
-              addOn=","
-              style={styles(theme).textXs}
-            />
-            <EdgeCase
               value={`India - ${data?.Shop?.address?.zip}`}
               addOn="."
               style={styles(theme).textXs}
@@ -197,11 +191,11 @@ export const TemplateOne = ({ data, theme = "light", download }: any) => {
               value={data?.Shop?.email}
               style={styles(theme).textContainer}
             />
-            <KeyValue
+            {/* <KeyValue
               field={"Website"}
               value={data?.Shop?.website}
               style={styles(theme).textContainer}
-            />
+            /> */}
           </View>
         </View>
         <View style={styles(theme).billTagLine}>

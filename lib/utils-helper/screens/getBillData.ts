@@ -2,8 +2,8 @@ import { billCalculation } from "../calculation/calculateTotal";
 import { getStateCode } from "./newBill";
 
 export const getBillData =(data : any) => {
-    const shopStateCode = getStateCode(data?.Shop);
-    const customerStateCode = getStateCode(data?.Customer);
+    const shopStateCode = getStateCode(data?.Shop?.address?.state);
+    const customerStateCode = getStateCode(data?.Customer?.address?.state);
   
     const isIntraTrade = !data?.Customer ? true : shopStateCode === customerStateCode;
   

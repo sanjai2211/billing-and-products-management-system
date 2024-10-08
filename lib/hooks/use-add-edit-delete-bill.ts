@@ -37,6 +37,7 @@ const useAddEditDeleteBill = ({ billId, method }: any) => {
         address,
         accountNumber,
         branchName,
+        method,
         ifscCode,
         faxNumber,
         createdAt,

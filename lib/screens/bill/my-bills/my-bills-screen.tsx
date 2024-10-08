@@ -87,7 +87,7 @@ export default function MyBillsScreen({ bills, session }: any) {
               >
                 Quotations
               </TabsTrigger>
-              <TabsTrigger
+              {/* <TabsTrigger
                 value="DRAFT"
                 onClick={() => {
                   newParams.append("dataStatus", "DRAFT");
@@ -97,7 +97,7 @@ export default function MyBillsScreen({ bills, session }: any) {
                 className="h-full"
               >
                 Drafts
-              </TabsTrigger>
+              </TabsTrigger> */}
             </TabsList>
           </Tabs>
           {/* <ExportButton data={ExportOptionsMyBills} exportData={bills} /> */}

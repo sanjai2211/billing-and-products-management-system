@@ -61,6 +61,7 @@ export async function GET(req: NextRequest) {
       where,
       include: {
         Bank: true,
+        Shop : true,
         items: {
           include: {
             product: true,

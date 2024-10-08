@@ -21,7 +21,7 @@ import { PDFViewer } from "@react-pdf/renderer";
 import { useTheme } from "next-themes";
 import { useState } from "react";
 
-export function ViewBillTemplate({ billDetails, title = "View Bill" }: any) {
+export function ViewBillTemplate({ billDetails, title = "View Bill",download=false }: any) {
   console.log({ billDetails });
   const [template, setTemplate] = useState(TemplateList["TAX_INVOICE"][0]);
   const { theme } = useTheme();
@@ -29,7 +29,7 @@ export function ViewBillTemplate({ billDetails, title = "View Bill" }: any) {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="outline" size="icon">
+        <Button variant="outline" size="icon" className="rounded-full">
           <Icon name="Eye" className="h-5 w-5" />
         </Button>
       </SheetTrigger>
@@ -96,6 +96,7 @@ export function ViewBillTemplate({ billDetails, title = "View Bill" }: any) {
               data={[billDetails]}
               template={template?.template}
               theme={theme}
+              download={download}
             />
           </PDFViewer>
         </div>

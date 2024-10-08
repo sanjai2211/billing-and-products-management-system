@@ -111,7 +111,7 @@ export function DynamicInputSearchField({ form, data }: any) {
                         {...field}
                         onChange={(e) => onChange(e?.target?.value, field)}
                         defaultValue={search || ""}
-                        value={form.watch(select) || ""}
+                        value={form.watch(select) || search}
                         placeholder="Search"
                       />
                     </FormControl>

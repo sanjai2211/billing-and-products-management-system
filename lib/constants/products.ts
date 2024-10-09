@@ -134,12 +134,12 @@ export const AdddProduct = [
     sectionName: "Cost Details",
     icon: "IndianRupee",
     fields: [
-      {
-        id: "cost",
-        label: "Cost",
-        placeholder: "Cost",
-        component: "inputField",
-      },
+      // {
+      //   id: "cost",
+      //   label: "Cost",
+      //   placeholder: "Cost",
+      //   component: "inputField",
+      // },
       {
         id: "mrp",
         label: "Market Retail Price",
@@ -165,30 +165,30 @@ export const AdddProduct = [
     sectionName: "GST Details",
     icon: "HandCoins",
     fields: [
-      {
-        id: "gstPurchase",
-        label: "GST Purchase",
-        placeholder: "GST Purchase",
-        component: "inputField",
-      },
+      // {
+      //   id: "gstPurchase",
+      //   label: "GST Purchase",
+      //   placeholder: "GST Purchase",
+      //   component: "inputField",
+      // },
       {
         id: "gstSales",
-        label: "GST Sales",
+        label: "GST",
         placeholder: "GST Sales",
         component: "inputField",
       },
-      {
-        id: "igstPurchase",
-        label: "IGST Purchase",
-        placeholder: "IGST Purchase",
-        component: "inputField",
-      },
-      {
-        id: "igstSales",
-        label: "IGST Sales",
-        placeholder: "IGST Sales",
-        component: "inputField",
-      },
+      // {
+      //   id: "igstPurchase",
+      //   label: "IGST Purchase",
+      //   placeholder: "IGST Purchase",
+      //   component: "inputField",
+      // },
+      // {
+      //   id: "igstSales",
+      //   label: "IGST Sales",
+      //   placeholder: "IGST Sales",
+      //   component: "inputField",
+      // },
       {
         id: "hsnCode",
         label: "HSN Code",
@@ -208,12 +208,12 @@ export const AdddProduct = [
         placeholder: "Open Stock",
         component: "inputField",
       },
-      {
-        id: "stockValue",
-        label: "Stock Value",
-        placeholder: "Stock Value",
-        component: "inputField",
-      },
+      // {
+      //   id: "stockValue",
+      //   label: "Stock Value",
+      //   placeholder: "Stock Value",
+      //   component: "inputField",
+      // },
     ],
   },
 ];

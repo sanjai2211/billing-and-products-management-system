@@ -171,10 +171,10 @@ export const columns: ColumnDef<any>[] = [
               <span className="text-xs opacity-50">Dated : </span>
               {formatDate(row.getValue("date"))?.date || "-"}
             </p>
-            <p className="text-xs">
+            {/* <p className="text-xs">
               <span className="text-xs opacity-50">Dued : </span>
               {formatDate(row.getValue("dueDate"))?.date || "-"}
-            </p>
+            </p> */}
           </div>
         );
       } else {

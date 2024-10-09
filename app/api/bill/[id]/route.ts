@@ -24,7 +24,7 @@ export async function GET(
         },
         Bank: true,
         Customer: true,
-        Shop : true
+        Shop: true,
       },
     });
 
@@ -49,7 +49,7 @@ export async function PATCH(
   try {
     const { id } = params;
     const data = await req.json();
-    
+
     if (!id) {
       return NextResponse.json({ error: "Bill id not found" }, { status: 400 });
     }
@@ -59,16 +59,15 @@ export async function PATCH(
       data,
     });
 
-    if (data?.dataStatus === 'COMPLETED' && data?.effectStock) {
-
+    if (data?.dataStatus === "COMPLETED" && data?.effectStock) {
       const billingItems = await (prisma as any).billingItems.findMany({
         where: { billId: id },
         include: {
-          product: true, 
+          product: true,
         },
       });
 
-      const updateStockPromises = billingItems.map(async (item : any) => {
+      const updateStockPromises = billingItems.map(async (item: any) => {
         const productSnap = item.product;
 
         if (!productSnap?.productSnapId) return;
@@ -107,7 +106,6 @@ export async function PATCH(
   }
 }
 
-
 export async function DELETE(
   req: NextRequest,
   { params }: { params: { id: string } }
@@ -130,9 +128,19 @@ export async function DELETE(
       return NextResponse.json({ error: "Product not found" }, { status: 404 });
     }
 
+    const checkAnyotherImpact = await (prisma as any).billingItems.findUnique({
+      where: { productSnapId: id },
+    });
+
+    if (!checkAnyotherImpact)
+      await (prisma as any).productSnapshot.delete({
+        where: { productSnapId: id },
+      });
+
     await (prisma as any).product.delete({
       where: { id },
     });
+    
 
     return NextResponse.json(
       { message: "Product deleted successfully" },

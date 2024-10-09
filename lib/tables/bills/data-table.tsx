@@ -29,7 +29,6 @@ import { DataTablePagination } from "./data-table-pagination";
 import { DataTableToolbar } from "./data-table-toolbar";
 import { Icon } from "@/lib/icons";
 import { EditDeleteContainer } from "@/lib/components";
-import { DataTableRowActions } from "./data-table-row-actions";
 import { BillActions } from "@/lib/components/bill-actions-hover-container";
 
 interface DataTableProps<TData, TValue> {

@@ -92,7 +92,7 @@ export const columns: ColumnDef<any>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Open Stock" />
     ),
-    cell: ({ row }) => <div>{row.getValue("openStock") || "-"}  {getValues(row.original.unit, ProductUnits) || "-"}</div>,
+    cell: ({ row }) => <div>{row.getValue("openStock") || "0"}  {getValues(row.original.unit, ProductUnits) || "-"}</div>,
   },
   {
     accessorKey: "group",
@@ -108,13 +108,13 @@ export const columns: ColumnDef<any>[] = [
     ),
     cell: ({ row }) => <div>{row.getValue("brand") || "-"}</div>,
   },
-  {
-    accessorKey: "cost",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Cost" />
-    ),
-    cell: ({ row }) => <div>{row.getValue("cost") || 0}</div>,
-  },
+  // {
+  //   accessorKey: "cost",
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader column={column} title="Cost" />
+  //   ),
+  //   cell: ({ row }) => <div>{row.getValue("cost") || 0}</div>,
+  // },
   {
     accessorKey: "mrp",
     header: ({ column }) => (
@@ -136,13 +136,13 @@ export const columns: ColumnDef<any>[] = [
     ),
     cell: ({ row }) => <div>{row.getValue("salesRate") || 0}</div>,
   },
-  {
-    accessorKey: "gstPurchase",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="GST Purchase" />
-    ),
-    cell: ({ row }) => <div>{row.getValue("gstPurchase") || 0} %</div>,
-  },
+  // {
+  //   accessorKey: "gstPurchase",
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader column={column} title="GST Purchase" />
+  //   ),
+  //   cell: ({ row }) => <div>{row.getValue("gstPurchase") || 0} %</div>,
+  // },
   {
     accessorKey: "gstSales",
     header: ({ column }) => (
@@ -150,20 +150,20 @@ export const columns: ColumnDef<any>[] = [
     ),
     cell: ({ row }) => <div>{row.getValue("gstSales") || 0} %</div>,
   },
-  {
-    accessorKey: "igstPurchase",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="IGST Purchase" />
-    ),
-    cell: ({ row }) => <div>{row.getValue("igstPurchase") || 0} %</div>,
-  },
-  {
-    accessorKey: "igstSales",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="IGST Sales" />
-    ),
-    cell: ({ row }) => <div>{row.getValue("igstSales") || 0} %</div>,
-  },
+  // {
+  //   accessorKey: "igstPurchase",
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader column={column} title="IGST Purchase" />
+  //   ),
+  //   cell: ({ row }) => <div>{row.getValue("igstPurchase") || 0} %</div>,
+  // },
+  // {
+  //   accessorKey: "igstSales",
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader column={column} title="IGST Sales" />
+  //   ),
+  //   cell: ({ row }) => <div>{row.getValue("igstSales") || 0} %</div>,
+  // },
   {
     accessorKey: "hsnCode",
     header: ({ column }) => (

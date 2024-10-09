@@ -83,7 +83,7 @@ model Product {
 
 model ProductSnapshot {
   id            String         @id @default(auto()) @map("_id") @db.ObjectId
-  productSnapId String         @db.ObjectId
+  productSnapId String?        @db.ObjectId
   code          String
   productName   String?
   printName     String?

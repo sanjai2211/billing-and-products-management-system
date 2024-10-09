@@ -2,25 +2,33 @@ import { useMutation } from "@tanstack/react-query";
 import { toast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import {
+  billItemsClearAll,
   createBillItems,
   deleteBillItem,
   updateBillItem,
 } from "@/apicall";
 
-const useAddEditDeleteBillItems = ({ method,form }: any) => {
+const useAddEditDeleteBillItems = ({ method, form }: any) => {
   const router = useRouter();
   const action =
-    method === "PATCH" ? "Updat" : method === "DELETE" ? "Delet" : "Creat";
+    method === "PATCH"
+      ? "Updat"
+      : method === "DELETE"
+      ? "Delet"
+      : method === "CLEAR"
+      ? "Clear"
+      : "Creat";
   return useMutation({
     mutationFn: async (data: any) => {
-        console.log({data})
-      const { billItemId, ...rest } = data;
+      console.log({ data });
+      const { billItemId, billId, ...rest } = data;
       let response;
-      if (method === "PATCH")
-        response = await updateBillItem(billItemId, rest);
+      if (method === "PATCH") response = await updateBillItem(billItemId, rest);
       else if (method === "DELETE") response = await deleteBillItem(billItemId);
-      else
-        response = await createBillItems(data);
+      else if (method === "CREATE")
+        response = response = await createBillItems(data);
+      else response = await billItemsClearAll(billId);
+
       return response;
     },
     onMutate: () => {
@@ -30,20 +38,22 @@ const useAddEditDeleteBillItems = ({ method,form }: any) => {
       });
     },
     onSuccess: (data: any) => {
-        console.log({data})
+      console.log({ data });
       if (data?.error) {
         toast({
           title: `Bill Items ${action}ion Failed !`,
-          description: data?.error || `We encountered an issue while ${action}ing your product. Please try again.`,
+          description:
+            data?.error ||
+            `We encountered an issue while ${action}ing your product. Please try again.`,
         });
       } else {
         toast({
           title: `Bill Items ${action}ed !`,
           description: `Your Bill Items has been ${action}ed successfully.`,
         });
-        console.log({resssss : data})
-        if(method === 'CREATE' || method === 'PATCH'){
-          form?.reset()
+        console.log({ resssss: data });
+        if (method === "CREATE" || method === "PATCH") {
+          form?.reset();
         }
         router.refresh();
       }

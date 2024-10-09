@@ -14,7 +14,7 @@ import BillSlot from "./bill-slot";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "@/components/ui/form";
-import { useAddEditDeleteBill, useAddEditShop } from "@/lib/hooks";
+import { useAddEditDeleteBill, useAddEditDeleteBillItems, useAddEditShop } from "@/lib/hooks";
 import { handlePrintBill } from "@/lib/utils-helper/export/print-bill";
 import { RecordType, StateCodes } from "@/lib/constants";
 import { MultiplSelectButton } from "@/components/ui/multiple-select-button";
@@ -78,6 +78,11 @@ export default function NewBillScreen({ billDetails, billId, session }: any) {
   const { mutate: onSubmit } = useAddEditDeleteBill({
     billId,
     method: "FINAL",
+  });
+
+  const { mutate: onBillItemsSubmit } = useAddEditDeleteBillItems({
+    billId,
+    method: "CLEAR",
   });
 
   const handleSaveBill = ({ dataStatus, effectStock }: any) => {
@@ -221,6 +226,21 @@ export default function NewBillScreen({ billDetails, billId, session }: any) {
                 }
                 content={`${sessionName} Number`}
               />
+              <Button
+                type="button"
+                variant="destructive"
+                onClick={() =>
+                  onBillItemsSubmit({ billId })
+                }
+                disabled={
+                  !billDetails?.items.length &&
+                  !billDetails?.bankId &&
+                  !billDetails?.customerId
+                }
+              >
+                <Icon name="CircleX" className="h-4 w-4 mr-2" />
+                Clear All
+              </Button>
               <Tabs defaultValue="bill" className="w-fit">
                 <TabsList className="h-11">
                   <TabsTrigger

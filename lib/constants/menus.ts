@@ -2,11 +2,11 @@ export const MenuData = [
   {
     id: "base",
     items: [
-      {
-        name: "Dashboard",
-        icon: "LayoutDashboard",
-        path: "/",
-      },
+      // {
+      //   name: "Dashboard",
+      //   icon: "LayoutDashboard",
+      //   path: "/",
+      // },
       {
         name: "My Bills",
         icon: "FileStack",

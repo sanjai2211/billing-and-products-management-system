@@ -408,7 +408,11 @@ export const TemplateOne = ({ data, theme = "light", download }: any) => {
               Terms & Conditions
             </Text>
             <Text style={{ fontSize: "10px", padding: "1px" }}>
-              1jfgdf fdjjgd gedjn
+              1. All prices include applicable GST; payment is to be made in full at the time of purchase
+            </Text><Text style={{ fontSize: "10px", padding: "1px" }}>
+            2. No returns, exchanges, or dues are applicable after the transaction.
+            </Text><Text style={{ fontSize: "10px", padding: "1px" }}>
+            3. Disputes are subject to corresponding jurisdiction, with efforts for amicable resolution first.
             </Text>
           </View>
 

@@ -191,7 +191,7 @@ export const deleteBillItem = async (billId: any) => {
   return response;
 };
 
-export const getCustomersByShopId = async (shopId: any, queryParams = "") => {
+export const getCustomersByShopId = async (shopId: any, queryParams = "" as any) => {
   const response = await fetchApi({
     endpoint: `/customer?id=${shopId}&${queryParams}`,
   });
@@ -273,6 +273,14 @@ export const deleteStock = async (stockId: any) => {
 export const stockClearAll = async (stockId: any) => {
   const response = await fetchApi({
     endpoint: `/stock/${stockId}/clear-all`,
+    method: "DELETE",
+  });
+  return response;
+};
+
+export const billItemsClearAll = async (stockId: any) => {
+  const response = await fetchApi({
+    endpoint: `/bill/bill-items/${stockId}/clear-all`,
     method: "DELETE",
   });
   return response;

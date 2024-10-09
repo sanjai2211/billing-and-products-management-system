@@ -53,6 +53,11 @@ export default function AddBill({
     cost: costField,
     hsnCode,
     total,
+    product,
+    cost:costInProduct,
+    gstPurchase,
+    igstPurchse,
+    igstSales,
     ...rest
   } = form.getValues() as any;
 

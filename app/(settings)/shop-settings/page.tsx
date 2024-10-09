@@ -22,10 +22,9 @@ export default async function ShopSettings() {
 
 
   return (
-    // <ShopSettingsScreen
-    //   shopDetails={{ ...shopDetails, ...shopDetails?.address }}
-    //   session={session}
-    // />
-    <Loading  />
+    <ShopSettingsScreen
+      shopDetails={{ ...shopDetails, ...shopDetails?.address }}
+      session={session}
+    />
   );
 }

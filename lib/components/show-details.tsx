@@ -18,6 +18,7 @@ export function ShowDetails({
   icon = "Eye",
   component = null,
 }: any) {
+  console.log({data,component,title})
   return (
     <Popover>
       <PopoverTrigger asChild>

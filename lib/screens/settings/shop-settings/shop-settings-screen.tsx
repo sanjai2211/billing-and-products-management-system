@@ -22,7 +22,7 @@ export default function ShopSettingsScreen({ shopDetails, session }: any) {
   const form = useForm<FormData>({
     resolver: zodResolver(ShopDetailsSchema),
     defaultValues: {
-      email : session?.email,
+      email: session?.email,
       ...shopDetails,
     },
   });
@@ -32,15 +32,17 @@ export default function ShopSettingsScreen({ shopDetails, session }: any) {
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit((data) => {
-          onSubmit({ ...data, userId: session?.userId });
-        })}
-      >
+      <form>
         <div className="flex flex-1 h-full flex-col gap-4">
           <div className="flex justify-between">
             <PageHeader title={`Shop Settings`} />
-            <Button type="submit" className="flex items-center gap-2">
+            <Button
+              onClick={() =>
+                onSubmit({ ...form.getValues(), userId: session?.userId })
+              }
+              type='button'
+              className="flex items-center gap-2"
+            >
               {shopId && <Icon name="Pencil" className="h-3.5 w-4" />}
               <p>{shopId ? "Save" : "Create Shop"}</p>
               {!shopId && <Icon name="Store" className="h-4 w-4" />}

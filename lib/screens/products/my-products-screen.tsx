@@ -18,7 +18,7 @@ export default function MyProductsScreen({ products, session }: any) {
     method: "DELETE",
   });
 
-  const handleDelte = (id: String) => onSubmit({ productId: id });
+  const handleDelte = ({id}: any) => onSubmit({ productId: id });
   return (
     <div>
       <PageHeader title={`My Products`} />

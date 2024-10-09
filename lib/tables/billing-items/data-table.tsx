@@ -144,7 +144,7 @@ export function DynamicAddTable<TData, TValue>({
                     <TableCell
                       key={cell.id}
                       className={
-                        cell.column.id === "hsnCode"
+                        cell.column.id === "hsnCode" && !editAndDeletable
                           ? "sticky left-0 z-10 bg-background"
                           : ""
                       }
@@ -179,7 +179,7 @@ export function DynamicAddTable<TData, TValue>({
               ? table.getFooterGroups().map((footerGroup) => (
                   <TableRow key={footerGroup.id}>
                     {footerGroup.headers.map((header) => (
-                      <TableCell key={header.id} className="py-2">
+                      <TableCell key={header.id} className="p-4">
                         {header.isPlaceholder
                           ? null
                           : flexRender(

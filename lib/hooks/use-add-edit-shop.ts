@@ -9,7 +9,7 @@ const useAddEditShop = ({ shopId }: any) => {
   const action = shopId ? "Updat" : "Creat";
   return useMutation({
     mutationFn: async (data: any) => {
-      const { addressLine1, addressLine2, city, state, zip, userId, ...rest } =
+      const { id,addressLine1, addressLine2, city, state, zip, userId, ...rest } =
         data;
       const address = {
         addressLine1,
